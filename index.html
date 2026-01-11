@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlueLavaCommunity - Saúde Mental</title>
+    <!-- Icons for Discord and X (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4A90E2; /* Blue Lava */
+            --accent: #FF5722;  /* Hot Lava (Orange) */
+            --discord: #5865F2;
+            --x-black: #000000;
+            --bg: #f4f7f6;
+            --white: #ffffff;
+            --text: #333;
+        }
+
+        body { font-family: 'Roboto', sans-serif; background-color: var(--bg); margin: 0; color: var(--text); }
+
+        /* HEADER */
+        header { 
+            background: linear-gradient(135deg, #2c3e50 0%, #4A90E2 100%); 
+            color: var(--white); padding: 40px 20px; text-align: center; 
+        }
+        header h1 { margin: 0; font-size: 3rem; letter-spacing: 2px; text-transform: uppercase; }
+        header .subtitle { margin-top: 10px; opacity: 0.9; font-size: 1.2rem; }
+
+        /* SOCIAL BUTTONS */
+        .social-area { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
+        .social-btn {
+            text-decoration: none; padding: 10px 20px; border-radius: 30px; font-weight: bold; color: white;
+            display: flex; align-items: center; gap: 10px; transition: transform 0.2s;
+        }
+        .social-btn:hover { transform: scale(1.05); }
+        .btn-discord { background-color: var(--discord); }
+        .btn-x { background-color: var(--x-black); border: 1px solid #333; }
+
+        /* ALERT BAR */
+        .stats-banner {
+            background: var(--accent); color: white; padding: 12px; text-align: center;
+            font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* NAVIGATION TABS */
+        nav { background: var(--white); box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; overflow-x: auto; }
+        .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; padding: 0 10px; }
+        .tab-link {
+            padding: 18px 20px; text-decoration: none; color: #555; font-weight: bold;
+            text-transform: uppercase; font-size: 0.9rem; border-bottom: 4px solid transparent; cursor: pointer; white-space: nowrap;
+        }
+        .tab-link:hover { color: var(--primary); background: #f9f9f9; }
+        .tab-link.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+        /* MAIN LAYOUT */
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        
+        /* GRID SYSTEM */
+        .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        
+        .post-card { 
+            background: var(--white); border-radius: 10px; overflow: hidden; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: transform 0.3s; cursor: pointer; border-top: 4px solid var(--primary);
+        }
+        .post-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .post-img { height: 180px; background-size: cover; background-position: center; background-color: #ddd; }
+        .post-content { padding: 25px; }
+        .post-tag { background: #e3f2fd; color: var(--primary); padding: 4px 10px; font-size: 0.75rem; border-radius: 20px; font-weight: bold; text-transform: uppercase; }
+        .post-title { margin: 15px 0 10px 0; font-size: 1.4rem; color: #222; }
+        .post-stat { color: var(--accent); font-weight: bold; font-size: 0.9rem; display: block; margin-bottom: 10px;}
+        .read-more { color: var(--primary); font-weight: bold; margin-top: 15px; display: inline-block; font-size: 0.9rem; }
+
+        /* SINGLE POST VIEW */
+        .single-post-view { display: none; background: var(--white); padding: 40px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .back-btn { cursor: pointer; color: #777; font-weight: bold; margin-bottom: 20px; display: inline-block; }
+        .back-btn:hover { color: var(--primary); }
+        .article-img { width: 100%; height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 30px; }
+        
+        /* TESTIMONIALS & LIKES */
+        .comments-wrapper { margin-top: 50px; border-top: 2px dashed #eee; padding-top: 30px; }
+        .comment-box { background: #f8f9fa; padding: 25px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #eee; }
+        
+        .testimony-item { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid #f0f0f0; padding-bottom: 20px; }
+        .avatar { width: 45px; height: 45px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 1.2rem; }
+        .t-name { font-weight: bold; color: #222; display: block; }
+        .t-text { margin-top: 5px; color: #555; line-height: 1.5; }
+        
+        .like-btn { 
+            background: none; border: 1px solid #ddd; padding: 5px 12px; border-radius: 20px; 
+            margin-top: 10px; cursor: pointer; color: #777; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; transition: 0.2s;
+        }
+        .like-btn:hover { border-color: #e0245e; color: #e0245e; }
+        .like-btn.liked { background-color: #ffeef3; border-color: #e0245e; color: #e0245e; }
+
+        /* FORM INPUTS */
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; box-sizing: border-box; }
+        button.submit-btn { background: var(--primary); color: white; border: none; padding: 12px 25px; cursor: pointer; font-weight: bold; border-radius: 6px; font-size: 1rem; }
+        button.submit-btn:hover { background: #357ABD; }
+
+        /* MOBILE */
+        @media(max-width: 600px) {
+            header h1 { font-size: 2rem; }
+            .social-area { flex-direction: column; align-items: center; }
+            .social-btn { width: 80%; justify-content: center; }
+            .container { padding: 0 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stats-banner">
+        ⚠️ Estatística Nacional: 1 em cada 5 pessoas em Portugal sofre de uma perturbação mental.
+    </div>
+
+    <header>
+        <h1>BlueLava<span style="color:#FFD700">Community</span></h1>
+        <div class="subtitle">Apoio, Informação e Comunidade</div>
+
+    </header>
+
+    <nav>
+        <div class="nav-inner">
+            <a class="tab-link active" onclick="filterPosts('all')">Todos</a>
+            <a class="tab-link" onclick="filterPosts('Ansiedade')">Ansiedade</a>
+            <a class="tab-link" onclick="filterPosts('Depressão')">Depressão</a>
+            <a class="tab-link" onclick="filterPosts('Fobias')">Fobias</a>
+            <a class="tab-link" onclick="filterPosts('TOC')">TOC</a>
+            <a class="tab-link" onclick="filterPosts('Substâncias')">Substâncias</a>
+            <a class="tab-link" onclick="filterPosts('Impulsos')">Impulsos</a>
+            <a class="tab-link" onclick="filterPosts('Esquizofrenia')">Esquizofrenia</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <!-- MAIN GRID -->
+        <div id="posts-grid" class="posts-grid"></div>
+
+        <!-- POST VIEW -->
+        <div id="single-post" class="single-post-view">
+            <div class="back-btn" onclick="showGrid()">← Voltar aos artigos</div>
+            <h2 id="sp-title" style="margin-top:0; font-size:2.5rem; color:#333;"></h2>
+            <div id="sp-stat" class="post-stat" style="font-size:1.1rem; margin-bottom:20px;"></div>
+            <img id="sp-img" class="article-img" src="" alt="">
+            <div id="sp-content" style="line-height:1.8; font-size:1.1rem; color:#444; margin-bottom:40px;"></div>
+
+            <!-- TESTIMONIALS SECTION -->
+            <div class="comments-wrapper">
+                <h3>💬 Testemunhos da Comunidade</h3>
+                <p>O seu testemunho pode ajudar alguém. Partilhe a sua história.</p>
+                
+                <div class="comment-box">
+                    <input type="text" id="new-name" placeholder="O seu nome (ou escreva Anónimo)">
+                    <textarea id="new-text" rows="3" placeholder="Como é que lida com a doença? Que estratégias usa?"></textarea>
+                    <button class="submit-btn" onclick="addComment()">Publicar Testemunho</button>
+                </div>
+
+                <div id="comments-list"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- CONTENT DATABASE ---
+        const posts = [
+            {
+                id: 1,
+                category: "Ansiedade",
+                title: "Perturbações de Ansiedade",
+                stat: "📊 16,5% da população portuguesa",
+                img: "https://images.unsplash.com/photo-1620912189865-1e8a33da4c5e?auto=format&fit=crop&w=800&q=80",
+                desc: "A perturbação mais frequente em Portugal. Sintomas incluem preocupação excessiva e taquicardia.",
+                fullText: "A ansiedade torna-se uma doença quando o medo é desproporcional ao perigo. Em Portugal, é a condição nº1. O tratamento passa por terapia e regulação de estilo de vida.",
+                comments: [{ name: "Mariana", text: "A terapia mudou a minha vida. Aprendi a respirar antes de entrar em pânico.", likes: 15 }]
+            },
+            {
+                id: 2,
+                category: "Depressão",
+                title: "Perturbações Depressivas",
+                stat: "📊 7,9% (Perturbações do humor)",
+                img: "https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&w=800&q=80",
+                desc: "Tristeza profunda e persistente que retira o prazer de viver e afeta o sono.",
+                fullText: "A depressão é uma doença clínica, não é fraqueza. Afeta quimicamente o cérebro. Pedir ajuda é o primeiro passo para voltar a ver a luz.",
+                comments: [{ name: "João", text: "Não desistam. A medicação certa fez-me sair do fundo do poço.", likes: 42 }]
+            },
+            {
+                id: 3,
+                category: "Fobias",
+                title: "Fobias Específicas",
+                stat: "📊 Muito prevalente na população",
+                img: "https://images.unsplash.com/photo-1508669232496-136bca59055f?auto=format&fit=crop&w=800&q=80",
+                desc: "Medo irracional de objetos ou situações (alturas, animais, espaços fechados).",
+                fullText: "As fobias levam ao evitamento. A pessoa deixa de viver a vida normal para evitar o objeto do medo. A exposição gradual é o melhor tratamento.",
+                comments: []
+            },
+            {
+                id: 4,
+                category: "TOC",
+                title: "Perturbação Obsessivo-Compulsiva",
+                stat: "📊 Ansiedade relacionada recorrente",
+                img: "https://images.unsplash.com/photo-1585842378081-5aa38dc4020d?auto=format&fit=crop&w=800&q=80",
+                desc: "Obsessões (pensamentos) e compulsões (rituais) que consomem tempo e energia.",
+                fullText: "Quem tem TOC sabe que os rituais não fazem sentido, mas não consegue parar. É como uma 'comichão' no cérebro que só passa se fizermos o ritual.",
+                comments: [{ name: "Ana T.", text: "O meu TOC é de organização. É exaustivo mas controlável com ajuda.", likes: 8 }]
+            },
+            {
+                id: 5,
+                category: "Substâncias",
+                title: "Uso de Substâncias",
+                stat: "📊 Problema de saúde pública",
+                img: "https://images.unsplash.com/photo-1527153664360-143922650085?auto=format&fit=crop&w=800&q=80",
+                desc: "Dependência de álcool ou drogas que afeta a saúde física e mental.",
+                fullText: "O vício é muitas vezes uma fuga para a dor emocional. A recuperação exige apoio médico e uma rede de suporte forte.",
+                comments: []
+            },
+            {
+                id: 6,
+                category: "Impulsos",
+                title: "Controlo de Impulsos",
+                stat: "📊 Afeta a regulação emocional",
+                img: "https://images.unsplash.com/photo-1504450874802-0ed58ffa9455?auto=format&fit=crop&w=800&q=80",
+                desc: "Dificuldade em resistir a um ato que é prejudicial para si ou para os outros.",
+                fullText: "Inclui cleptomania, jogo patológico e explosões de raiva. É uma luta constante entre o desejo e a razão.",
+                comments: []
+            },
+            {
+                id: 7,
+                category: "Esquizofrenia",
+                title: "Esquizofrenia",
+                stat: "📊 Doença mental grave",
+                img: "https://images.unsplash.com/photo-1545989253-02cc26577f88?auto=format&fit=crop&w=800&q=80",
+                desc: "Altera a perceção da realidade. Pode incluir alucinações e delírios.",
+                fullText: "O estigma é o pior inimigo. Pessoas com esquizofrenia podem levar vidas produtivas se mantiverem a medicação e terapia.",
+                comments: [{ name: "Ricardo", text: "Vivo com isto há 15 anos. A estabilidade é possível.", likes: 105 }]
+            }
+        ];
+
+        let currentPostId = null;
+
+        // --- FUNCTIONS ---
+        function init() { filterPosts('all'); }
+
+        function filterPosts(cat) {
+            document.getElementById('posts-grid').style.display = 'grid';
+            document.getElementById('single-post').style.display = 'none';
+            document.querySelectorAll('.tab-link').forEach(el => {
+                el.classList.remove('active');
+                if(el.innerText === cat || (cat === 'all' && el.innerText === 'INÍCIO')) el.classList.add('active');
+            });
+
+            const grid = document.getElementById('posts-grid');
+            grid.innerHTML = '';
+            const filtered = cat === 'all' ? posts : posts.filter(p => p.category === cat);
+
+            filtered.forEach(p => {
+                grid.innerHTML += `
+                    <div class="post-card" onclick="openPost(${p.id})">
+                        <div class="post-img" style="background-image: url('${p.img}')"></div>
+                        <div class="post-content">
+                            <span class="post-tag">${p.category}</span>
+                            <h3 class="post-title">${p.title}</h3>
+                            <span class="post-stat">${p.stat}</span>
+                            <p>${p.desc}</p>
+                            <span class="read-more">Ler mais →</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function openPost(id) {
+            currentPostId = id;
+            const p = posts.find(x => x.id === id);
+            document.getElementById('posts-grid').style.display = 'none';
+            document.getElementById('single-post').style.display = 'block';
+            window.scrollTo(0,0);
+
+            document.getElementById('sp-title').innerText = p.title;
+            document.getElementById('sp-stat').innerText = p.stat;
+            document.getElementById('sp-content').innerText = p.fullText;
+            document.getElementById('sp-img').src = p.img;
+            renderComments(p);
+        }
+
+        function showGrid() {
+            document.getElementById('posts-grid').style.display = 'grid';
+            document.getElementById('single-post').style.display = 'none';
+        }
+
+        function renderComments(p) {
+            const list = document.getElementById('comments-list');
+            list.innerHTML = '';
+            if(p.comments.length === 0) { list.innerHTML = '<p>Seja o primeiro a partilhar.</p>'; return; }
+            
+            p.comments.forEach((c, idx) => {
+                list.innerHTML += `
+                    <div class="testimony-item">
+                        <div class="avatar">${c.name.charAt(0)}</div>
+                        <div style="flex:1;">
+                            <span class="t-name">${c.name}</span>
+                            <div class="t-text">${c.text}</div>
+                            <button class="like-btn" onclick="toggleLike(${p.id}, ${idx}, this)">
+                                <i class="fa-regular fa-heart"></i> <span>${c.likes}</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function toggleLike(pid, idx, btn) {
+            const p = posts.find(x => x.id === pid);
+            const icon = btn.querySelector('i');
+            const span = btn.querySelector('span');
+
+            if(btn.classList.contains('liked')) {
+                p.comments[idx].likes--;
+                btn.classList.remove('liked');
+                icon.classList.remove('fa-solid');
+                icon.classList.add('fa-regular');
+            } else {
+                p.comments[idx].likes++;
+                btn.classList.add('liked');
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid');
+            }
+            span.innerText = p.comments[idx].likes;
+        }
+
+        function addComment() {
+            const name = document.getElementById('new-name').value;
+            const text = document.getElementById('new-text').value;
+            if(!text) return alert("Escreva um testemunho.");
+            
+            const p = posts.find(x => x.id === currentPostId);
+            p.comments.unshift({ name: name || "Anónimo", text: text, likes: 0 });
+            
+            document.getElementById('new-name').value = '';
+            document.getElementById('new-text').value = '';
+            renderComments(p);
+        }
+
+        init();
+    </script>
+</body>
+</html>
