@@ -24,9 +24,21 @@
 
         /* HEADER */
         header { 
-            background: linear-gradient(135deg, #2c3e50 0%, #4A90E2 100%); 
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c3e50 100%); 
             color: var(--white); padding: 40px 20px; text-align: center; 
         }
+        
+        /* LOGO STYLING */
+        .header-logo {
+            max-width: 250px;
+            height: auto;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+        }
+
         header h1 { margin: 0; font-size: 3rem; letter-spacing: 2px; text-transform: uppercase; }
         header .subtitle { margin-top: 10px; opacity: 0.9; font-size: 1.2rem; }
 
@@ -38,7 +50,7 @@
         }
         .social-btn:hover { transform: scale(1.05); }
         .btn-discord { background-color: var(--discord); }
-        .btn-x { background-color: var(--x-black); border: 1px solid #333; }
+        .btn-x { background-color: var(--x-black); border: 1px solid #555; }
 
         /* ALERT BAR */
         .stats-banner {
@@ -67,7 +79,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: transform 0.3s; cursor: pointer; border-top: 4px solid var(--primary);
         }
         .post-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .post-img { height: 180px; background-size: cover; background-position: center; background-color: #ddd; }
+        .post-img { height: 200px; background-size: cover; background-position: center; background-color: #ddd; }
         .post-content { padding: 25px; }
         .post-tag { background: #e3f2fd; color: var(--primary); padding: 4px 10px; font-size: 0.75rem; border-radius: 20px; font-weight: bold; text-transform: uppercase; }
         .post-title { margin: 15px 0 10px 0; font-size: 1.4rem; color: #222; }
@@ -78,7 +90,7 @@
         .single-post-view { display: none; background: var(--white); padding: 40px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .back-btn { cursor: pointer; color: #777; font-weight: bold; margin-bottom: 20px; display: inline-block; }
         .back-btn:hover { color: var(--primary); }
-        .article-img { width: 100%; height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 30px; }
+        .article-img { width: 100%; height: 400px; object-fit: cover; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         
         /* TESTIMONIALS & LIKES */
         .comments-wrapper { margin-top: 50px; border-top: 2px dashed #eee; padding-top: 30px; }
@@ -107,6 +119,8 @@
             .social-area { flex-direction: column; align-items: center; }
             .social-btn { width: 80%; justify-content: center; }
             .container { padding: 0 15px; }
+            .header-logo { max-width: 180px; }
+            .article-img { height: 250px; }
         }
     </style>
 </head>
@@ -117,14 +131,27 @@
     </div>
 
     <header>
+        <!-- LOGO DA BLUELAVA (Certifique-se que o ficheiro logo.png está no GitHub) -->
+        <img src="logo.png" alt="Blue Lava Logo" class="header-logo">
+        
         <h1>BlueLava<span style="color:#FFD700">Community</span></h1>
         <div class="subtitle">Apoio, Informação e Comunidade</div>
-
+        
+        <!-- BOTÕES SOCIAIS ATUALIZADOS -->
+        <div class="social-area">
+            <a href="https://discord.gg/SEU_CODIGO" target="_blank" class="social-btn btn-discord">
+                <i class="fa-brands fa-discord"></i> Entrar no Discord
+            </a>
+            <!-- LINK X.COM ATUALIZADO AQUI 👇 -->
+            <a href="https://x.com/bluelava_pt" target="_blank" class="social-btn btn-x">
+                <i class="fa-brands fa-x-twitter"></i> Seguir no X.com
+            </a>
+        </div>
     </header>
 
     <nav>
         <div class="nav-inner">
-            <a class="tab-link active" onclick="filterPosts('all')">Todos</a>
+            <a class="tab-link active" onclick="filterPosts('all')">Início</a>
             <a class="tab-link" onclick="filterPosts('Ansiedade')">Ansiedade</a>
             <a class="tab-link" onclick="filterPosts('Depressão')">Depressão</a>
             <a class="tab-link" onclick="filterPosts('Fobias')">Fobias</a>
@@ -136,19 +163,18 @@
     </nav>
 
     <div class="container">
-        
-        <!-- MAIN GRID -->
+        <!-- GRELHA PRINCIPAL -->
         <div id="posts-grid" class="posts-grid"></div>
 
-        <!-- POST VIEW -->
+        <!-- VISUALIZAÇÃO DO ARTIGO -->
         <div id="single-post" class="single-post-view">
             <div class="back-btn" onclick="showGrid()">← Voltar aos artigos</div>
             <h2 id="sp-title" style="margin-top:0; font-size:2.5rem; color:#333;"></h2>
             <div id="sp-stat" class="post-stat" style="font-size:1.1rem; margin-bottom:20px;"></div>
-            <img id="sp-img" class="article-img" src="" alt="">
+            <img id="sp-img" class="article-img" src="" alt="Imagem Artística da Doença">
             <div id="sp-content" style="line-height:1.8; font-size:1.1rem; color:#444; margin-bottom:40px;"></div>
 
-            <!-- TESTIMONIALS SECTION -->
+            <!-- SECÇÃO DE TESTEMUNHOS -->
             <div class="comments-wrapper">
                 <h3>💬 Testemunhos da Comunidade</h3>
                 <p>O seu testemunho pode ajudar alguém. Partilhe a sua história.</p>
@@ -162,20 +188,19 @@
                 <div id="comments-list"></div>
             </div>
         </div>
-
     </div>
 
     <script>
-        // --- CONTENT DATABASE ---
+        // --- BASE DE DADOS COM IMAGENS AI ---
         const posts = [
             {
                 id: 1,
                 category: "Ansiedade",
                 title: "Perturbações de Ansiedade",
                 stat: "📊 16,5% da população portuguesa",
-                img: "https://images.unsplash.com/photo-1620912189865-1e8a33da4c5e?auto=format&fit=crop&w=800&q=80",
-                desc: "A perturbação mais frequente em Portugal. Sintomas incluem preocupação excessiva e taquicardia.",
-                fullText: "A ansiedade torna-se uma doença quando o medo é desproporcional ao perigo. Em Portugal, é a condição nº1. O tratamento passa por terapia e regulação de estilo de vida.",
+                img: "https://images.unsplash.com/photo-1594322436404-5a0526db4d13?auto=format&fit=crop&w=800&q=80",
+                desc: "A perturbação mais frequente em Portugal. Sintomas incluem preocupação excessiva.",
+                fullText: "A ansiedade torna-se uma doença quando o medo é desproporcional ao perigo. É como ter um alarme de incêndio no cérebro que não se desliga. O tratamento passa por terapia e regulação de estilo de vida.",
                 comments: [{ name: "Mariana", text: "A terapia mudou a minha vida. Aprendi a respirar antes de entrar em pânico.", likes: 15 }]
             },
             {
@@ -183,9 +208,9 @@
                 category: "Depressão",
                 title: "Perturbações Depressivas",
                 stat: "📊 7,9% (Perturbações do humor)",
-                img: "https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&w=800&q=80",
+                img: "https://images.unsplash.com/photo-1505312926838-898495442b3a?auto=format&fit=crop&w=800&q=80",
                 desc: "Tristeza profunda e persistente que retira o prazer de viver e afeta o sono.",
-                fullText: "A depressão é uma doença clínica, não é fraqueza. Afeta quimicamente o cérebro. Pedir ajuda é o primeiro passo para voltar a ver a luz.",
+                fullText: "A depressão é uma doença clínica, não é fraqueza. Afeta quimicamente o cérebro, alterando a percepção da realidade para tons mais cinzentos. Pedir ajuda é o primeiro passo.",
                 comments: [{ name: "João", text: "Não desistam. A medicação certa fez-me sair do fundo do poço.", likes: 42 }]
             },
             {
@@ -193,9 +218,9 @@
                 category: "Fobias",
                 title: "Fobias Específicas",
                 stat: "📊 Muito prevalente na população",
-                img: "https://images.unsplash.com/photo-1508669232496-136bca59055f?auto=format&fit=crop&w=800&q=80",
+                img: "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?auto=format&fit=crop&w=800&q=80",
                 desc: "Medo irracional de objetos ou situações (alturas, animais, espaços fechados).",
-                fullText: "As fobias levam ao evitamento. A pessoa deixa de viver a vida normal para evitar o objeto do medo. A exposição gradual é o melhor tratamento.",
+                fullText: "As fobias levam ao evitamento extremo. A pessoa deixa de viver a vida normal para evitar o objeto do medo. A terapia de exposição é altamente eficaz.",
                 comments: []
             },
             {
@@ -203,19 +228,19 @@
                 category: "TOC",
                 title: "Perturbação Obsessivo-Compulsiva",
                 stat: "📊 Ansiedade relacionada recorrente",
-                img: "https://images.unsplash.com/photo-1585842378081-5aa38dc4020d?auto=format&fit=crop&w=800&q=80",
+                img: "https://images.unsplash.com/photo-1517412586675-97623a31c6a7?auto=format&fit=crop&w=800&q=80",
                 desc: "Obsessões (pensamentos) e compulsões (rituais) que consomem tempo e energia.",
-                fullText: "Quem tem TOC sabe que os rituais não fazem sentido, mas não consegue parar. É como uma 'comichão' no cérebro que só passa se fizermos o ritual.",
-                comments: [{ name: "Ana T.", text: "O meu TOC é de organização. É exaustivo mas controlável com ajuda.", likes: 8 }]
+                fullText: "Quem tem TOC sente que tem de realizar rituais para evitar que algo mau aconteça. É uma prisão mental de repetição, mas que pode ser controlada com ajuda médica.",
+                comments: [{ name: "Ana T.", text: "O meu TOC de organização é exaustivo mas controlável com ajuda.", likes: 8 }]
             },
             {
                 id: 5,
                 category: "Substâncias",
                 title: "Uso de Substâncias",
                 stat: "📊 Problema de saúde pública",
-                img: "https://images.unsplash.com/photo-1527153664360-143922650085?auto=format&fit=crop&w=800&q=80",
+                img: "https://images.unsplash.com/photo-1502945015378-0e284ca1a543?auto=format&fit=crop&w=800&q=80",
                 desc: "Dependência de álcool ou drogas que afeta a saúde física e mental.",
-                fullText: "O vício é muitas vezes uma fuga para a dor emocional. A recuperação exige apoio médico e uma rede de suporte forte.",
+                fullText: "O vício é muitas vezes uma fuga para a dor emocional. A recuperação exige desintoxicação física e, acima de tudo, reconstrução emocional.",
                 comments: []
             },
             {
@@ -223,9 +248,9 @@
                 category: "Impulsos",
                 title: "Controlo de Impulsos",
                 stat: "📊 Afeta a regulação emocional",
-                img: "https://images.unsplash.com/photo-1504450874802-0ed58ffa9455?auto=format&fit=crop&w=800&q=80",
+                img: "https://images.unsplash.com/photo-1503751071777-d2918b21bbd9?auto=format&fit=crop&w=800&q=80",
                 desc: "Dificuldade em resistir a um ato que é prejudicial para si ou para os outros.",
-                fullText: "Inclui cleptomania, jogo patológico e explosões de raiva. É uma luta constante entre o desejo e a razão.",
+                fullText: "Inclui cleptomania e explosões de raiva. É como se o 'travão' do cérebro falhasse momentaneamente perante um desejo intenso.",
                 comments: []
             },
             {
@@ -233,16 +258,16 @@
                 category: "Esquizofrenia",
                 title: "Esquizofrenia",
                 stat: "📊 Doença mental grave",
-                img: "https://images.unsplash.com/photo-1545989253-02cc26577f88?auto=format&fit=crop&w=800&q=80",
+                img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
                 desc: "Altera a perceção da realidade. Pode incluir alucinações e delírios.",
-                fullText: "O estigma é o pior inimigo. Pessoas com esquizofrenia podem levar vidas produtivas se mantiverem a medicação e terapia.",
+                fullText: "O estigma é o pior inimigo. Pessoas com esquizofrenia podem levar vidas produtivas. A arte e a terapia ocupacional ajudam muito na reintegração.",
                 comments: [{ name: "Ricardo", text: "Vivo com isto há 15 anos. A estabilidade é possível.", likes: 105 }]
             }
         ];
 
         let currentPostId = null;
 
-        // --- FUNCTIONS ---
+        // --- FUNÇÕES ---
         function init() { filterPosts('all'); }
 
         function filterPosts(cat) {
