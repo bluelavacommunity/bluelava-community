@@ -1,0 +1,22 @@
+<svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Beer Glass (Left) -->
+  <g>
+    <!-- Glass outline -->
+    <path d="M 80 80 L 100 250 L 160 250 L 180 80 Z" fill="none" stroke="black" stroke-width="20" stroke-linejoin="round"/>
+    <!-- Foam/Head -->
+    <circle cx="90" cy="60" r="25" fill="black"/>
+    <circle cx="110" cy="50" r="20" fill="black"/>
+    <circle cx="130" cy="65" r="22" fill="black"/>
+  </g>
+
+  <!-- Blue Lava Text (Right) -->
+  <g>
+    <!-- Main text styling with blue and graffiti effect -->
+    <text x="250" y="180" font-size="120" font-weight="bold" fill="black" font-family="Arial Black, sans-serif" letter-spacing="5">
+      BLUVS
+    </text>
+    <text x="250" y="200" font-size="80" font-weight="bold" fill="black" font-family="Arial Black, sans-serif" letter-spacing="3">
+      LAVA
+    </text>
+  </g>
+</svg>
