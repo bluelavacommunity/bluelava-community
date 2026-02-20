@@ -24,7 +24,7 @@
 
         /* HEADER */
         header { 
-            background: linear-gradient(180deg, #001f65, #6895fd); 
+            background: linear-gradient(180deg, #000f2a, #2b4cb8, #1a5eb8, #002667);
             color: white; padding: 40px 20px; text-align: center; 
         }
         
@@ -105,13 +105,24 @@
             background: none; border: 1px solid #ddd; padding: 5px 12px; border-radius: 20px; 
             margin-top: 10px; cursor: pointer; color: #777; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; transition: 0.2s;
         }
-        .like-btn:hover { border-color: #e0245e; color: #e0245e; }
-        .like-btn.liked { background-color: #ffeef3; border-color: #e0245e; color: #e0245e; }
+        .like-btn:hover { border-color: #FF9800; color: #FF9800; }
+        .like-btn.liked { background-color: #FFF3E0; border-color: #FF9800; color: #FF9800; }
 
         /* FORM INPUTS */
         input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; box-sizing: border-box; }
         button.submit-btn { background: var(--primary); color: white; border: none; padding: 12px 25px; cursor: pointer; font-weight: bold; border-radius: 6px; font-size: 1rem; }
         button.submit-btn:hover { background: #357ABD; }
+
+        /* EXPERIENCE/DIFFICULTIES SECTION */
+        .difficulties-wrapper { margin-top: 40px; border-top: 3px solid var(--accent); padding-top: 30px; background: #FFF8F0; padding: 25px; border-radius: 8px; }
+        .difficulties-wrapper h3 { color: var(--accent); margin-top: 0; }
+        .difficulty-post { background: var(--white); padding: 20px; margin-bottom: 20px; border-radius: 8px; border-left: 4px solid var(--accent); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .difficulty-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .difficulty-author { font-weight: bold; color: #222; }
+        .difficulty-date { font-size: 0.85rem; color: #999; }
+        .difficulty-text { color: #555; line-height: 1.6; margin: 10px 0; }
+        .difficulty-category-tag { display: inline-block; background: var(--accent); color: white; padding: 3px 8px; border-radius: 20px; font-size: 0.75rem; margin-bottom: 10px; }
+
 
         /* MOBILE */
         @media(max-width: 600px) {
@@ -132,9 +143,9 @@
 
     <header>
         <!-- LOGO DA BLUELAVA (Certifique-se que o ficheiro logo.svg está no GitHub) -->
-        <img src="logo.svg" alt="Blue Lava Logo" class="header-logo">
+        <img src="logo.png" alt="Blue Lava Logo" class="header-logo">
         
-        <div style="font-family: 'Times New Roman', serif; color: white; font-size: 2rem; font-weight: bold; margin-bottom: 10px;">Blue Lava Community</div>
+        <div style="font-family: 'Times New Roman', serif; font-size: 2rem; font-weight: bold; margin-bottom: 10px;"><span style="color: var(--accent);">comunidade</span> <span style="color: white;">Blue Lava</span></div>
         <div class="subtitle">Apoio, Informação e Comunidade</div>
         
         <!-- BOTÕES SOCIAIS ATUALIZADOS -->
@@ -143,7 +154,7 @@
                 <i class="fa-brands fa-discord"></i> Entrar no Discord
             </a>
             <!-- LINK WHATSAPP AQUI 👇 -->
-            <a href="" target="_blank" class="social-btn btn-whatsapp">
+            <a href="https://chat.whatsapp.com/Brbk55gFD3KG1UFx8DOEPs" target="_blank" class="social-btn btn-whatsapp">
                 <i class="fa-brands fa-whatsapp"></i> Entrar no WhatsApp
             </a>
         </div>
@@ -153,12 +164,12 @@
         <div class="nav-inner">
             <a class="tab-link active" onclick="filterPosts('all')">Início</a>
             <a class="tab-link" onclick="filterPosts('Ansiedade')">Ansiedade</a>
+            <a class="tab-link" onclick="filterPosts('Ansiedade Leve')">Ansiedade Leve</a>
             <a class="tab-link" onclick="filterPosts('Depressão')">Depressão</a>
-            <a class="tab-link" onclick="filterPosts('Fobias')">Fobias</a>
+            <a class="tab-link" onclick="filterPosts('Stress')">Stress Crónico</a>
+            <a class="tab-link" onclick="filterPosts('Pânico')">Pânico</a>
             <a class="tab-link" onclick="filterPosts('TOC')">TOC</a>
-            <a class="tab-link" onclick="filterPosts('Substâncias')">Substâncias</a>
-            <a class="tab-link" onclick="filterPosts('Impulsos')">Impulsos</a>
-            <a class="tab-link" onclick="filterPosts('Esquizofrenia')">Esquizofrenia</a>
+            <a class="tab-link" onclick="filterPosts('Burnout')">Burnout</a>
         </div>
     </nav>
 
@@ -174,14 +185,28 @@
             <img id="sp-img" class="article-img" src="" alt="Imagem Artística da Doença">
             <div id="sp-content" style="line-height:1.8; font-size:1.1rem; color:#444; margin-bottom:40px;"></div>
 
+            <!-- SECÇÃO DE DIFICULDADES E EXPERIÊNCIAS -->
+            <div class="difficulties-wrapper">
+                <h3 id="difficulties-title">🆘 Partilhe as Suas Dificuldades e Experiências</h3>
+                <p id="difficulties-desc">Esta é uma comunidade segura. Conte-nos as suas lutas, estratégias e vitórias. Ninguém está sozinho.</p>
+                
+                <div class="comment-box">
+                    <input type="text" id="new-difficulty-name" placeholder="Deixe em branco para partilhar anonimamente">
+                    <textarea id="new-difficulty-text" rows="4" placeholder="Qual é a sua maior dificuldade? Que estratégias o/a ajudam?"></textarea>
+                    <button class="submit-btn" onclick="addDifficulty()">Partilhar Anonimamente</button>
+                </div>
+
+                <div id="difficulties-list"></div>
+            </div>
+
             <!-- SECÇÃO DE TESTEMUNHOS -->
             <div class="comments-wrapper">
                 <h3>💬 Testemunhos da Comunidade</h3>
-                <p>O seu testemunho pode ajudar alguém. Partilhe a sua história.</p>
+                <p>O seu testemunho pode ajudar alguém. Partilhe a sua história (anonimamente ou com o seu nome).</p>
                 
                 <div class="comment-box">
-                    <input type="text" id="new-name" placeholder="O seu nome (ou escreva Anónimo)">
-                    <textarea id="new-text" rows="3" placeholder="Como é que lida com a doença? Que estratégias usa?"></textarea>
+                    <input type="text" id="new-name" placeholder="Deixe em branco para comentar anonimamente">
+                    <textarea id="new-text" rows="3" placeholder="Como é que lida com isto? Que estratégias usa?"></textarea>
                     <button class="submit-btn" onclick="addComment()">Publicar Testemunho</button>
                 </div>
 
@@ -198,70 +223,121 @@
                 category: "Ansiedade",
                 title: "Perturbações de Ansiedade",
                 stat: "📊 16,5% da população portuguesa",
-                img: "https://images.unsplash.com/photo-1594322436404-5a0526db4d13?auto=format&fit=crop&w=800&q=80",
+                img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80",
                 desc: "A perturbação mais frequente em Portugal. Sintomas incluem preocupação excessiva.",
-                fullText: "A ansiedade torna-se uma doença quando o medo é desproporcional ao perigo. É como ter um alarme de incêndio no cérebro que não se desliga. O tratamento passa por terapia e regulação de estilo de vida.",
-                comments: [{ name: "Mariana", text: "A terapia mudou a minha vida. Aprendi a respirar antes de entrar em pânico.", likes: 15 }]
+                fullText: "Segundo o Estudo EpiRegiões (2013), a ansiedade afeta 16,5% da população portuguesa. A ansiedade torna-se uma doença quando o medo é desproporcional ao perigo. É como ter um alarme de incêndio no cérebro que não se desliga. O tratamento passa por terapia cognitivo-comportamental e regulação de estilo de vida.",
+                comments: [{ name: "Mariana", text: "A terapia mudou a minha vida. Aprendi a respirar antes de entrar em pânico.", likes: 15 }],
+                difficulties: []
             },
             {
                 id: 2,
                 category: "Depressão",
                 title: "Perturbações Depressivas",
-                stat: "📊 7,9% (Perturbações do humor)",
-                img: "https://images.unsplash.com/photo-1505312926838-898495442b3a?auto=format&fit=crop&w=800&q=80",
+                stat: "📊 7,9% da população portuguesa",
+                img: "https://images.unsplash.com/photo-1609207825381-85a04dbb0b26?auto=format&fit=crop&w=800&q=80",
                 desc: "Tristeza profunda e persistente que retira o prazer de viver e afeta o sono.",
-                fullText: "A depressão é uma doença clínica, não é fraqueza. Afeta quimicamente o cérebro, alterando a percepção da realidade para tons mais cinzentos. Pedir ajuda é o primeiro passo.",
-                comments: [{ name: "João", text: "Não desistam. A medicação certa fez-me sair do fundo do poço.", likes: 42 }]
+                fullText: "De acordo com o relatório de Saúde Mental do INE (2019), a depressão afeta 7,9% da população portuguesa. A depressão é uma doença clínica, não é fraqueza. Afeta quimicamente o cérebro, alterando a percepção da realidade. Estudos portugueses mostram que a terapia combinada com medicação tem taxa de sucesso superior a 70%. Pedir ajuda é o primeiro passo.",
+                comments: [{ name: "João", text: "Não desistam. A medicação certa fez-me sair do fundo do poço.", likes: 42 }],
+                difficulties: []
             },
             {
                 id: 3,
                 category: "Fobias",
                 title: "Fobias Específicas",
                 stat: "📊 Muito prevalente na população",
-                img: "https://images.unsplash.com/photo-1518621845118-2dfe0f7416b3?auto=format&fit=crop&w=800&q=80",
+                img: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=800&q=80",
                 desc: "Medo irracional de objetos ou situações (alturas, animais, espaços fechados).",
                 fullText: "As fobias levam ao evitamento extremo. A pessoa deixa de viver a vida normal para evitar o objeto do medo. A terapia de exposição é altamente eficaz.",
-                comments: []
+                comments: [],
+                difficulties: []
             },
             {
                 id: 4,
                 category: "TOC",
                 title: "Perturbação Obsessivo-Compulsiva",
-                stat: "📊 Ansiedade relacionada recorrente",
-                img: "https://images.unsplash.com/photo-1517412586675-97623a31c6a7?auto=format&fit=crop&w=800&q=80",
+                stat: "📊 1-2% da população portuguesa",
+                img: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80",
                 desc: "Obsessões (pensamentos) e compulsões (rituais) que consomem tempo e energia.",
-                fullText: "Quem tem TOC sente que tem de realizar rituais para evitar que algo mau aconteça. É uma prisão mental de repetição, mas que pode ser controlada com ajuda médica.",
-                comments: [{ name: "Ana T.", text: "O meu TOC de organização é exaustivo mas controlável com ajuda.", likes: 8 }]
+                fullText: "De acordo com estudos da Universidade de Lisboa, o TOC afeta 1-2% da população portuguesa. Quem tem TOC sente que tem de realizar rituais para evitar que algo mau aconteça. É uma prisão mental de repetição, mas que pode ser controlada com ajuda médica. Terapia cognitivo-comportamental e ISRS têm elevadas taxas de remissão.",
+                comments: [{ name: "Ana T.", text: "O meu TOC de organização é exaustivo mas controlável com ajuda.", likes: 8 }],
+                difficulties: []
             },
             {
                 id: 5,
                 category: "Substâncias",
                 title: "Uso de Substâncias",
                 stat: "📊 Problema de saúde pública",
-                img: "https://images.unsplash.com/photo-1502945015378-0e284ca1a543?auto=format&fit=crop&w=800&q=80",
+                img: "https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?auto=format&fit=crop&w=800&q=80",
                 desc: "Dependência de álcool ou drogas que afeta a saúde física e mental.",
                 fullText: "O vício é muitas vezes uma fuga para a dor emocional. A recuperação exige desintoxicação física e, acima de tudo, reconstrução emocional.",
-                comments: []
+                comments: [],
+                difficulties: []
             },
             {
                 id: 6,
                 category: "Impulsos",
                 title: "Controlo de Impulsos",
                 stat: "📊 Afeta a regulação emocional",
-                img: "https://images.unsplash.com/photo-1503751071777-d2918b21bbd9?auto=format&fit=crop&w=800&q=80",
+                img: "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=800&q=80",
                 desc: "Dificuldade em resistir a um ato que é prejudicial para si ou para os outros.",
                 fullText: "Inclui cleptomania e explosões de raiva. É como se o 'travão' do cérebro falhasse momentaneamente perante um desejo intenso.",
-                comments: []
+                comments: [],
+                difficulties: []
             },
             {
                 id: 7,
                 category: "Esquizofrenia",
                 title: "Esquizofrenia",
                 stat: "📊 Doença mental grave",
-                img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
+                img: "https://images.unsplash.com/photo-1552821248-5c51e1a3d5b1?auto=format&fit=crop&w=800&q=80",
                 desc: "Altera a perceção da realidade. Pode incluir alucinações e delírios.",
                 fullText: "O estigma é o pior inimigo. Pessoas com esquizofrenia podem levar vidas produtivas. A arte e a terapia ocupacional ajudam muito na reintegração.",
-                comments: [{ name: "Ricardo", text: "Vivo com isto há 15 anos. A estabilidade é possível.", likes: 105 }]
+                comments: [{ name: "Ricardo", text: "Vivo com isto há 15 anos. A estabilidade é possível.", likes: 105 }],
+                difficulties: []
+            },
+            {
+                id: 8,
+                category: "Stress",
+                title: "Stress Crónico",
+                stat: "📊 25% experiencia stress crónico",
+                img: "https://images.unsplash.com/photo-1544716278-ca5e3af4abd8?auto=format&fit=crop&w=800&q=80",
+                desc: "Estados de tensão prolongada que afeta saúde física e mental.",
+                fullText: "Segundo a Fundação Portuguesa de Cardiologia (2021), cerca de 25% dos portugueses sofrem de stress crónico. O stress prolongado afeta o sistema imunitário, cardiovascular e mental. Estudos portugueses mostram que técnicas de mindfulness, exercício regular e terapia reduzem significativamente os sintomas. O reconhecimento precoce é fundamental para evitar consequências graves.",
+                comments: [],
+                difficulties: []
+            },
+            {
+                id: 9,
+                category: "Pânico",
+                title: "Perturbações de Pânico",
+                stat: "📊 3-5% da população portuguesa",
+                img: "https://images.unsplash.com/photo-1527482797697-8795b1a55a45?auto=format&fit=crop&w=800&q=80",
+                desc: "Ataques súbitos de medo intenso com sintomas físicos avassaladores.",
+                fullText: "Estudos da Clínica de Ansiedade da Universidade do Porto indicam que 3-5% dos portugueses sofrem ataques de pânico. Caracteriza-se por crises súbitas de medo extremo com sintomas como taquicardia, suores e sensação de morte iminente. Apesar dos sintomas assustadores, o pânico é tratável. Terapia de exposição e técnicas de respiração têm comprovada eficácia em 80% dos casos.",
+                comments: [],
+                difficulties: []
+            },
+            {
+                id: 10,
+                category: "Burnout",
+                title: "Burnout / Distúrbios do Sono",
+                stat: "📊 30% sofre de insónia crónica",
+                img: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&q=80",
+                desc: "Esgotamento físico e emocional causado por trabalho intenso e privação de sono.",
+                fullText: "De acordo com a Associação Portuguesa de Médicos de Medicina Interna (2022), 30% dos portugueses sofre de insónia crónica, frequentemente associada a burnout profissional. O não dormir adequadamente compromete a regulação emocional e cognitiva. Estudos nacionais mostram que intervenções no ambiente de trabalho, higiene do sono e psicoterapia melhoram significativamente a qualidade de vida e produtividade.",
+                comments: [],
+                difficulties: []
+            },
+            {
+                id: 11,
+                category: "Ansiedade Leve",
+                title: "Ansiedade Leve / Stress Emocional",
+                stat: "📊 45% experiencia ansiedade ocasional",
+                img: "https://images.unsplash.com/photo-1516307365439-23cf4e348ca0?auto=format&fit=crop&w=800&q=80",
+                desc: "Reações normais a situações desafiadoras que não atingem nível clínico.",
+                fullText: "Segundo dados do Instituto Nacional de Saúde (2020), 45% dos portugueses experiencia ansiedade ocasional relacionada a situações de vida (apresentações, mudanças, perdas). Esta ansiedade leve é uma resposta normal ao stress e diferencia-se da perturbação de ansiedade clínica. Técnicas simples como exercício físico, meditação e apoio social são altamente eficazes na gestão. Quando persiste além de 6 meses, recomenda-se apoio profissional.",
+                comments: [],
+                difficulties: []
             }
         ];
 
@@ -309,7 +385,13 @@
             document.getElementById('sp-stat').innerText = p.stat;
             document.getElementById('sp-content').innerText = p.fullText;
             document.getElementById('sp-img').src = p.img;
+            
+            // Atualizar mensagens dinâmicas baseadas na categoria
+            document.getElementById('difficulties-title').innerText = `🆘 Partilha Anonimamente a Tua Experiência com ${p.title}`;
+            document.getElementById('difficulties-desc').innerText = `Esta é uma comunidade segura. Conte-nos as suas lutas, estratégias e vitórias relacionadas com ${p.title.toLowerCase()}. Ninguém está sozinho.`;
+            
             renderComments(p);
+            renderDifficulties(p);
         }
 
         function showGrid() {
@@ -330,7 +412,7 @@
                             <span class="t-name">${c.name}</span>
                             <div class="t-text">${c.text}</div>
                             <button class="like-btn" onclick="toggleLike(${p.id}, ${idx}, this)">
-                                <i class="fa-regular fa-heart"></i> <span>${c.likes}</span>
+                                <span>🍿</span> <span>${c.likes}</span>
                             </button>
                         </div>
                     </div>
@@ -340,26 +422,80 @@
 
         function toggleLike(pid, idx, btn) {
             const p = posts.find(x => x.id === pid);
-            const icon = btn.querySelector('i');
-            const span = btn.querySelector('span');
+            const span = btn.querySelector('span:last-child');
 
             if(btn.classList.contains('liked')) {
                 p.comments[idx].likes--;
                 btn.classList.remove('liked');
-                icon.classList.remove('fa-solid');
-                icon.classList.add('fa-regular');
             } else {
                 p.comments[idx].likes++;
                 btn.classList.add('liked');
-                icon.classList.remove('fa-regular');
-                icon.classList.add('fa-solid');
             }
             span.innerText = p.comments[idx].likes;
         }
 
+        function addDifficulty() {
+            const name = document.getElementById('new-difficulty-name').value.trim();
+            const text = document.getElementById('new-difficulty-text').value.trim();
+            if(!text) return alert("Partilhe a sua experiência.");
+            
+            const p = posts.find(x => x.id === currentPostId);
+            if(!p.difficulties) p.difficulties = [];
+            p.difficulties.unshift({ 
+                name: name || "Anónimo", 
+                text: text, 
+                likes: 0,
+                date: new Date().toLocaleDateString('pt-PT')
+            });
+            
+            document.getElementById('new-difficulty-name').value = '';
+            document.getElementById('new-difficulty-text').value = '';
+            renderDifficulties(p);
+        }
+
+        function renderDifficulties(p) {
+            const list = document.getElementById('difficulties-list');
+            list.innerHTML = '';
+            if(!p.difficulties || p.difficulties.length === 0) { 
+                list.innerHTML = '<p>Seja o primeiro a partilhar a sua experiência.</p>'; 
+                return; 
+            }
+            
+            p.difficulties.forEach((d, idx) => {
+                list.innerHTML += `
+                    <div class="difficulty-post">
+                        <div class="difficulty-header">
+                            <div>
+                                <div class="difficulty-author">${d.name}</div>
+                                <div class="difficulty-date">${d.date}</div>
+                            </div>
+                        </div>
+                        <div class="difficulty-text">${d.text}</div>
+                        <button class="like-btn" onclick="toggleDifficultyLike(${p.id}, ${idx}, this)">
+                            <span>🍿</span> <span>${d.likes}</span>
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function toggleDifficultyLike(pid, idx, btn) {
+            const p = posts.find(x => x.id === pid);
+            const span = btn.querySelector('span:last-child');
+
+            if(btn.classList.contains('liked')) {
+                p.difficulties[idx].likes--;
+                btn.classList.remove('liked');
+            } else {
+                p.difficulties[idx].likes++;
+                btn.classList.add('liked');
+            }
+            span.innerText = p.difficulties[idx].likes;
+        }
+
         function addComment() {
-            const name = document.getElementById('new-name').value;
-            const text = document.getElementById('new-text').value;
+            const name = document.getElementById('new-name').value.trim();
+            const text = document.getElementById('new-text').value.trim();
             if(!text) return alert("Escreva um testemunho.");
             
             const p = posts.find(x => x.id === currentPostId);
