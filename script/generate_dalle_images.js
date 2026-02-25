@@ -18,11 +18,11 @@ const outDir = path.resolve('assets/images');
 if(!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
 
 const prompts = [
-  {file: 'ansiedade.png', prompt: 'Abstract, soft-focus illustration representing anxiety and worry, warm muted colors, human silhouette with swirling thoughts, empathetic and non-stigmatizing style'},
-  {file: 'depressao.png', prompt: 'Abstract, gentle illustration representing depression, melancholic yet hopeful, cool tones, person sitting with soft light, painterly style'},
-  {file: 'toc.png', prompt: 'Stylized illustration representing obsessive-compulsive disorder, repeating patterns and small rituals, calm color palette, conceptual art'},
-  {file: 'panico.png', prompt: 'Illustration representing panic attack, sudden burst of energy and breath, clear but sensitive depiction, not graphic, expressive brush strokes'},
-  {file: 'esquizofrenia.png', prompt: 'Conceptual illustration representing schizophrenia with auditory hallucinations, abstract sound waves and human profile, respectful and sensitive, muted palette'}
+  {file: 'ansiedade.png', prompt: 'Realistic, empathetic portrait capturing the feeling of anxiety: a person clutching their chest slightly, tense shoulders, shallow breathing; background blurred with subtle swirling shapes to suggest racing thoughts; warm-but-muted tones, soft studio lighting, high-detail, respectful and non-stigmatizing'},
+  {file: 'depressao.png', prompt: 'Realistic, gentle scene expressing depression: a person seated by a window with low, soft light, gaze downcast and distant, heavy atmosphere, cool desaturated color palette, subtle grain, emotional but hopeful undertone, respectful portrayal'},
+  {file: 'toc.png', prompt: 'Realistic, focused image representing obsessive-compulsive behaviors: close-up of hands arranging small objects precisely in repeated patterns, cool neutral tones, shallow depth of field, crisp detail on hands and objects, conveying tension and the need for order without judgement'},
+  {file: 'panico.png', prompt: 'Expressive, respectful depiction of a panic moment: person with widened eyes and slightly open mouth, motion blur around edges to suggest sudden overwhelm, high-contrast lighting with cool highlights, emphasis on immediacy and breathlessness rather than sensationalism'},
+  {file: 'esquizofrenia.png', prompt: 'Conceptual but realistic portrait for schizophrenia focusing on experience and feeling: human profile with soft sound-wave and fragmented text overlays suggesting auditory hallucinations, muted color palette, gentle light, avoid caricature—respectful, empathetic and contemplative'}
 ];
 
 async function generate(){
