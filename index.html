@@ -69,24 +69,35 @@
     <div class="email-overlay">
       <div class="email-card" id="emailCard">
         <h2 style="margin-top:0;font-family:'Patrick Hand',cursive;font-size:1.8rem">Bem-vindo à Comunidade Blue Lava</h2>
-        <p>Chamo-me Humberto e criei esta comunidade com o objetivo de proporcionar às pessoas que vivem com perturbações mentais, especialmente a que eu sofro — esquizofrenia com alucinações auditivas — um espaço seguro onde possam partilhar as suas experiências e falar abertamente sobre os seus desafios. Pois durante muitos anos tentei encontrar espaços como este sem sucesso na internet e ainda mais difícil é encontrar alguém que tenha passado pelo mesmo tipo de alucinações que eu.</p>
+        <div style="font-style:italic;margin-bottom:12px">Uma carta de Humberto</div>
+        <div style="background:#fafafa;border-radius:8px;padding:18px;border:1px solid #eee">
+          <p>Chamo-me Humberto e criei esta comunidade com o objetivo de proporcionar às pessoas que vivem com perturbações mentais, especialmente a que eu sofro — esquizofrenia com alucinações auditivas — um espaço seguro onde possam partilhar as suas experiências e falar abertamente sobre os seus desafios. Pois durante muitos anos tentei encontrar espaços como este sem sucesso na internet e ainda mais difícil é encontrar alguém que tenha passado pelo mesmo tipo de alucinações que eu.</p>
 
-        <p>Acredito que, no futuro, se esta plataforma crescer e ganhar impacto, poderá também tornar-se um ponto de ligação para que os membros encontrem profissionais de saúde mental, como psiquiatras, que possam acompanhar os membros de forma adequada. Um espaço como este era exatamente aquilo que eu gostaria de ter tido ao longo dos últimos dez anos.</p>
+          <p>Acredito que, no futuro, se esta plataforma crescer e ganhar impacto, poderá também tornar-se um ponto de ligação para que os membros encontrem profissionais de saúde mental, como psiquiatras, que possam acompanhar os membros de forma adequada. Um espaço como este era exatamente aquilo que eu gostaria de ter tido ao longo dos últimos dez anos.</p>
 
-        <p>Demorei cerca de dez anos a sentir-me verdadeiramente estável e alinhado com a medicação. Durante muito tempo, fui resistente, teimoso e excessivamente imediatista nas minhas decisões. Sempre senti a necessidade de falar sobre o que se passava na minha mente, mas raramente senti que estava a ser plenamente compreendido pelos psicólogos por quem passei. Por este motivo, acabei por optar por tomar a medicação sem o devido acompanhamento contínuo — uma decisão que hoje reconheço ter sido um erro, pois se eu tivesse seguido o processo talvez não tivesse a necessidade de lutar contra os meus pensamentos por mais de uma década.</p>
+          <p>Demorei cerca de dez anos a sentir-me verdadeiramente estável e alinhado com a medicação. Durante muito tempo, fui resistente, teimoso e excessivamente imediatista nas minhas decisões. Sempre senti a necessidade de falar sobre o que se passava na minha mente, mas raramente senti que estava a ser plenamente compreendido pelos psicólogos por quem passei. Por este motivo, acabei por optar por tomar a medicação sem o devido acompanhamento contínuo — uma decisão que hoje reconheço ter sido um erro, pois se eu tivesse seguido o processo talvez não tivesse a necessidade de lutar contra os meus pensamentos por mais de uma década.</p>
 
-        <p>Sentia que, por mais que tentasse explicar o que estava a viver, nunca conseguia expressar totalmente aquilo que sentia. Tinha a perceção de que apenas alguém que tivesse passado — ou estivesse a passar — pelo mesmo desafio poderia compreender verdadeiramente a minha experiência.</p>
+          <p>Sentia que, por mais que tentasse explicar o que estava a viver, nunca conseguia expressar totalmente aquilo que sentia. Tinha a perceção de que apenas alguém que tivesse passado — ou estivesse a passar — pelo mesmo desafio poderia compreender verdadeiramente a minha experiência.</p>
 
-        <p>Foi dessa necessidade que nasceu este espaço: um lugar onde cada pessoa possa partilhar a sua história, sentir-se ouvida e, quem sabe, ajudar alguém que se sinta como eu me senti há dez anos — perdido, incompreendido e condicionado pelo estigma que ainda existe, especialmente entre pessoas da minha idade ou gerações mais antigas (+31 anos), que diz que quem procura um psiquiatra é “maluquinho”.</p>
+          <p>Foi dessa necessidade que nasceu este espaço: um lugar onde cada pessoa possa partilhar a sua história, sentir-se ouvida e, quem sabe, ajudar alguém que se sinta como eu me senti há dez anos — perdido, incompreendido e condicionado pelo estigma que ainda existe, especialmente entre pessoas da minha idade ou gerações mais antigas (+31 anos), que diz que quem procura um psiquiatra é “maluquinho”.</p>
 
-        <p>A Blue Lava pretende ser o contrário desse estigma: um espaço de consciência, partilha, responsabilidade e crescimento.</p>
+          <p>A Blue Lava pretende ser o contrário desse estigma: um espaço de consciência, partilha, responsabilidade e crescimento.</p>
 
-        <span class="email-sign">— Humberto</span>
+          <p class="email-sign">— Humberto</p>
+        </div>
 
         <div style="text-align:center;margin-top:18px">
           <button id="visitFromEmail" class="email-visit-btn">Visitar comunidade</button>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Small landing chart (Portugal prevalence snapshot) -->
+  <section style="max-width:900px;margin:18px auto;padding:0 18px">
+    <div style="background:#fff;border-radius:10px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,0.04)">
+      <div style="font-weight:700;margin-bottom:8px">Prevalência em Portugal — visão rápida</div>
+      <canvas id="landingChart" style="width:100%;height:220px;display:block"></canvas>
     </div>
   </section>
 
@@ -155,6 +166,14 @@
       prevalenceChart = new Chart(ctx,{type:'bar',data:{labels, datasets:[{label:'Portugal (%)',data:ptData, backgroundColor:'rgba(141,198,255,0.9)'},{label:'Mundo (%)',data:worldData, backgroundColor:'rgba(10,73,150,0.9)'}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
     }
 
+    // Small landing-only chart (Portugal snapshot)
+    function renderLandingChart(){
+      const labels = Object.keys(prevalence);
+      const ptData = labels.map(l=>prevalence[l].pt);
+      const ctx = document.getElementById('landingChart').getContext('2d');
+      new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'Portugal (%)',data:ptData,backgroundColor:'rgba(141,198,255,0.95)'}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
+    }
+
     // Render posts grid
     function filterPosts(cat){
       const grid = document.getElementById('posts-grid');grid.innerHTML='';
@@ -168,12 +187,11 @@
     function openPost(id){alert('Abrir post '+id)}
 
     // Landing buttons redirect to a dedicated community page
-    document.getElementById('enterBtn').addEventListener('click',()=>{
-      window.location.href = 'community.html';
-    });
-    document.getElementById('visitFromEmail').addEventListener('click',()=>{
-      window.location.href = 'community.html';
-    });
+    document.getElementById('enterBtn').addEventListener('click',()=>{ window.location.href = 'community.html'; });
+    document.getElementById('visitFromEmail').addEventListener('click',()=>{ window.location.href = 'community.html'; });
+
+    // Render landing chart immediately
+    try{ renderLandingChart(); }catch(e){console.warn('landing chart init error',e)}
   </script>
 </body>
 </html>

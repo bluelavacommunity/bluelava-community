@@ -24,8 +24,14 @@
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="logo" style="max-width:160px;display:block;margin:0 auto 12px">
-    <div style="font-weight:700">Comunidade Blue Lava</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap">
+      <img src="logo.png" alt="logo" style="max-width:140px;display:block;margin:0">
+      <div style="font-weight:700;font-size:1.1rem">Comunidade Blue Lava</div>
+      <div style="margin-left:8px;display:flex;gap:8px;align-items:center">
+        <a href="#" aria-label="WhatsApp" style="color:#fff;text-decoration:none"><i class="fa-brands fa-whatsapp" style="font-size:18px"></i></a>
+        <a href="#" aria-label="Discord" style="color:#fff;text-decoration:none"><i class="fa-brands fa-discord" style="font-size:18px"></i></a>
+      </div>
+    </div>
   </header>
   <div class="stats-banner">⚠️ Estatística Nacional: 1 em cada 5 pessoas em Portugal sofre de uma perturbação mental.</div>
 
@@ -61,11 +67,11 @@
     };
 
     const posts = [
-      {id:1,category:'Ansiedade',title:'Perturbações de Ansiedade',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?anxiety,mental',desc:'Preocupação excessiva',fullText:'',comments:[]},
-      {id:2,category:'Depressão',title:'Perturbações Depressivas',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?depression,sadness',desc:'Tristeza persistente',fullText:'',comments:[]},
-      {id:3,category:'TOC',title:'Perturbação Obsessivo-Compulsiva',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?obsessive,compulsive',desc:'Rituais e obsessões',fullText:'',comments:[]},
-      {id:4,category:'Pânico',title:'Perturbações de Pânico',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?panic,anxiety',desc:'Ataques súbitos de medo',fullText:'',comments:[]},
-      {id:5,category:'Esquizofrenia',title:'Esquizofrenia',stat:'Doença grave',img:'https://source.unsplash.com/600x400/?schizophrenia,mental',desc:'Alucinações e delírios',fullText:'',comments:[]}
+      {id:1,category:'Ansiedade',title:'Perturbações de Ansiedade',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?anxiety,mental',desc:'Preocupação excessiva',fullText:'Perturbações de ansiedade caracterizam-se por preocupação excessiva, apreensão e sintomas físicos como palpitações. Fonte: Organização Mundial da Saúde (WHO).',source:'https://www.who.int',comments:[]},
+      {id:2,category:'Depressão',title:'Perturbações Depressivas',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?depression,sadness',desc:'Tristeza persistente',fullText:'A depressão é caracterizada por tristeza persistente, perda de interesse e alterações no sono e apetite. Fonte: WHO, WebMD.',source:'https://www.who.int',comments:[]},
+      {id:3,category:'TOC',title:'Perturbação Obsessivo-Compulsiva',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?obsessive,compulsive',desc:'Rituais e obsessões',fullText:'O TOC envolve pensamentos intrusivos recorrentes e comportamentos repetitivos (rituais). Fonte: WebMD.',source:'https://www.webmd.com',comments:[]},
+      {id:4,category:'Pânico',title:'Perturbações de Pânico',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?panic,anxiety',desc:'Ataques súbitos de medo',fullText:'Ataques de pânico são episódios intensos de ansiedade com sintomas físicos intensos. Fonte: WHO, NHS.',source:'https://www.nhs.uk',comments:[]},
+      {id:5,category:'Esquizofrenia',title:'Esquizofrenia',stat:'Doença grave',img:'https://source.unsplash.com/600x400/?schizophrenia,mental',desc:'Alucinações e delírios',fullText:'A esquizofrenia é uma perturbação mental grave que pode incluir alucinações, delírios e alterações no pensamento. Fonte: WHO.',source:'https://www.who.int',comments:[]}
     ];
 
     let prevalenceChart;
@@ -83,9 +89,92 @@
       const filtered = cat==='all'?posts:posts.filter(p=>p.category===cat);
       filtered.forEach(p=>{
         const perc = prevalence[p.category]?prevalence[p.category].pt:0;
-        const imgHTML = p.img?`<img src="${p.img}" alt="${p.title}" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px">`:'']
+        const imgHTML = p.img?`<img src="${p.img}" alt="${p.title}" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px">`:'';
         grid.innerHTML+=`<div class="post-card" onclick="openPost(${p.id})">${imgHTML}<div class="post-title">${p.title}</div><div class="post-portugal">🇵🇹 ${perc}% da população portuguesa</div><div>${p.desc}</div></div>`});
     }
+
+    // --- Post view / comments ---
+    // Modal overlay markup (injected)
+    const postViewHTML = `
+      <div id="postView" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);z-index:80;padding:24px">
+        <div style="max-width:900px;width:100%;background:#fff;border-radius:12px;padding:20px;overflow:auto;max-height:90vh">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div style="font-weight:700;font-size:1.1rem" id="pvTitle"></div>
+            <button onclick="closePostView()" style="background:transparent;border:none;font-size:18px;cursor:pointer">Fechar ✕</button>
+          </div>
+          <img id="pvImg" src="" style="width:100%;height:220px;object-fit:cover;border-radius:8px;margin-bottom:12px" />
+          <div id="pvMeta" style="margin-bottom:12px;color:#555"></div>
+          <div id="pvDefinition" style="margin-bottom:18px"></div>
+          <hr />
+          <h3 style="margin-top:14px">Conta a tua história</h3>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+            <input id="commentName" placeholder="Nome (opcional)" style="flex:1;padding:8px;border-radius:6px;border:1px solid #ddd"> 
+            <label style="display:flex;align-items:center;gap:6px"><input id="commentAnon" type="checkbox"> Anónimo</label>
+          </div>
+          <textarea id="commentText" placeholder="Partilha a tua experiência" style="width:100%;height:100px;padding:10px;border-radius:8px;border:1px solid #ddd"></textarea>
+          <div style="text-align:right;margin-top:8px"><button id="submitComment" style="background:var(--primary);color:#fff;padding:8px 14px;border-radius:8px;border:none;cursor:pointer">Enviar</button></div>
+          <div id="commentsList" style="margin-top:18px"></div>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', postViewHTML);
+
+    function closePostView(){ document.getElementById('postView').style.display='none'; }
+
+    function openPost(id){
+      const post = posts.find(p=>p.id===id); if(!post) return;
+      document.getElementById('pvTitle').textContent = post.title;
+      document.getElementById('pvImg').src = post.img || '';
+      const perc = prevalence[post.category]?prevalence[post.category].pt:0;
+      document.getElementById('pvMeta').innerHTML = `🇵🇹 ${perc}% da população portuguesa • <a href="${post.source}" target="_blank">Fonte</a>`;
+      document.getElementById('pvDefinition').innerHTML = `<p>${post.fullText}</p>`;
+      document.getElementById('commentName').value = '';
+      document.getElementById('commentAnon').checked = false;
+      document.getElementById('commentText').value = '';
+      document.getElementById('postView').style.display='flex';
+      // bind submit
+      const submit = document.getElementById('submitComment');
+      submit.onclick = ()=>{ saveComment(id); };
+      renderComments(id);
+    }
+
+    function commentsKey(id){ return `bluelava_comments_${id}` }
+    function loadComments(id){ try{ return JSON.parse(localStorage.getItem(commentsKey(id))||'[]') }catch(e){return []} }
+    function saveCommentsFor(id,arr){ localStorage.setItem(commentsKey(id), JSON.stringify(arr)); }
+
+    function saveComment(postId){
+      const name = document.getElementById('commentName').value.trim();
+      const anon = document.getElementById('commentAnon').checked;
+      const text = document.getElementById('commentText').value.trim();
+      if(!text) return alert('Escreve a tua experiência antes de enviar.');
+      const arr = loadComments(postId);
+      const comment = {id:Date.now(),name: name||'',anon:anon, text:text, likes:0, ts:Date.now()};
+      arr.unshift(comment);
+      saveCommentsFor(postId,arr);
+      document.getElementById('commentText').value='';
+      renderComments(postId);
+    }
+
+    function renderComments(postId){
+      const list = loadComments(postId);
+      const container = document.getElementById('commentsList');
+      if(!container) return;
+      if(list.length===0){ container.innerHTML = '<p style="color:#666">Seja a primeira pessoa a partilhar — tu podes ajudar alguém hoje.</p>'; return }
+      container.innerHTML = list.map(c=>{
+        const who = c.anon? 'Anónimo' : (c.name||'Sem nome');
+        return `<div style="background:#f9f9f9;border-radius:8px;padding:10px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center"><strong>${who}</strong><small style="color:#666">${new Date(c.ts).toLocaleString()}</small></div><div style="margin-top:6px">${escapeHtml(c.text)}</div><div style="margin-top:8px"><button onclick="toggleLike(${postId},${c.id})" style="background:transparent;border:none;cursor:pointer">❤ ${c.likes}</button></div></div>`
+      }).join('');
+    }
+
+    function toggleLike(postId,commentId){
+      const arr = loadComments(postId);
+      const it = arr.find(c=>c.id===commentId); if(!it) return;
+      it.likes = (it.likes||0) + 1;
+      saveCommentsFor(postId,arr);
+      renderComments(postId);
+    }
+
+    function escapeHtml(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
     function openPost(id){alert('Abrir post '+id)}
 
