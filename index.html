@@ -1,633 +1,154 @@
 <!DOCTYPE html>
 <html lang="pt-pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlueLavaCommunity - Saúde Mental</title>
-    <!-- Icons for Discord and X (FontAwesome) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --primary: #4A90E2; /* Blue Lava */
-            --accent: #FF5722;  /* Hot Lava (Orange) */
-            --discord: #5865F2;
-            --x-black: #000000;
-            --bg: #f4f7f6;
-            --white: #ffffff;
-            --text: #333;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BlueLava Community</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#4A90E2;--accent:#FF5722;--bg:#f4f7f6;--white:#fff;--text:#333}
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Roboto,Arial,sans-serif}
 
-        let currentPostId = null;
-            --primary: #4A90E2; /* Blue Lava */
-            --accent: #FF5722;  /* Hot Lava (Orange) */
-            --discord: #5865F2;
-            --x-black: #000000;
-            --bg: #f4f7f6;
-            --white: #ffffff;
-            --text: #333;
-        }
+    /* Hero banner (minimal) */
+    .hero-banner{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f2a4a 0%,#1a5eb8 100%);color:white;text-align:center;padding:24px}
+    .hero-title{font-family:'Patrick Hand',cursive;font-size:3.2rem;margin:0 0 8px 0}
+    .hero-sub{font-size:1.1rem;opacity:0.95;margin:0 0 24px 0}
+    .stat-box{background:rgba(255,255,255,0.08);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);max-width:720px}
+    .stat-box strong{color:#fff}
+    .btn-primary{background:var(--white);color:var(--primary);padding:12px 28px;border-radius:999px;border:none;font-weight:700;cursor:pointer;margin-top:24px}
 
-        body { font-family: 'Roboto', sans-serif; background-color: var(--bg); margin: 0; color: var(--text); }
+    /* Email letter style */
+    .email-card{max-width:880px;margin:28px auto;background:#fff;border-radius:12px;padding:34px;border:1px solid #eee;box-shadow:0 10px 30px rgba(0,0,0,0.06);font-size:1rem;line-height:1.7}
 
-        /* HEADER */
-        header { 
-            background: linear-gradient(180deg, #000f2a, #2b4cb8, #1a5eb8, #002667);
-            color: white; padding: 40px 20px; text-align: center; 
-        }
-        
-        /* LOGO STYLING */
-        .header-logo {
-            max-width: 250px;
-            height: auto;
-            margin-bottom: 20px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
-        }
+    /* Chart full-width */
+    #chart-section{width:100%;background:linear-gradient(180deg,#fff,#f7fbff);padding:28px 0}
+    #chart-canvas{width:100%;max-width:1400px;margin:0 auto;display:block}
 
-        header h1 { margin: 0; font-size: 3rem; letter-spacing: 2px; text-transform: uppercase; }
-        header .subtitle { margin-top: 10px; opacity: 0.9; font-size: 1.2rem; }
+    /* Posts grid */
+    .container{max-width:1100px;margin:20px auto;padding:0 18px}
+    .posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+    .post-card{background:#fff;border-radius:10px;padding:18px;box-shadow:0 6px 18px rgba(0,0,0,0.04);cursor:pointer}
+    .post-title{font-weight:700;margin:6px 0}
+    .post-portugal{color:var(--primary);font-weight:700}
 
-        /* SOCIAL BUTTONS */
-        .social-area { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
-        .social-btn {
-            text-decoration: none; padding: 10px 20px; border-radius: 30px; font-weight: bold; color: white;
-            display: flex; align-items: center; gap: 10px; transition: transform 0.2s;
-        }
-        .social-btn:hover { transform: scale(1.05); }
-        .btn-discord { background-color: var(--discord); }
-        .btn-whatsapp { background-color: #25D366; }
-
-        /* ALERT BAR */
-        .stats-banner {
-            background: var(--accent); color: white; padding: 12px; text-align: center;
-            font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        /* NAVIGATION TABS */
-        nav { background: var(--white); box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; overflow-x: auto; }
-        .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; padding: 0 10px; }
-        .tab-link {
-            padding: 18px 20px; text-decoration: none; color: #555; font-weight: bold;
-            text-transform: uppercase; font-size: 0.9rem; border-bottom: 4px solid transparent; cursor: pointer; white-space: nowrap;
-        }
-        .tab-link:hover { color: var(--primary); background: #f9f9f9; }
-        .tab-link.active { color: var(--primary); border-bottom-color: var(--primary); }
-
-        /* MAIN LAYOUT */
-        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
-        
-        /* GRID SYSTEM */
-        .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        
-        .post-card { 
-            background: var(--white); border-radius: 10px; overflow: hidden; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: transform 0.3s; cursor: pointer; border-top: 4px solid var(--primary);
-        }
-        .post-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .post-img { height: 200px; background-size: cover; background-position: center; background-color: #ddd; }
-        .post-content { padding: 25px; }
-        .post-tag { background: #e3f2fd; color: var(--primary); padding: 4px 10px; font-size: 0.75rem; border-radius: 20px; font-weight: bold; text-transform: uppercase; }
-        .post-title { margin: 15px 0 10px 0; font-size: 1.4rem; color: #222; }
-        .post-stat { color: var(--accent); font-weight: bold; font-size: 0.9rem; display: block; margin-bottom: 10px;}
-        .read-more { color: var(--primary); font-weight: bold; margin-top: 15px; display: inline-block; font-size: 0.9rem; }
-
-        /* SINGLE POST VIEW */
-        .single-post-view { display: none; background: var(--white); padding: 40px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .back-btn { cursor: pointer; color: #777; font-weight: bold; margin-bottom: 20px; display: inline-block; }
-        .back-btn:hover { color: var(--primary); }
-        .article-img { width: 100%; height: 400px; object-fit: cover; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        
-        /* TESTIMONIALS & LIKES */
-        .comments-wrapper { margin-top: 50px; border-top: 2px dashed #eee; padding-top: 30px; }
-        .comment-box { background: #f8f9fa; padding: 25px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #eee; }
-        
-        .testimony-item { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid #f0f0f0; padding-bottom: 20px; }
-        .avatar { width: 45px; height: 45px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 1.2rem; }
-        .t-name { font-weight: bold; color: #222; display: block; }
-        .t-text { margin-top: 5px; color: #555; line-height: 1.5; }
-        
-        .like-btn { 
-            background: none; border: 1px solid #ddd; padding: 5px 12px; border-radius: 20px; 
-            margin-top: 10px; cursor: pointer; color: #777; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; transition: 0.2s;
-        }
-        .like-btn:hover { border-color: #FF9800; color: #FF9800; }
-        .like-btn.liked { background-color: #FFF3E0; border-color: #FF9800; color: #FF9800; }
-
-        /* FORM INPUTS */
-        input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; box-sizing: border-box; }
-        button.submit-btn { background: var(--primary); color: white; border: none; padding: 12px 25px; cursor: pointer; font-weight: bold; border-radius: 6px; font-size: 1rem; }
-        button.submit-btn:hover { background: #357ABD; }
-
-        /* EXPERIENCE/DIFFICULTIES SECTION */
-        .difficulties-wrapper { margin-top: 40px; border-top: 3px solid var(--accent); padding-top: 30px; background: #FFF8F0; padding: 25px; border-radius: 8px; }
-        .difficulties-wrapper h3 { color: var(--accent); margin-top: 0; }
-        .difficulty-post { background: var(--white); padding: 20px; margin-bottom: 20px; border-radius: 8px; border-left: 4px solid var(--accent); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .difficulty-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .difficulty-author { font-weight: bold; color: #222; }
-        .difficulty-date { font-size: 0.85rem; color: #999; }
-        .difficulty-text { color: #555; line-height: 1.6; margin: 10px 0; }
-        .difficulty-category-tag { display: inline-block; background: var(--accent); color: white; padding: 3px 8px; border-radius: 20px; font-size: 0.75rem; margin-bottom: 10px; }
-
-
-        /* MOBILE */
-        @media(max-width: 600px) {
-            header h1 { font-size: 2rem; }
-            .social-area { flex-direction: column; align-items: center; }
-            .social-btn { width: 80%; justify-content: center; }
-            .container { padding: 0 15px; }
-            .header-logo { max-width: 180px; }
-            .article-img { height: 250px; }
-        }
-    </style>
+    /* small responsive */
+    @media(max-width:700px){.hero-title{font-size:2.2rem}.email-card{padding:20px}}
+  </style>
 </head>
 <body>
 
-    <div class="stats-banner">
-        ⚠️ Estatística Nacional: 1 em cada 5 pessoas em Portugal sofre de uma perturbação mental.
-    </div>
+  <!-- HERO BANNER (only banner + national stat + button) -->
+  <section id="hero" class="hero-banner">
+    <div>
+      <div style="text-align:center">
+        <div class="hero-title">Bem-vindo à Comunidade Blue Lava</div>
+        <div class="hero-sub">A comunidade de apoio, partilha e crescimento em saúde mental</div>
+      </div>
 
-    <header>
-        <!-- LOGO DA BLUELAVA (Certifique-se que o ficheiro logo.svg está no GitHub) -->
-        <img src="logo.png" alt="Blue Lava Logo" class="header-logo">
-        
-        <div style="font-family: 'Times New Roman', serif; font-size: 2rem; font-weight: bold; margin-bottom: 10px;"><span style="color: var(--accent);">Comunidade</span> <span style="color: var(--accent);">Blue Lava</span></div>
-        <div class="subtitle">Apoio, Informação e Comunidade</div>
-        
-        <!-- BOTÕES SOCIAIS ATUALIZADOS -->
-        <div class="social-area">
-            <a href="https://discord.gg/bluelava" target="_blank" class="social-btn btn-discord">
-                <i class="fa-brands fa-discord"></i> Entrar no Discord
-            </a>
-            <!-- LINK WHATSAPP AQUI 👇 -->
-            <a href="https://chat.whatsapp.com/Brbk55gFD3KG1UFx8DOEPs" target="_blank" class="social-btn btn-whatsapp">
-                <i class="fa-brands fa-whatsapp"></i> Entrar no WhatsApp
-            </a>
+      <div style="margin-top:18px;display:flex;justify-content:center">
+        <div class="stat-box">
+          <div style="font-size:1rem">⚠️ <strong>Estatística Nacional:</strong> 1 em cada 5 pessoas em Portugal sofre de uma perturbação mental.</div>
         </div>
+      </div>
+
+      <div style="display:flex;justify-content:center">
+        <button class="btn-primary" id="enterBtn">Visitar a Comunidade</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMAIL-STYLED INTRO (letter) -->
+  <section id="email" style="display:none">
+    <div class="email-card">
+      <p>Olá,</p>
+      <p>Chamo-me Humberto e criei esta comunidade com o objetivo de proporcionar às pessoas que vivem com perturbações mentais, especialmente a que eu sofro — esquizofrenia com alucinações auditivas — um espaço seguro onde possam partilhar as suas experiências e falar abertamente sobre os seus desafios.</p>
+      <p>Durante muitos anos tentei encontrar espaços como este sem sucesso na internet e ainda mais difícil é encontrar alguém que tenha passado pelo mesmo tipo de alucinações que eu.</p>
+      <p>A Blue Lava pretende ser o contrário desse estigma: um espaço de consciência, partilha, responsabilidade e crescimento.</p>
+      <p style="text-align:right;margin-bottom:0"><strong>Humberto</strong></p>
+    </div>
+  </section>
+
+  <!-- MAIN SITE (hidden until visit) -->
+  <main id="site" style="display:none">
+    <!-- Header -->
+    <header style="background:linear-gradient(180deg,#000f2a,#2b4cb8);color:#fff;padding:24px;text-align:center">
+      <img src="logo.png" alt="logo" style="max-width:180px;display:block;margin:0 auto 12px">
+      <div style="font-weight:700">Comunidade Blue Lava</div>
     </header>
 
-    <!-- HERO / INTRO -->
-    <section id="hero-intro" style="background: linear-gradient(90deg,#0f2a4a11,#ffffff); padding:28px 0;">
-        <div class="container" style="text-align:left;">
-            <div style="max-width:900px; margin:0 auto; background: white; padding:22px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.06);">
-                <h2 style="margin-top:0; color:var(--primary);">Bem-vindo à Comunidade Blue Lava</h2>
-                <p style="line-height:1.6; color:#333;">Chamo-me Humberto e criei esta comunidade com o objetivo de proporcionar às pessoas que vivem com perturbações mentais, especialmente a que eu sofro — esquizofrenia com alucinações auditivas — um espaço seguro onde possam partilhar as suas experiências e falar abertamente sobre os seus desafios. Pois durante muitos anos tentei encontrar espaços como este sem sucesso na internet e ainda mais difícil é encontrar alguém que tenha passado pelo mesmo tipo de alucinações que eu.
-                </p>
-                <p style="line-height:1.6; color:#333;">Acredito que, no futuro, se esta plataforma crescer e ganhar impacto, poderá também tornar-se um ponto de ligação para que os membros encontrem profissionais de saúde mental, como psiquiatras, que possam acompanhar os membros de forma adequada. Um espaço como este era exatamente aquilo que eu gostaria de ter tido ao longo dos últimos dez anos.
-                </p>
-                <p style="line-height:1.6; color:#333;">Demorei cerca de dez anos a sentir-me verdadeiramente estável e alinhado com a medicação. Durante muito tempo, fui resistente, teimoso e excessivamente imediatista nas minhas decisões. Sempre senti a necessidade de falar sobre o que se passava na minha mente, mas raramente senti que estava a ser plenamente compreendido pelos psicólogos por quem passei. Por este motivo, acabei por optar por tomar a medicação sem o devido acompanhamento contínuo — uma decisão que hoje reconheço ter sido um erro, pois se eu tivesse seguido o processo talvez não tivesse a necessidade de lutar contra os meus pensamentos por mais de uma década.</p>
-                <p style="line-height:1.6; color:#333;">Sentia que, por mais que tentasse explicar o que estava a viver, nunca conseguia expressar totalmente aquilo que sentia. Tinha a perceção de que apenas alguém que tivesse passado — ou estivesse a passar — pelo mesmo desafio poderia compreender verdadeiramente a minha experiência.</p>
-                <p style="line-height:1.6; color:#333;">Foi dessa necessidade que nasceu este espaço: um lugar onde cada pessoa possa partilhar a sua história, sentir-se ouvida e, quem sabe, ajudar alguém que se sinta como eu me senti há dez anos — perdido, incompreendido e condicionado pelo estigma que ainda existe, especialmente entre pessoas da minha idade ou gerações mais antigas (+31 anos), que diz que quem procura um psiquiatra é “maluquinho”.</p>
-                <p style="line-height:1.6; color:#333;">A Blue Lava pretende ser o contrário desse estigma: um espaço de consciência, partilha, responsabilidade e crescimento.</p>
+    <!-- National alert (orange) -->
+    <div class="stats-banner" style="background:var(--accent);color:#fff;padding:10px;text-align:center;font-weight:700">⚠️ Estatística Nacional: 1 em cada 5 pessoas em Portugal sofre de uma perturbação mental.</div>
 
-                <div style="margin-top:18px; display:flex; gap:10px; align-items:center;">
-                    <button class="submit-btn" onclick="document.getElementById('hero-intro').style.display='none'; window.scrollTo({top:0,behavior:'smooth'})">Entrar na Comunidade</button>
-                    <a href="#prevalenceChart" style="color:var(--primary); font-weight:bold;">Ver estatísticas — Não está sozinho</a>
-                </div>
-            </div>
-
-            <!-- CHART & BLURB -->
-            <div style="max-width:1100px; margin:28px auto 0; text-align:center;">
-                <p style="font-size:1.1rem; color:#333; max-width:900px; margin:0 auto 10px;">Olhe para este gráfico com esperança: mostra quantas pessoas em Portugal são afetadas por várias perturbações — não está só e há muita gente com experiências semelhantes. A comunidade existe para apoiar, partilhar e encontrar caminhos de recuperação.</p>
-                <canvas id="prevalenceChart" style="max-width:900px; margin:18px auto; background:transparent;" aria-label="Gráfico de prevalência"></canvas>
-                <div id="prevalence-sources" style="font-size:0.85rem; color:#666; margin-top:8px;">Fontes: <a href="https://www.who.int/news-room/fact-sheets/detail/anxiety-disorders" target="_blank">WHO (ansiedade)</a>, <a href="https://www.who.int/news-room/fact-sheets/detail/depression" target="_blank">WHO (depressão)</a>, <a href="https://www.who.int/news-room/fact-sheets/detail/schizophrenia" target="_blank">WHO (esquizofrenia)</a>, relatórios portugueses (INE / estudos nacionais) quando disponíveis.</div>
-            </div>
-        </div>
+    <!-- Full-width chart -->
+    <section id="chart-section">
+      <div id="chart-canvas">
+        <canvas id="prevalenceChart"></canvas>
+      </div>
     </section>
 
-    <nav>
-        <div class="nav-inner">
-            <a class="tab-link active" onclick="filterPosts('all')">Início</a>
-            <a class="tab-link" onclick="filterPosts('Ansiedade')">Ansiedade</a>
-            <a class="tab-link" onclick="filterPosts('Esquizofrenia')">Esquizofrenia</a>
-            <a class="tab-link" onclick="filterPosts('Ansiedade Leve')">Ansiedade Leve</a>
-            <a class="tab-link" onclick="filterPosts('Depressão')">Depressão</a>
-            <a class="tab-link" onclick="filterPosts('Stress')">Stress Crónico</a>
-            <a class="tab-link" onclick="filterPosts('Pânico')">Pânico</a>
-            <a class="tab-link" onclick="filterPosts('TOC')">TOC</a>
-            <a class="tab-link" onclick="filterPosts('Burnout')">Burnout</a>
-            <!-- Prevalence grouping -->
-            <a class="tab-link" onclick="filterPosts('prevalence-high')">Mais Prevalentes</a>
-            <a class="tab-link" onclick="filterPosts('prevalence-medium')">Prevalência Média</a>
-            <a class="tab-link" onclick="filterPosts('prevalence-low')">Menos Prevalentes</a>
-        </div>
+    <!-- Navigation and posts -->
+    <nav style="background:#fff;position:sticky;top:0;padding:8px 0;box-shadow:0 4px 10px rgba(0,0,0,0.04)">
+      <div class="container" style="display:flex;gap:10px;align-items:center;overflow:auto">
+        <a onclick="filterPosts('all')" style="font-weight:700;cursor:pointer">Início</a>
+        <a onclick="filterPosts('Ansiedade')" style="cursor:pointer">Ansiedade</a>
+        <a onclick="filterPosts('Esquizofrenia')" style="cursor:pointer">Esquizofrenia</a>
+        <a onclick="filterPosts('Depressão')" style="cursor:pointer">Depressão</a>
+      </div>
     </nav>
 
     <div class="container">
-        <!-- GRELHA PRINCIPAL -->
-        <div id="posts-grid" class="posts-grid"></div>
-
-        <!-- VISUALIZAÇÃO DO ARTIGO -->
-        <div id="single-post" class="single-post-view">
-            <div class="back-btn" onclick="showGrid()">← Voltar aos artigos</div>
-            <h2 id="sp-title" style="margin-top:0; font-size:2.5rem; color:#333;"></h2>
-            <div id="sp-stat" class="post-stat" style="font-size:1.1rem; margin-bottom:20px;"></div>
-            <img id="sp-img" class="article-img" src="" alt="Imagem Artística da Doença">
-            <div id="sp-content" style="line-height:1.8; font-size:1.1rem; color:#444; margin-bottom:40px;"></div>
-
-            <!-- SECÇÃO DE DIFICULDADES E EXPERIÊNCIAS -->
-            <div class="difficulties-wrapper">
-                <h3 id="difficulties-title">🆘 Partilhe as Suas Dificuldades e Experiências</h3>
-                <p id="difficulties-desc">Esta é uma comunidade segura. Conte-nos as suas lutas, estratégias e vitórias. Ninguém está sozinho.</p>
-                
-                <div class="comment-box">
-                    <input type="text" id="new-difficulty-name" placeholder="Deixe em branco para partilhar anonimamente">
-                    <textarea id="new-difficulty-text" rows="4" placeholder="Qual é a sua maior dificuldade? Que estratégias o/a ajudam?"></textarea>
-                    <button class="submit-btn" onclick="addDifficulty()">Partilhar Anonimamente</button>
-                </div>
-
-                <div id="difficulties-list"></div>
-            </div>
-
-            <!-- SECÇÃO DE TESTEMUNHOS -->
-            <div class="comments-wrapper">
-                <h3>💬 Testemunhos da Comunidade</h3>
-                <p>O seu testemunho pode ajudar alguém. Partilhe a sua história (anonimamente ou com o seu nome).</p>
-                
-                <div class="comment-box">
-                    <input type="text" id="new-name" placeholder="Deixe em branco para comentar anonimamente">
-                    <textarea id="new-text" rows="3" placeholder="Como é que lida com isto? Que estratégias usa?"></textarea>
-                    <button class="submit-btn" onclick="addComment()">Publicar Testemunho</button>
-                </div>
-
-                <div id="comments-list"></div>
-            </div>
-        </div>
+      <div id="posts-grid" class="posts-grid"></div>
     </div>
+  </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // --- Dados de prevalência (Portugal e Mundo) ---
-        const prevalenceMap = {
-            'Ansiedade': 16.5,
-            'Ansiedade Leve': 45,
-            'Depressão': 7.9,
-            'Stress': 25,
-            'Pânico': 4,
-            'TOC': 1.5,
-            'Burnout': 10,
-            'Esquizofrenia': 0.43
-        };
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Prevalence data (Portugal and World)
+    const prevalence = {
+      'Ansiedade': {pt:16.5, world:4.4},
+      'Depressão': {pt:7.9, world:5.7},
+      'TOC': {pt:1.5, world:1.2},
+      'Pânico': {pt:4, world:1.1},
+      'Esquizofrenia': {pt:0.43, world:0.29},
+      'Stress': {pt:25, world:8},
+      'Burnout': {pt:10, world:3}
+    };
 
-        // Valores globais aproximados (fontes WHO / GBD)
-        const globalMap = {
-            'Ansiedade': 4.4,
-            'Ansiedade Leve': 4.4,
-            'Depressão': 5.7,
-            'Stress': 8,
-            'Pânico': 1.1,
-            'TOC': 1.2,
-            'Burnout': 3,
-            'Esquizofrenia': 0.29
-        };
+    const posts = [
+      {id:1,category:'Ansiedade',title:'Perturbações de Ansiedade',stat:'Sintomas comuns',img:'',desc:'Preocupação excessiva',fullText:'',comments:[]},
+      {id:2,category:'Depressão',title:'Perturbações Depressivas',stat:'Sintomas comuns',img:'',desc:'Tristeza persistente',fullText:'',comments:[]},
+      {id:3,category:'TOC',title:'Perturbação Obsessivo-Compulsiva',stat:'Sintomas comuns',img:'',desc:'Rituais e obsessões',fullText:'',comments:[]},
+      {id:4,category:'Pânico',title:'Perturbações de Pânico',stat:'Sintomas comuns',img:'',desc:'Ataques súbitos de medo',fullText:'',comments:[]},
+      {id:5,category:'Esquizofrenia',title:'Esquizofrenia',stat:'Doença grave',img:'',desc:'Alucinações e delírios',fullText:'',comments:[]}
+    ];
 
-        // --- BASE DE DADOS COM IMAGENS AI ---
-        const posts = [
-            {
-                id: 1,
-                category: "Ansiedade",
-                title: "Perturbações de Ansiedade",
-                stat: "📊 16,5% da população portuguesa",
-                img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80",
-                desc: "A perturbação mais frequente em Portugal. Sintomas incluem preocupação excessiva.",
-                fullText: "Segundo o Estudo EpiRegiões (2013), a ansiedade afeta 16,5% da população portuguesa.\n\nSegundo a Organização Mundial da Saúde, as perturbações de ansiedade caracterizam-se por medo e preocupação excessivos, persistentes e desproporcionais em relação à situação real. Não se trata apenas de nervosismo ocasional — é uma condição clínica que interfere significativamente com a vida diária.\n\nA ansiedade pode manifestar-se através de:\n• Preocupação constante e difícil de controlar\n• Sensação de tensão ou nervosismo contínuo\n• Aumento do ritmo cardíaco\n• Dificuldade em dormir\n• Problemas de concentração\n• Sintomas físicos como sudação, tremores ou tensão muscular\n\nExistem diferentes tipos de perturbações de ansiedade, incluindo ansiedade generalizada, fobias específicas, ansiedade social e perturbação de pânico.\n\n🔗 Referência: Organização Mundial da Saúde (OMS)\nhttps://www.who.int/news-room/fact-sheets/detail/anxiety-disorders",
-                comments: [{ name: "Mariana", text: "A terapia mudou a minha vida. Aprendi a respirar antes de entrar em pânico.", likes: 15 }],
-                difficulties: []
-            },
-            {
-                id: 2,
-                category: "Depressão",
-                title: "Perturbações Depressivas",
-                stat: "📊 7,9% da população portuguesa",
-                img: "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=800&q=80",
-                desc: "Tristeza profunda e persistente que retira o prazer de viver e afeta o sono.",
-                fullText: "De acordo com o relatório de Saúde Mental do INE (2019), a depressão afeta 7,9% da população portuguesa.\n\nSegundo a Organização Mundial da Saúde, a depressão é uma perturbação mental comum caracterizada por tristeza persistente e perda de interesse ou prazer em atividades que anteriormente eram significativas. Não é o mesmo que tristeza passageira. Para ser considerada depressão clínica, os sintomas devem estar presentes durante pelo menos duas semanas e afetar o funcionamento social, profissional ou académico.\n\nSintomas principais:\n• Humor deprimido na maior parte do dia\n• Perda de interesse ou prazer\n• Alterações do sono (insónia ou sono excessivo)\n• Alterações do apetite\n• Fadiga persistente\n• Sentimentos de culpa ou inutilidade\n• Dificuldade de concentração\n• Pensamentos de morte ou suicídio\n\nA depressão pode variar em intensidade (leve, moderada ou grave). Estudos portugueses mostram que a terapia combinada com medicação tem taxa de sucesso superior a 70%.\n\n🔗 Referência: Organização Mundial da Saúde (OMS)\nhttps://www.who.int/news-room/fact-sheets/detail/depression",
-                comments: [{ name: "João", text: "Não desistam. A medicação certa fez-me sair do fundo do poço.", likes: 42 }],
-                difficulties: []
-            },
-            {
-                id: 3,
-                category: "Fobias",
-                title: "Fobias Específicas",
-                stat: "📊 Muito prevalente na população",
-                img: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=800&q=80",
-                desc: "Medo irracional de objetos ou situações (alturas, animais, espaços fechados).",
-                fullText: "As fobias levam ao evitamento extremo. A pessoa deixa de viver a vida normal para evitar o objeto do medo. A terapia de exposição é altamente eficaz.",
-                comments: [],
-                difficulties: []
-            },
-            {
-                id: 4,
-                category: "TOC",
-                title: "Perturbação Obsessivo-Compulsiva",
-                stat: "📊 1-2% da população portuguesa",
-                img: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80",
-                desc: "Obsessões (pensamentos) e compulsões (rituais) que consomem tempo e energia.",
-                fullText: "De acordo com estudos da Universidade de Lisboa, o TOC afeta 1-2% da população portuguesa.\n\nSegundo a Organização Mundial da Saúde, a Perturbação Obsessivo-Compulsiva (TOC) é caracterizada por:\n\nObsessões: pensamentos, imagens ou impulsos intrusivos, repetitivos e indesejados\nCompulsões: comportamentos repetitivos ou actos mentais realizados para reduzir a ansiedade causada pelas obsessões\n\nEstes sintomas consomem tempo significativo e interferem com a vida pessoal, social e profissional.\n\nExemplos comuns incluem:\n• Medo excessivo de contaminação\n• Necessidade de verificar repetidamente portas ou fogões\n• Contagem ou repetição mental compulsiva\n\nO TOC não é simplesmente gostar de organização; é uma condição clínica incapacitante quando não tratada. Terapia cognitivo-comportamental e ISRS têm elevadas taxas de remissão.\n\n🔗 Referência: Organização Mundial da Saúde (OMS)\nhttps://www.who.int/news-room/fact-sheets/detail/obsessive-compulsive-disorder",
-                comments: [{ name: "Ana T.", text: "O meu TOC de organização é exaustivo mas controlável com ajuda.", likes: 8 }],
-                difficulties: []
-            },
-            {
-                id: 5,
-                category: "Substâncias",
-                title: "Uso de Substâncias",
-                stat: "📊 Problema de saúde pública",
-                img: "https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?auto=format&fit=crop&w=800&q=80",
-                desc: "Dependência de álcool ou drogas que afeta a saúde física e mental.",
-                fullText: "O vício é muitas vezes uma fuga para a dor emocional. A recuperação exige desintoxicação física e, acima de tudo, reconstrução emocional.",
-                comments: [],
-                difficulties: []
-            },
-            {
-                id: 6,
-                category: "Impulsos",
-                title: "Controlo de Impulsos",
-                stat: "📊 Afeta a regulação emocional",
-                img: "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=800&q=80",
-                desc: "Dificuldade em resistir a um ato que é prejudicial para si ou para os outros.",
-                fullText: "Inclui cleptomania e explosões de raiva. É como se o 'travão' do cérebro falhasse momentaneamente perante um desejo intenso.",
-                comments: [],
-                difficulties: []
-            },
-            {
-                id: 7,
-                category: "Esquizofrenia",
-                title: "Esquizofrenia",
-                stat: "📊 Doença mental grave",
-                img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80",
-                desc: "Altera a perceção da realidade. Pode incluir alucinações e delírios.",
-                fullText: "O estigma é o pior inimigo. Pessoas com esquizofrenia podem levar vidas produtivas. A arte e a terapia ocupacional ajudam muito na reintegração.",
-                comments: [{ name: "Ricardo", text: "Vivo com isto há 15 anos. A estabilidade é possível.", likes: 105 }],
-                difficulties: []
-            },
-            {
-                id: 8,
-                category: "Stress",
-                title: "Stress Crónico",
-                stat: "📊 25% experiencia stress crónico",
-                img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80",
-                desc: "Estados de tensão prolongada que afeta saúde física e mental.",
-                fullText: "Segundo a Fundação Portuguesa de Cardiologia (2021), cerca de 25% dos portugueses sofrem de stress crónico.\n\nO stress é uma resposta natural do organismo perante desafios ou ameaças. No entanto, quando essa resposta se mantém ativa durante longos períodos, passa a ser considerado stress crónico.\n\nO stress crónico envolve ativação prolongada do sistema nervoso e libertação contínua de hormonas como o cortisol. Isto pode levar a:\n• Fadiga constante\n• Irritabilidade\n• Dores musculares\n• Problemas gastrointestinais\n• Alterações do sono\n• Maior vulnerabilidade a ansiedade e depressão\n\nO stress crónico não é apenas psicológico — tem impacto físico real e mensurável no corpo. Estudos portugueses mostram que técnicas de mindfulness, exercício regular e terapia reduzem significativamente os sintomas. O reconhecimento precoce é fundamental para evitar consequências graves.\n\n🔗 Referência: WebMD\nhttps://www.webmd.com/balance/stress-management/what-is-chronic-stress",
-                comments: [],
-                difficulties: []
-            },
-            {
-                id: 9,
-                category: "Pânico",
-                title: "Perturbações de Pânico",
-                stat: "📊 3-5% da população portuguesa",
-                img: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80",
-                desc: "Ataques súbitos de medo intenso com sintomas físicos avassaladores.",
-                fullText: "Estudos da Clínica de Ansiedade da Universidade do Porto indicam que 3-5% dos portugueses sofrem ataques de pânico.\n\nSegundo a Organização Mundial da Saúde, a perturbação de pânico caracteriza-se por ataques de pânico recorrentes e inesperados. Um ataque de pânico é um episódio súbito de medo intenso que atinge o pico em minutos.\n\nOs sintomas incluem:\n• Palpitações ou taquicardia\n• Sensação de falta de ar\n• Dor ou aperto no peito\n• Tonturas\n• Sensação de perda de controlo\n• Medo de morrer\n\nApós um ataque, a pessoa pode desenvolver medo constante de ter novos ataques, o que pode levar à evitação de locais ou situações. Apesar dos sintomas assustadores, o pânico é tratável. Terapia de exposição e técnicas de respiração têm comprovada eficácia em 80% dos casos.\n\n🔗 Referência: Organização Mundial da Saúde (OMS)\nhttps://www.who.int/news-room/fact-sheets/detail/anxiety-disorders",
-                comments: [],
-                difficulties: []
-            },
-            {
-                id: 10,
-                category: "Burnout",
-                title: "Burnout / Distúrbios do Sono",
-                stat: "📊 30% sofre de insónia crónica",
-                img: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&q=80",
-                desc: "Esgotamento físico e emocional causado por trabalho intenso e privação de sono.",
-                fullText: "De acordo com a Associação Portuguesa de Médicos de Medicina Interna (2022), 30% dos portugueses sofre de insónia crónica, frequentemente associada a burnout profissional.\n\nSegundo a Organização Mundial da Saúde, o burnout é um fenómeno ocupacional resultando de stress crónico no contexto de trabalho que não foi gerido com sucesso. Não é classificado como uma perturbação mental, mas como uma síndrome relacionada com o trabalho.\n\nCaracteriza-se por três dimensões:\n• Sensação de exaustão extrema\n• Distanciamento mental ou cinismo em relação ao trabalho\n• Redução da eficácia profissional\n\nO burnout afeta o desempenho, a motivação e o bem-estar emocional, podendo evoluir para ansiedade ou depressão se não for tratado. O não dormir adequadamente compromete a regulação emocional e cognitiva. Estudos nacionais mostram que intervenções no ambiente de trabalho, higiene do sono e psicoterapia melhoram significativamente a qualidade de vida e produtividade.\n\n🔗 Referência: Organização Mundial da Saúde (OMS)\nhttps://www.who.int/mental_health/evidence/burn-out/en/",
-                comments: [],
-                difficulties: []
-            },
-            {
-                id: 11,
-                category: "Ansiedade Leve",
-                title: "Ansiedade Leve / Stress Emocional",
-                stat: "📊 45% experiencia ansiedade ocasional",
-                img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80",
-                desc: "Reações normais a situações desafiadoras que não atingem nível clínico.",
-                fullText: "Segundo dados do Instituto Nacional de Saúde (2020), 45% dos portugueses experiencia ansiedade ocasional relacionada a situações de vida (apresentações, mudanças, perdas).\n\nA ansiedade leve não constitui necessariamente um diagnóstico clínico formal, mas refere-se a um nível moderado de sintomas ansiosos que ainda permite à pessoa manter o funcionamento diário.\n\nPode incluir:\n• Inquietação frequente\n• Pensamentos antecipatórios negativos\n• Tensão muscular\n• Leve dificuldade de concentração\n• Irritabilidade\n\nApesar de ser considerada leve, quando persistente pode evoluir para formas mais graves se não for reconhecida e gerida adequadamente. Técnicas simples como exercício físico, meditação e apoio social são altamente eficazes na gestão. Quando persiste além de 6 meses, recomenda-se apoio profissional.\n\n🔗 Referência: WebMD\nhttps://www.webmd.com/mental-health/mental-health-types-illness",
-                comments: [],
-                difficulties: []
-            }
-        ];
+    // Render chart full-width
+    let prevalenceChart;
+    function renderChart(){
+      const labels = Object.keys(prevalence);
+      const ptData = labels.map(l=>prevalence[l].pt);
+      const worldData = labels.map(l=>prevalence[l].world);
+      const ctx = document.getElementById('prevalenceChart').getContext('2d');
+      if(prevalenceChart) prevalenceChart.destroy();
+      prevalenceChart = new Chart(ctx,{type:'bar',data:{labels, datasets:[{label:'Portugal (%)',data:ptData, backgroundColor:'rgba(141,198,255,0.9)'},{label:'Mundo (%)',data:worldData, backgroundColor:'rgba(10,73,150,0.9)'}]},options:{responsive:true,scales:{y:{beginAtZero:true}}}});
+    }
 
-        
+    // Render posts grid
+    function filterPosts(cat){
+      const grid = document.getElementById('posts-grid');grid.innerHTML='';
+      const filtered = cat==='all'?posts:posts.filter(p=>p.category===cat);
+      filtered.forEach(p=>{const perc = prevalence[p.category]?prevalence[p.category].pt:0;grid.innerHTML+=`<div class="post-card" onclick="openPost(${p.id})"><div class="post-title">${p.title}</div><div class="post-portugal">🇵🇹 ${perc}% da população portuguesa</div><div>${p.desc}</div></div>`});
+    }
 
-        // --- FUNÇÕES ---
-        function init() { filterPosts('all'); renderPrevalenceChart(); }
+    function openPost(id){alert('Abrir post '+id)}
 
-        // --- Render Prevalence Chart (Chart.js) ---
-        function renderPrevalenceChart() {
-            try {
-                const ctx = document.getElementById('prevalenceChart').getContext('2d');
-                const labels = Object.keys(prevalenceMap);
-                const portugalData = labels.map(l => prevalenceMap[l] || 0);
-                const worldData = labels.map(l => globalMap[l] || 0);
-
-                // colors
-                const portugalColor = 'rgba(141,198,255,0.9)'; // light blue
-                const worldColor = 'rgba(10,73,150,0.9)'; // dark blue
-
-                if(window._prevalenceChart) window._prevalenceChart.destroy();
-
-                window._prevalenceChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [
-                            { label: 'Portugal (%)', data: portugalData, backgroundColor: portugalColor },
-                            { label: 'Mundo (%)', data: worldData, backgroundColor: worldColor }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'top' },
-                            tooltip: { callbacks: { label: function(ctx){ return ctx.dataset.label + ': ' + ctx.parsed.y + '%'; } } }
-                        },
-                        scales: {
-                            y: { beginAtZero: true, max: Math.max(...portugalData.concat(worldData)) < 50 ? 50 : Math.ceil(Math.max(...portugalData.concat(worldData))/10)*10 }
-                        }
-                    }
-                });
-            } catch(e) {
-                console.warn('Chart render error', e);
-            }
-        }
-
-        function filterPosts(cat) {
-            document.getElementById('posts-grid').style.display = 'grid';
-            document.getElementById('single-post').style.display = 'none';
-            document.querySelectorAll('.tab-link').forEach(el => {
-                el.classList.remove('active');
-                if(el.innerText === cat || (cat === 'all' && el.innerText === 'INÍCIO')) el.classList.add('active');
-            });
-
-            const grid = document.getElementById('posts-grid');
-            grid.innerHTML = '';
-            let filtered;
-            if(cat === 'all') filtered = posts;
-            else if(cat === 'prevalence-high') {
-                filtered = posts.filter(p => (prevalenceMap[p.category] || 0) >= 15);
-            } else if(cat === 'prevalence-medium') {
-                filtered = posts.filter(p => {
-                    const v = (prevalenceMap[p.category] || 0);
-                    return v >=5 && v < 15;
-                });
-            } else if(cat === 'prevalence-low') {
-                filtered = posts.filter(p => (prevalenceMap[p.category] || 0) > 0 && (prevalenceMap[p.category] || 0) < 5);
-            } else {
-                filtered = posts.filter(p => p.category === cat);
-            }
-
-            filtered.forEach(p => {
-                grid.innerHTML += `
-                    <div class="post-card" onclick="openPost(${p.id})">
-                        <div class="post-img" style="background-image: url('${p.img}')"></div>
-                        <div class="post-content">
-                            <span class="post-tag">${p.category}</span>
-                            <h3 class="post-title">${p.title}</h3>
-                            <span class="post-stat">${p.stat}</span>
-                            <p>${p.desc}</p>
-                            <span class="read-more">Ler mais →</span>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function openPost(id) {
-            currentPostId = id;
-            const p = posts.find(x => x.id === id);
-            document.getElementById('posts-grid').style.display = 'none';
-            document.getElementById('single-post').style.display = 'block';
-            window.scrollTo(0,0);
-
-            document.getElementById('sp-title').innerText = p.title;
-            document.getElementById('sp-stat').innerText = p.stat;
-            document.getElementById('sp-content').innerText = p.fullText;
-            document.getElementById('sp-img').src = p.img;
-            
-            // Atualizar mensagens dinâmicas baseadas na categoria
-            document.getElementById('difficulties-title').innerText = `🆘 Partilha Anonimamente a Tua Experiência com ${p.title}`;
-            document.getElementById('difficulties-desc').innerText = `Esta é uma comunidade segura. Conte-nos as suas lutas, estratégias e vitórias relacionadas com ${p.title.toLowerCase()}. Ninguém está sozinho.`;
-            
-            renderComments(p);
-            renderDifficulties(p);
-        }
-
-        function showGrid() {
-            document.getElementById('posts-grid').style.display = 'grid';
-            document.getElementById('single-post').style.display = 'none';
-        }
-
-        function renderComments(p) {
-            const list = document.getElementById('comments-list');
-            list.innerHTML = '';
-            if(p.comments.length === 0) { list.innerHTML = '<p>Seja o primeiro a partilhar.</p>'; return; }
-            
-            p.comments.forEach((c, idx) => {
-                list.innerHTML += `
-                    <div class="testimony-item">
-                        <div class="avatar">${c.name.charAt(0)}</div>
-                        <div style="flex:1;">
-                            <span class="t-name">${c.name}</span>
-                            <div class="t-text">${c.text}</div>
-                            <button class="like-btn" onclick="toggleLike(${p.id}, ${idx}, this)">
-                                <span>🍿</span> <span>${c.likes}</span>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function toggleLike(pid, idx, btn) {
-            const p = posts.find(x => x.id === pid);
-            const span = btn.querySelector('span:last-child');
-
-            if(btn.classList.contains('liked')) {
-                p.comments[idx].likes--;
-                btn.classList.remove('liked');
-            } else {
-                p.comments[idx].likes++;
-                btn.classList.add('liked');
-            }
-            span.innerText = p.comments[idx].likes;
-        }
-
-        function addDifficulty() {
-            const name = document.getElementById('new-difficulty-name').value.trim();
-            const text = document.getElementById('new-difficulty-text').value.trim();
-            if(!text) return alert("Partilhe a sua experiência.");
-            
-            const p = posts.find(x => x.id === currentPostId);
-            if(!p.difficulties) p.difficulties = [];
-            p.difficulties.unshift({ 
-                name: name || "Anónimo", 
-                text: text, 
-                likes: 0,
-                date: new Date().toLocaleDateString('pt-PT')
-            });
-            
-            document.getElementById('new-difficulty-name').value = '';
-            document.getElementById('new-difficulty-text').value = '';
-            renderDifficulties(p);
-        }
-
-        function renderDifficulties(p) {
-            const list = document.getElementById('difficulties-list');
-            list.innerHTML = '';
-            if(!p.difficulties || p.difficulties.length === 0) { 
-                list.innerHTML = '<p>Seja o primeiro a partilhar a sua experiência.</p>'; 
-                return; 
-            }
-            
-            p.difficulties.forEach((d, idx) => {
-                list.innerHTML += `
-                    <div class="difficulty-post">
-                        <div class="difficulty-header">
-                            <div>
-                                <div class="difficulty-author">${d.name}</div>
-                                <div class="difficulty-date">${d.date}</div>
-                            </div>
-                        </div>
-                        <div class="difficulty-text">${d.text}</div>
-                        <button class="like-btn" onclick="toggleDifficultyLike(${p.id}, ${idx}, this)">
-                            <span>🍿</span> <span>${d.likes}</span>
-                        </button>
-                    </div>
-                `;
-            });
-        }
-
-        function toggleDifficultyLike(pid, idx, btn) {
-            const p = posts.find(x => x.id === pid);
-            const span = btn.querySelector('span:last-child');
-
-            if(btn.classList.contains('liked')) {
-                p.difficulties[idx].likes--;
-                btn.classList.remove('liked');
-            } else {
-                p.difficulties[idx].likes++;
-                btn.classList.add('liked');
-            }
-            span.innerText = p.difficulties[idx].likes;
-        }
-
-        function addComment() {
-            const name = document.getElementById('new-name').value.trim();
-            const text = document.getElementById('new-text').value.trim();
-            if(!text) return alert("Escreva um testemunho.");
-            
-            const p = posts.find(x => x.id === currentPostId);
-            p.comments.unshift({ name: name || "Anónimo", text: text, likes: 0 });
-            
-            document.getElementById('new-name').value = '';
-            document.getElementById('new-text').value = '';
-            renderComments(p);
-        }
-
-        init();
-    </script>
+    // Flow: enterBtn -> email card -> main site
+    document.getElementById('enterBtn').addEventListener('click',()=>{
+      document.getElementById('hero').style.display='none';
+      document.getElementById('email').style.display='block';
+      setTimeout(()=>{document.getElementById('email').style.display='none';document.getElementById('site').style.display='block';renderChart();filterPosts('all');},2300);
+    });
+  </script>
 </body>
 </html>
