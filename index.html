@@ -10,7 +10,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        :root {
+        // Percentagens de prevalência (valores % estimados / citados em fontes WHO/INE/estudos nacionais)
+        const prevalenceMap = {
+            'Ansiedade': 16.5,
+            'Ansiedade Leve': 45,
+            'Depressão': 7.9,
+            'Stress': 25,
+            'Pânico': 4,
+            'TOC': 1.5,
+            'Burnout': 10,
+            'Esquizofrenia': 0.43
+        };
+
+        let currentPostId = null;
             --primary: #4A90E2; /* Blue Lava */
             --accent: #FF5722;  /* Hot Lava (Orange) */
             --discord: #5865F2;
@@ -160,16 +172,50 @@
         </div>
     </header>
 
+    <!-- HERO / INTRO -->
+    <section id="hero-intro" style="background: linear-gradient(90deg,#0f2a4a11,#ffffff); padding:28px 0;">
+        <div class="container" style="text-align:left;">
+            <div style="max-width:900px; margin:0 auto; background: white; padding:22px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.06);">
+                <h2 style="margin-top:0; color:var(--primary);">Bem-vindo à Comunidade Blue Lava</h2>
+                <p style="line-height:1.6; color:#333;">Chamo-me Humberto e criei esta comunidade com o objetivo de proporcionar às pessoas que vivem com perturbações mentais, especialmente a que eu sofro — esquizofrenia com alucinações auditivas — um espaço seguro onde possam partilhar as suas experiências e falar abertamente sobre os seus desafios. Pois durante muitos anos tentei encontrar espaços como este sem sucesso na internet e ainda mais difícil é encontrar alguém que tenha passado pelo mesmo tipo de alucinações que eu.
+                </p>
+                <p style="line-height:1.6; color:#333;">Acredito que, no futuro, se esta plataforma crescer e ganhar impacto, poderá também tornar-se um ponto de ligação para que os membros encontrem profissionais de saúde mental, como psiquiatras, que possam acompanhar os membros de forma adequada. Um espaço como este era exatamente aquilo que eu gostaria de ter tido ao longo dos últimos dez anos.
+                </p>
+                <p style="line-height:1.6; color:#333;">Demorei cerca de dez anos a sentir-me verdadeiramente estável e alinhado com a medicação. Durante muito tempo, fui resistente, teimoso e excessivamente imediatista nas minhas decisões. Sempre senti a necessidade de falar sobre o que se passava na minha mente, mas raramente senti que estava a ser plenamente compreendido pelos psicólogos por quem passei. Por este motivo, acabei por optar por tomar a medicação sem o devido acompanhamento contínuo — uma decisão que hoje reconheço ter sido um erro, pois se eu tivesse seguido o processo talvez não tivesse a necessidade de lutar contra os meus pensamentos por mais de uma década.</p>
+                <p style="line-height:1.6; color:#333;">Sentia que, por mais que tentasse explicar o que estava a viver, nunca conseguia expressar totalmente aquilo que sentia. Tinha a perceção de que apenas alguém que tivesse passado — ou estivesse a passar — pelo mesmo desafio poderia compreender verdadeiramente a minha experiência.</p>
+                <p style="line-height:1.6; color:#333;">Foi dessa necessidade que nasceu este espaço: um lugar onde cada pessoa possa partilhar a sua história, sentir-se ouvida e, quem sabe, ajudar alguém que se sinta como eu me senti há dez anos — perdido, incompreendido e condicionado pelo estigma que ainda existe, especialmente entre pessoas da minha idade ou gerações mais antigas (+31 anos), que diz que quem procura um psiquiatra é “maluquinho”.</p>
+                <p style="line-height:1.6; color:#333;">A Blue Lava pretende ser o contrário desse estigma: um espaço de consciência, partilha, responsabilidade e crescimento.</p>
+
+                <div style="margin-top:18px; display:flex; gap:10px; align-items:center;">
+                    <button class="submit-btn" onclick="document.getElementById('hero-intro').style.display='none'; window.scrollTo({top:0,behavior:'smooth'})">Entrar na Comunidade</button>
+                    <a href="#prevalenceChart" style="color:var(--primary); font-weight:bold;">Ver estatísticas — Não está sozinho</a>
+                </div>
+            </div>
+
+            <!-- CHART & BLURB -->
+            <div style="max-width:1100px; margin:28px auto 0; text-align:center;">
+                <p style="font-size:1.1rem; color:#333; max-width:900px; margin:0 auto 10px;">Olhe para este gráfico com esperança: mostra quantas pessoas em Portugal são afetadas por várias perturbações — não está só e há muita gente com experiências semelhantes. A comunidade existe para apoiar, partilhar e encontrar caminhos de recuperação.</p>
+                <canvas id="prevalenceChart" style="max-width:900px; margin:18px auto; background:transparent;" aria-label="Gráfico de prevalência"></canvas>
+                <div id="prevalence-sources" style="font-size:0.85rem; color:#666; margin-top:8px;">Fontes: <a href="https://www.who.int/news-room/fact-sheets/detail/anxiety-disorders" target="_blank">WHO (ansiedade)</a>, <a href="https://www.who.int/news-room/fact-sheets/detail/depression" target="_blank">WHO (depressão)</a>, <a href="https://www.who.int/news-room/fact-sheets/detail/schizophrenia" target="_blank">WHO (esquizofrenia)</a>, relatórios portugueses (INE / estudos nacionais) quando disponíveis.</div>
+            </div>
+        </div>
+    </section>
+
     <nav>
         <div class="nav-inner">
             <a class="tab-link active" onclick="filterPosts('all')">Início</a>
             <a class="tab-link" onclick="filterPosts('Ansiedade')">Ansiedade</a>
+            <a class="tab-link" onclick="filterPosts('Esquizofrenia')">Esquizofrenia</a>
             <a class="tab-link" onclick="filterPosts('Ansiedade Leve')">Ansiedade Leve</a>
             <a class="tab-link" onclick="filterPosts('Depressão')">Depressão</a>
             <a class="tab-link" onclick="filterPosts('Stress')">Stress Crónico</a>
             <a class="tab-link" onclick="filterPosts('Pânico')">Pânico</a>
             <a class="tab-link" onclick="filterPosts('TOC')">TOC</a>
             <a class="tab-link" onclick="filterPosts('Burnout')">Burnout</a>
+            <!-- Prevalence grouping -->
+            <a class="tab-link" onclick="filterPosts('prevalence-high')">Mais Prevalentes</a>
+            <a class="tab-link" onclick="filterPosts('prevalence-medium')">Prevalência Média</a>
+            <a class="tab-link" onclick="filterPosts('prevalence-low')">Menos Prevalentes</a>
         </div>
     </nav>
 
@@ -215,6 +261,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // --- BASE DE DADOS COM IMAGENS AI ---
         const posts = [
@@ -344,7 +391,46 @@
         let currentPostId = null;
 
         // --- FUNÇÕES ---
-        function init() { filterPosts('all'); }
+        function init() { filterPosts('all'); renderPrevalenceChart(); }
+
+        // --- Render Prevalence Chart (Chart.js) ---
+        function renderPrevalenceChart() {
+            try {
+                const ctx = document.getElementById('prevalenceChart').getContext('2d');
+                const labels = Object.keys(prevalenceMap);
+                const data = labels.map(l => prevalenceMap[l]);
+
+                // dynamic colours
+                const bg = labels.map(l => 'rgba(74,144,226,0.8)');
+
+                // destroy previous chart if exists
+                if(window._prevalenceChart) window._prevalenceChart.destroy();
+
+                window._prevalenceChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{ label: 'Percentagem da população portuguesa (%)', data: data, backgroundColor: bg }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(ctx) { return ctx.parsed.y + '%'; }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, max: Math.max(...data) < 50 ? 50 : Math.ceil(Math.max(...data)/10)*10 }
+                        }
+                    }
+                });
+            } catch(e) {
+                console.warn('Chart render error', e);
+            }
+        }
 
         function filterPosts(cat) {
             document.getElementById('posts-grid').style.display = 'grid';
@@ -356,7 +442,20 @@
 
             const grid = document.getElementById('posts-grid');
             grid.innerHTML = '';
-            const filtered = cat === 'all' ? posts : posts.filter(p => p.category === cat);
+            let filtered;
+            if(cat === 'all') filtered = posts;
+            else if(cat === 'prevalence-high') {
+                filtered = posts.filter(p => (prevalenceMap[p.category] || 0) >= 15);
+            } else if(cat === 'prevalence-medium') {
+                filtered = posts.filter(p => {
+                    const v = (prevalenceMap[p.category] || 0);
+                    return v >=5 && v < 15;
+                });
+            } else if(cat === 'prevalence-low') {
+                filtered = posts.filter(p => (prevalenceMap[p.category] || 0) > 0 && (prevalenceMap[p.category] || 0) < 5);
+            } else {
+                filtered = posts.filter(p => p.category === cat);
+            }
 
             filtered.forEach(p => {
                 grid.innerHTML += `
