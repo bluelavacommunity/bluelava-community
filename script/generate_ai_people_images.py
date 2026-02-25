@@ -13,64 +13,76 @@ if not API_KEY:
 OUT_DIR = pathlib.Path("assets/images")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-MODEL = "gpt-image-1"
+MODEL_CANDIDATES = [
+    "mai-image-1",
+    "gpt-image-1"
+]
 
 PROMPTS = [
     {
-        "file": "stress-ai.png",
-        "prompt": "Photorealistic image of a real person under intense stress at work: young adult in an office/call-center setting, visibly overwhelmed, shouting into a pillow to release tension, cinematic but respectful, natural lighting, no text"
+        "file": "stress-real.jpg",
+        "prompt": "Ultra realistic photo of a real person under intense work stress, office setting, tense posture, natural light, documentary photography look, no text, no illustration"
     },
     {
-        "file": "ansiedade-ai.png",
-        "prompt": "Photorealistic image of a real person with anxiety: young adult looking repeatedly at a wristwatch in a busy public place, tense body posture, worried expression, realistic skin detail, empathetic framing, no text"
+        "file": "ansiedade-real.jpg",
+        "prompt": "Ultra realistic portrait photo of a real person with anxiety, worried expression, shallow breathing body language, city background softly blurred, no text, no drawing"
     },
     {
-        "file": "burnout-ai.png",
-        "prompt": "Photorealistic image of a real person with burnout: exhausted professional at desk late at night, head down near laptop, tired posture, empty coffee cups, realistic office environment, empathetic tone, no text"
+        "file": "burnout-real.jpg",
+        "prompt": "Ultra realistic photo of a real professional with burnout, late night desk, exhausted expression, laptop light, cinematic but natural, no text, no illustration"
     },
     {
-        "file": "depressao-ai.png",
-        "prompt": "Photorealistic image of a real person with depressive symptoms: adult seated near a window in soft natural light, low energy and distant gaze, intimate and respectful composition, no text"
+        "file": "depressao-real.jpg",
+        "prompt": "Ultra realistic photo of a real person with depressive mood, seated by window, low energy posture, soft natural light, respectful framing, no text, no drawing"
     },
     {
-        "file": "panico-ai.png",
-        "prompt": "Photorealistic image of a young woman experiencing panic, holding her chest on the heart side, visible shortness of breath and fear, background slightly blurred, respectful and non-sensational, no text"
+        "file": "panico-real.jpg",
+        "prompt": "Ultra realistic photo of a real person during panic moment, hand on chest, short breath expression, indoor setting, respectful non-sensational look, no text"
     },
     {
-        "file": "toc-ai.png",
-        "prompt": "Photorealistic image of a real person with OCD traits, meticulously organizing a desk with precise alignment of objects, repeated checking behavior implied, clear indoor lighting, respectful framing, no text"
+        "file": "toc-real.jpg",
+        "prompt": "Ultra realistic photo of a real person with OCD traits, carefully aligning objects on a table, repeated checking behavior implied, clean indoor light, no text"
     },
     {
-        "file": "esquizofrenia-ai.png",
-        "prompt": "Photorealistic image of a real person with schizophrenia-related distress, covering ears in desperation as if trying to block voices, emotional but respectful framing, realistic interior scene, no text"
+        "file": "esquizofrenia-real.jpg",
+        "prompt": "Ultra realistic photo of a real person in schizophrenia-related distress, covering ears as if overwhelmed by voices, empathetic and respectful framing, no text"
     }
 ]
 
 
 def generate_image(prompt: str) -> bytes:
-    payload = {
-        "model": MODEL,
-        "prompt": prompt,
-        "size": "1024x1024"
-    }
+    last_error = None
+    for model in MODEL_CANDIDATES:
+        payload = {
+            "model": model,
+            "prompt": prompt,
+            "size": "1024x1024",
+            "output_format": "jpeg"
+        }
 
-    req = urllib.request.Request(
-        "https://api.openai.com/v1/images/generations",
-        data=json.dumps(payload).encode("utf-8"),
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {API_KEY}"
-        },
-        method="POST"
-    )
+        req = urllib.request.Request(
+            "https://api.openai.com/v1/images/generations",
+            data=json.dumps(payload).encode("utf-8"),
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {API_KEY}"
+            },
+            method="POST"
+        )
 
-    with urllib.request.urlopen(req, timeout=120) as response:
-        data = json.loads(response.read().decode("utf-8"))
+        try:
+            with urllib.request.urlopen(req, timeout=120) as response:
+                data = json.loads(response.read().decode("utf-8"))
+            b64 = data["data"][0].get("b64_json")
+            if not b64:
+                raise RuntimeError("No b64_json returned by API")
+            print(f"Generated using model: {model}")
+            return base64.b64decode(b64)
+        except Exception as exc:
+            last_error = exc
+            print(f"Model failed: {model} -> {exc}")
 
-    b64 = data["data"][0].get("b64_json")
-    if not b64:
-        raise RuntimeError("No b64_json returned by API")
-    return base64.b64decode(b64)
+    raise RuntimeError(f"All models failed. Last error: {last_error}")
 
 
 def main() -> None:
