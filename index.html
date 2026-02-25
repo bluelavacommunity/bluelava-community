@@ -1,7 +1,4 @@
-# se não tiveres Homebrew, instala-o primeiro (opcional)
-# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-brew install imagemagick<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-pt">
 <head>
   <meta charset="utf-8">
@@ -29,17 +26,6 @@ brew install imagemagick<!DOCTYPE html>
     @keyframes slideUp{from{transform:translateY(120vh);opacity:0}to{transform:translateY(0);opacity:1}}
     .email-sign{display:block;text-align:right;margin-top:18px;font-weight:700}
     .email-visit-btn{display:inline-block;margin-top:18px;background:var(--primary);color:#fff;padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
-
-    /* Chart full-width */
-    #chart-section{width:100%;background:linear-gradient(180deg,#fff,#f7fbff);padding:28px 0}
-    #chart-canvas{width:100%;max-width:1400px;margin:0 auto;display:block}
-
-    /* Posts grid */
-    .container{max-width:1100px;margin:20px auto;padding:0 18px}
-    .posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-    .post-card{background:#fff;border-radius:10px;padding:18px;box-shadow:0 6px 18px rgba(0,0,0,0.04);cursor:pointer}
-    .post-title{font-weight:700;margin:6px 0}
-    .post-portugal{color:var(--primary);font-weight:700}
 
     /* small responsive */
     @media(max-width:700px){.hero-title{font-size:2.2rem}.email-card{padding:20px}}
@@ -96,105 +82,10 @@ brew install imagemagick<!DOCTYPE html>
     </div>
   </section>
 
-  <!-- Small landing chart (Portugal prevalence snapshot) -->
-  <section style="max-width:900px;margin:18px auto;padding:0 18px">
-    <div style="background:#fff;border-radius:10px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,0.04)">
-      <div style="font-weight:700;margin-bottom:8px">Prevalência em Portugal — visão rápida</div>
-      <canvas id="landingChart" style="width:100%;height:220px;display:block"></canvas>
-    </div>
-  </section>
-
-  <!-- MAIN SITE (hidden until visit) -->
-  <main id="site" style="display:none">
-    <!-- Header -->
-    <header style="background:linear-gradient(180deg,#000f2a,#2b4cb8);color:#fff;padding:24px;text-align:center">
-      <img src="logo.png" alt="logo" style="max-width:180px;display:block;margin:0 auto 12px">
-      <div style="font-weight:700">Comunidade Blue Lava</div>
-    </header>
-
-    <!-- National alert (orange) -->
-    <div class="stats-banner" style="background:var(--accent);color:#fff;padding:10px;text-align:center;font-weight:700">⚠️ Estatística Nacional: 1 em cada 5 pessoas em Portugal sofre de uma perturbação mental.</div>
-
-    <!-- Full-width chart -->
-    <section id="chart-section">
-      <div id="chart-canvas" style="max-width:900px;margin:0 auto;">
-        <canvas id="prevalenceChart" style="display:block;max-height:360px"></canvas>
-      </div>
-    </section>
-
-    <!-- Navigation and posts -->
-    <nav style="background:#fff;position:sticky;top:0;padding:8px 0;box-shadow:0 4px 10px rgba(0,0,0,0.04)">
-      <div class="container" style="display:flex;gap:10px;align-items:center;overflow:auto">
-        <a onclick="filterPosts('all')" style="font-weight:700;cursor:pointer">Início</a>
-        <a onclick="filterPosts('Ansiedade')" style="cursor:pointer">Ansiedade</a>
-        <a onclick="filterPosts('Esquizofrenia')" style="cursor:pointer">Esquizofrenia</a>
-        <a onclick="filterPosts('Depressão')" style="cursor:pointer">Depressão</a>
-      </div>
-    </nav>
-
-    <div class="container">
-      <div id="posts-grid" class="posts-grid"></div>
-    </div>
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    // Prevalence data (Portugal and World)
-    const prevalence = {
-      'Ansiedade': {pt:16.5, world:4.4},
-      'Depressão': {pt:7.9, world:5.7},
-      'TOC': {pt:1.5, world:1.2},
-      'Pânico': {pt:4, world:1.1},
-      'Esquizofrenia': {pt:0.43, world:0.29},
-      'Stress': {pt:25, world:8},
-      'Burnout': {pt:10, world:3}
-    };
-
-    const posts = [
-      {id:1,category:'Ansiedade',title:'Perturbações de Ansiedade',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?anxiety,mental',desc:'Preocupação excessiva',fullText:'',comments:[]},
-      {id:2,category:'Depressão',title:'Perturbações Depressivas',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?depression,sadness',desc:'Tristeza persistente',fullText:'',comments:[]},
-      {id:3,category:'TOC',title:'Perturbação Obsessivo-Compulsiva',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?obsessive,compulsive',desc:'Rituais e obsessões',fullText:'',comments:[]},
-      {id:4,category:'Pânico',title:'Perturbações de Pânico',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?panic,anxiety',desc:'Ataques súbitos de medo',fullText:'',comments:[]},
-      {id:5,category:'Esquizofrenia',title:'Esquizofrenia',stat:'Doença grave',img:'https://source.unsplash.com/600x400/?schizophrenia,mental',desc:'Alucinações e delírios',fullText:'',comments:[]}
-    ];
-
-    // Render chart full-width
-    let prevalenceChart;
-    function renderChart(){
-      const labels = Object.keys(prevalence);
-      const ptData = labels.map(l=>prevalence[l].pt);
-      const worldData = labels.map(l=>prevalence[l].world);
-      const ctx = document.getElementById('prevalenceChart').getContext('2d');
-      if(prevalenceChart) prevalenceChart.destroy();
-      prevalenceChart = new Chart(ctx,{type:'bar',data:{labels, datasets:[{label:'Portugal (%)',data:ptData, backgroundColor:'rgba(141,198,255,0.9)'},{label:'Mundo (%)',data:worldData, backgroundColor:'rgba(10,73,150,0.9)'}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
-    }
-
-    // Small landing-only chart (Portugal snapshot)
-    function renderLandingChart(){
-      const labels = Object.keys(prevalence);
-      const ptData = labels.map(l=>prevalence[l].pt);
-      const ctx = document.getElementById('landingChart').getContext('2d');
-      new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'Portugal (%)',data:ptData,backgroundColor:'rgba(141,198,255,0.95)'}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
-    }
-
-    // Render posts grid
-    function filterPosts(cat){
-      const grid = document.getElementById('posts-grid');grid.innerHTML='';
-      const filtered = cat==='all'?posts:posts.filter(p=>p.category===cat);
-      filtered.forEach(p=>{
-        const perc = prevalence[p.category]?prevalence[p.category].pt:0;
-        const imgHTML = p.img?`<img src="${p.img}" alt="${p.title}" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px">`:'']
-        grid.innerHTML+=`<div class="post-card" onclick="openPost(${p.id})">${imgHTML}<div class="post-title">${p.title}</div><div class="post-portugal">🇵🇹 ${perc}% da população portuguesa</div><div>${p.desc}</div></div>`});
-    }
-
-    function openPost(id){alert('Abrir post '+id)}
-
     // Landing buttons redirect to a dedicated community page
     document.getElementById('enterBtn').addEventListener('click',()=>{ window.location.href = 'community.html'; });
     document.getElementById('visitFromEmail').addEventListener('click',()=>{ window.location.href = 'community.html'; });
-
-    // Render landing chart immediately
-    try{ renderLandingChart(); }catch(e){console.warn('landing chart init error',e)}
   </script>
 </body>
 </html>
