@@ -65,7 +65,7 @@
   </section>
 
   <!-- EMAIL-STYLED INTRO (letter) -->
-  <section id="email" style="display:none">
+  <section id="email" style="display:block">
     <div class="email-overlay">
       <div class="email-card" id="emailCard">
         <h2 style="margin-top:0;font-family:'Patrick Hand',cursive;font-size:1.8rem">Bem-vindo à Comunidade Blue Lava</h2>
@@ -103,8 +103,8 @@
 
     <!-- Full-width chart -->
     <section id="chart-section">
-      <div id="chart-canvas">
-        <canvas id="prevalenceChart"></canvas>
+      <div id="chart-canvas" style="max-width:900px;margin:0 auto;">
+        <canvas id="prevalenceChart" style="display:block;max-height:360px"></canvas>
       </div>
     </section>
 
@@ -137,11 +137,11 @@
     };
 
     const posts = [
-      {id:1,category:'Ansiedade',title:'Perturbações de Ansiedade',stat:'Sintomas comuns',img:'',desc:'Preocupação excessiva',fullText:'',comments:[]},
-      {id:2,category:'Depressão',title:'Perturbações Depressivas',stat:'Sintomas comuns',img:'',desc:'Tristeza persistente',fullText:'',comments:[]},
-      {id:3,category:'TOC',title:'Perturbação Obsessivo-Compulsiva',stat:'Sintomas comuns',img:'',desc:'Rituais e obsessões',fullText:'',comments:[]},
-      {id:4,category:'Pânico',title:'Perturbações de Pânico',stat:'Sintomas comuns',img:'',desc:'Ataques súbitos de medo',fullText:'',comments:[]},
-      {id:5,category:'Esquizofrenia',title:'Esquizofrenia',stat:'Doença grave',img:'',desc:'Alucinações e delírios',fullText:'',comments:[]}
+      {id:1,category:'Ansiedade',title:'Perturbações de Ansiedade',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?anxiety,mental',desc:'Preocupação excessiva',fullText:'',comments:[]},
+      {id:2,category:'Depressão',title:'Perturbações Depressivas',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?depression,sadness',desc:'Tristeza persistente',fullText:'',comments:[]},
+      {id:3,category:'TOC',title:'Perturbação Obsessivo-Compulsiva',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?obsessive,compulsive',desc:'Rituais e obsessões',fullText:'',comments:[]},
+      {id:4,category:'Pânico',title:'Perturbações de Pânico',stat:'Sintomas comuns',img:'https://source.unsplash.com/600x400/?panic,anxiety',desc:'Ataques súbitos de medo',fullText:'',comments:[]},
+      {id:5,category:'Esquizofrenia',title:'Esquizofrenia',stat:'Doença grave',img:'https://source.unsplash.com/600x400/?schizophrenia,mental',desc:'Alucinações e delírios',fullText:'',comments:[]}
     ];
 
     // Render chart full-width
@@ -152,14 +152,17 @@
       const worldData = labels.map(l=>prevalence[l].world);
       const ctx = document.getElementById('prevalenceChart').getContext('2d');
       if(prevalenceChart) prevalenceChart.destroy();
-      prevalenceChart = new Chart(ctx,{type:'bar',data:{labels, datasets:[{label:'Portugal (%)',data:ptData, backgroundColor:'rgba(141,198,255,0.9)'},{label:'Mundo (%)',data:worldData, backgroundColor:'rgba(10,73,150,0.9)'}]},options:{responsive:true,scales:{y:{beginAtZero:true}}}});
+      prevalenceChart = new Chart(ctx,{type:'bar',data:{labels, datasets:[{label:'Portugal (%)',data:ptData, backgroundColor:'rgba(141,198,255,0.9)'},{label:'Mundo (%)',data:worldData, backgroundColor:'rgba(10,73,150,0.9)'}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
     }
 
     // Render posts grid
     function filterPosts(cat){
       const grid = document.getElementById('posts-grid');grid.innerHTML='';
       const filtered = cat==='all'?posts:posts.filter(p=>p.category===cat);
-      filtered.forEach(p=>{const perc = prevalence[p.category]?prevalence[p.category].pt:0;grid.innerHTML+=`<div class="post-card" onclick="openPost(${p.id})"><div class="post-title">${p.title}</div><div class="post-portugal">🇵🇹 ${perc}% da população portuguesa</div><div>${p.desc}</div></div>`});
+      filtered.forEach(p=>{
+        const perc = prevalence[p.category]?prevalence[p.category].pt:0;
+        const imgHTML = p.img?`<img src="${p.img}" alt="${p.title}" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px">`:'']
+        grid.innerHTML+=`<div class="post-card" onclick="openPost(${p.id})">${imgHTML}<div class="post-title">${p.title}</div><div class="post-portugal">🇵🇹 ${perc}% da população portuguesa</div><div>${p.desc}</div></div>`});
     }
 
     function openPost(id){alert('Abrir post '+id)}
