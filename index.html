@@ -167,26 +167,12 @@
 
     function openPost(id){alert('Abrir post '+id)}
 
-    // Flow: enterBtn -> email card (slide up) -> main site when user clicks inside the letter
+    // Landing buttons redirect to a dedicated community page
     document.getElementById('enterBtn').addEventListener('click',()=>{
-      const hero = document.getElementById('hero');
-      const emailSection = document.getElementById('email');
-      const emailCard = document.getElementById('emailCard');
-      hero.style.display = 'none';
-      emailSection.style.display = 'block';
-      // trigger slide-up animation
-      requestAnimationFrame(()=> emailCard.classList.add('will-appear'));
+      window.location.href = 'community.html';
     });
-
-    // When user clicks the button inside the email, reveal the main community
-    document.getElementById('visitFromEmail').addEventListener('click', ()=>{
-      const emailSection = document.getElementById('email');
-      emailSection.style.display = 'none';
-      document.getElementById('site').style.display = 'block';
-      renderChart();
-      filterPosts('all');
-      // scroll to top of main site for better UX
-      window.scrollTo({top:0,behavior:'smooth'});
+    document.getElementById('visitFromEmail').addEventListener('click',()=>{
+      window.location.href = 'community.html';
     });
   </script>
 </body>
