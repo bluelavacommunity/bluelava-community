@@ -10,17 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        // Percentagens de prevalência (valores % estimados / citados em fontes WHO/INE/estudos nacionais)
-        const prevalenceMap = {
-            'Ansiedade': 16.5,
-            'Ansiedade Leve': 45,
-            'Depressão': 7.9,
-            'Stress': 25,
-            'Pânico': 4,
-            'TOC': 1.5,
-            'Burnout': 10,
-            'Esquizofrenia': 0.43
-        };
+        :root {
+            --primary: #4A90E2; /* Blue Lava */
+            --accent: #FF5722;  /* Hot Lava (Orange) */
+            --discord: #5865F2;
+            --x-black: #000000;
+            --bg: #f4f7f6;
+            --white: #ffffff;
+            --text: #333;
+        }
 
         let currentPostId = null;
             --primary: #4A90E2; /* Blue Lava */
@@ -263,6 +261,30 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // --- Dados de prevalência (Portugal e Mundo) ---
+        const prevalenceMap = {
+            'Ansiedade': 16.5,
+            'Ansiedade Leve': 45,
+            'Depressão': 7.9,
+            'Stress': 25,
+            'Pânico': 4,
+            'TOC': 1.5,
+            'Burnout': 10,
+            'Esquizofrenia': 0.43
+        };
+
+        // Valores globais aproximados (fontes WHO / GBD)
+        const globalMap = {
+            'Ansiedade': 4.4,
+            'Ansiedade Leve': 4.4,
+            'Depressão': 5.7,
+            'Stress': 8,
+            'Pânico': 1.1,
+            'TOC': 1.2,
+            'Burnout': 3,
+            'Esquizofrenia': 0.29
+        };
+
         // --- BASE DE DADOS COM IMAGENS AI ---
         const posts = [
             {
@@ -388,7 +410,7 @@
             }
         ];
 
-        let currentPostId = null;
+        
 
         // --- FUNÇÕES ---
         function init() { filterPosts('all'); renderPrevalenceChart(); }
@@ -398,32 +420,32 @@
             try {
                 const ctx = document.getElementById('prevalenceChart').getContext('2d');
                 const labels = Object.keys(prevalenceMap);
-                const data = labels.map(l => prevalenceMap[l]);
+                const portugalData = labels.map(l => prevalenceMap[l] || 0);
+                const worldData = labels.map(l => globalMap[l] || 0);
 
-                // dynamic colours
-                const bg = labels.map(l => 'rgba(74,144,226,0.8)');
+                // colors
+                const portugalColor = 'rgba(141,198,255,0.9)'; // light blue
+                const worldColor = 'rgba(10,73,150,0.9)'; // dark blue
 
-                // destroy previous chart if exists
                 if(window._prevalenceChart) window._prevalenceChart.destroy();
 
                 window._prevalenceChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: labels,
-                        datasets: [{ label: 'Percentagem da população portuguesa (%)', data: data, backgroundColor: bg }]
+                        datasets: [
+                            { label: 'Portugal (%)', data: portugalData, backgroundColor: portugalColor },
+                            { label: 'Mundo (%)', data: worldData, backgroundColor: worldColor }
+                        ]
                     },
                     options: {
                         responsive: true,
                         plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(ctx) { return ctx.parsed.y + '%'; }
-                                }
-                            }
+                            legend: { position: 'top' },
+                            tooltip: { callbacks: { label: function(ctx){ return ctx.dataset.label + ': ' + ctx.parsed.y + '%'; } } }
                         },
                         scales: {
-                            y: { beginAtZero: true, max: Math.max(...data) < 50 ? 50 : Math.ceil(Math.max(...data)/10)*10 }
+                            y: { beginAtZero: true, max: Math.max(...portugalData.concat(worldData)) < 50 ? 50 : Math.ceil(Math.max(...portugalData.concat(worldData))/10)*10 }
                         }
                     }
                 });
