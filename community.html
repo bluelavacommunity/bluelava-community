@@ -20,6 +20,10 @@
     .post-title{font-weight:700;margin:6px 0}
     .post-portugal{color:var(--primary);font-weight:700}
     .source{font-size:.88rem;color:#555;margin-top:8px}
+    .simple{margin-top:8px;padding:8px 10px;background:#f3f8ff;border:1px solid #d5e6ff;border-radius:8px;font-size:.92rem}
+    .social-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;background:#000;color:#fff;text-decoration:none;box-shadow:0 4px 10px rgba(0,0,0,.28);transition:transform .15s ease,opacity .15s ease}
+    .social-btn:hover{transform:translateY(-1px);opacity:.92}
+    .social-btn i{font-size:18px}
     @media(max-width:700px){#chart-canvas{padding:0 12px}}
   </style>
 </head>
@@ -29,8 +33,8 @@
       <img src="logo.png" alt="logo" style="max-width:140px;display:block;margin:0">
       <div style="font-weight:700;font-size:1.1rem">Comunidade Blue Lava</div>
       <div style="margin-left:8px;display:flex;gap:10px;align-items:center">
-        <a href="https://chat.whatsapp.com/Brbk55gFD3KG1UFx8DOEPs" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style="color:#fff;text-decoration:none"><i class="fa-brands fa-whatsapp" style="font-size:20px"></i></a>
-        <a href="#" aria-label="Discord" style="color:#fff;text-decoration:none"><i class="fa-brands fa-discord" style="font-size:18px"></i></a>
+        <a class="social-btn" href="https://chat.whatsapp.com/Brbk55gFD3KG1UFx8DOEPs" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a class="social-btn" href="#" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
       </div>
     </div>
   </header>
@@ -67,9 +71,11 @@
         id: 1,
         category: 'Stress',
         prevalencePt: 25,
-        image: 'https://source.unsplash.com/1200x700/?call-center,stress,office',
+        prevalenceWorld: 8,
+        image: 'assets/images/stress-ai.png',
         shortDescription: 'Resposta física e emocional a sobrecarga, comum em contextos de trabalho de alta pressão.',
         definition: 'Stress psicológico é uma resposta adaptativa do organismo a exigências percebidas como superiores aos recursos disponíveis. Em exposição prolongada, associa-se a pior saúde mental e física.',
+        simpleExplanation: 'No dia a dia, pode sentir-se como viver em modo de urgência constante: irritação, tensão muscular, fadiga e pouca capacidade para desligar.',
         sourceLabel: 'APA - Stress effects on body',
         sourceUrl: 'https://www.apa.org/topics/stress/body'
       },
@@ -77,9 +83,11 @@
         id: 2,
         category: 'Ansiedade',
         prevalencePt: 16.5,
-        image: 'https://source.unsplash.com/1200x700/?anxiety,worried,urban',
+        prevalenceWorld: 4.4,
+        image: 'assets/images/ansiedade-ai.png',
         shortDescription: 'Preocupação excessiva, persistente e difícil de controlar, com sintomas físicos associados.',
         definition: 'As perturbações de ansiedade incluem medo e preocupação desproporcionais, hipervigilância e sintomas somáticos (por exemplo, palpitações e tensão), com impacto funcional relevante.',
+        simpleExplanation: 'Pode parecer que a mente não para: preocupação com tudo, sensação de aperto no peito e dificuldade em relaxar mesmo quando não há perigo imediato.',
         sourceLabel: 'NIMH - Anxiety Disorders',
         sourceUrl: 'https://www.nimh.nih.gov/health/topics/anxiety-disorders'
       },
@@ -87,9 +95,11 @@
         id: 3,
         category: 'Burnout',
         prevalencePt: 10,
-        image: 'https://source.unsplash.com/1200x700/?overworked,computer,tired',
+        prevalenceWorld: 3,
+        image: 'assets/images/burnout-ai.png',
         shortDescription: 'Exaustão ligada ao trabalho, com distanciamento emocional e menor eficácia profissional.',
         definition: 'Burnout é uma síndrome associada ao stress crónico no trabalho, marcada por exaustão, cinismo/distanciamento e redução de eficácia profissional.',
+        simpleExplanation: 'É como chegar ao fim do dia “vazio”: pouca energia, desmotivação no trabalho e sensação de que tarefas simples se tornaram pesadas.',
         sourceLabel: 'WHO - Burn-out (ICD-11)',
         sourceUrl: 'https://www.who.int/standards/classifications/frequently-asked-questions/burn-out-an-occupational-phenomenon'
       },
@@ -97,9 +107,11 @@
         id: 4,
         category: 'Depressão',
         prevalencePt: 7.9,
-        image: 'https://source.unsplash.com/1200x700/?depression,alone,room',
+        prevalenceWorld: 5.7,
+        image: 'assets/images/depressao-ai.png',
         shortDescription: 'Humor deprimido persistente, perda de interesse e alterações de sono, energia e concentração.',
         definition: 'A depressão é uma perturbação mental com tristeza persistente e/ou anedonia, frequentemente acompanhada por alterações do sono, apetite, energia, cognição e risco suicidário.',
+        simpleExplanation: 'No quotidiano, pode surgir como tristeza contínua, falta de vontade para atividades antes prazerosas e sensação de vazio ou desesperança.',
         sourceLabel: 'WHO - Depressive disorder',
         sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/depression'
       },
@@ -107,9 +119,11 @@
         id: 5,
         category: 'Pânico',
         prevalencePt: 4,
-        image: 'https://source.unsplash.com/1200x700/?panic,fear,crowd',
+        prevalenceWorld: 1.1,
+        image: 'assets/images/panico-ai.png',
         shortDescription: 'Ataques súbitos de medo intenso com sintomas físicos marcantes.',
         definition: 'A perturbação de pânico caracteriza-se por ataques de pânico inesperados e recorrentes, seguidos de preocupação persistente com novos ataques e alterações comportamentais.',
+        simpleExplanation: 'Pode acontecer de repente: coração acelerado, falta de ar, tremores e medo de perder o controlo, mesmo sem uma ameaça real naquele momento.',
         sourceLabel: 'NHS - Panic disorder',
         sourceUrl: 'https://www.nhs.uk/mental-health/conditions/panic-disorder/'
       },
@@ -117,9 +131,11 @@
         id: 6,
         category: 'TOC',
         prevalencePt: 1.5,
-        image: 'https://source.unsplash.com/1200x700/?compulsive,cleaning,organization',
+        prevalenceWorld: 1.2,
+        image: 'assets/images/toc-ai.png',
         shortDescription: 'Obsessões intrusivas e compulsões repetitivas para reduzir ansiedade.',
         definition: 'A perturbação obsessivo-compulsiva envolve obsessões (pensamentos intrusivos) e/ou compulsões (rituais), clinicamente significativos e com prejuízo funcional.',
+        simpleExplanation: 'Pode parecer uma necessidade difícil de travar de verificar, ordenar ou repetir ações para aliviar ansiedade, mesmo que isso desgaste a rotina.',
         sourceLabel: 'NIMH - Obsessive-Compulsive Disorder',
         sourceUrl: 'https://www.nimh.nih.gov/health/topics/obsessive-compulsive-disorder-ocd'
       },
@@ -127,9 +143,11 @@
         id: 7,
         category: 'Esquizofrenia',
         prevalencePt: 0.43,
-        image: 'https://source.unsplash.com/1200x700/?mental-health,therapy,reflection',
+        prevalenceWorld: 0.29,
+        image: 'assets/images/esquizofrenia-ai.png',
         shortDescription: 'Perturbação grave com possíveis alucinações, delírios e desorganização do pensamento.',
         definition: 'A esquizofrenia é uma perturbação mental grave, heterogénea, com sintomas psicóticos e alterações cognitivas/funcionais que exigem acompanhamento clínico contínuo.',
+        simpleExplanation: 'Na prática, a pessoa pode viver experiências muito intensas e reais para si (como ouvir vozes) e precisar de apoio clínico regular e suporte social.',
         sourceLabel: 'WHO - Schizophrenia',
         sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/schizophrenia'
       }
@@ -141,6 +159,7 @@
     function renderChart() {
       const labels = sortedDisorders.map(item => item.category);
       const ptData = sortedDisorders.map(item => item.prevalencePt);
+      const worldData = sortedDisorders.map(item => item.prevalenceWorld);
       const ctx = document.getElementById('prevalenceChart').getContext('2d');
       if (prevalenceChart) prevalenceChart.destroy();
       prevalenceChart = new Chart(ctx, {
@@ -151,6 +170,10 @@
             label: 'Portugal (%)',
             data: ptData,
             backgroundColor: 'rgba(74, 144, 226, 0.85)'
+          }, {
+            label: 'Resto do mundo (%)',
+            data: worldData,
+            backgroundColor: 'rgba(22, 63, 138, 0.9)'
           }]
         },
         options: {
@@ -176,6 +199,7 @@
             <div class="post-title">${item.category}</div>
             <div class="post-portugal">🇵🇹 ${item.prevalencePt}% da população portuguesa</div>
             <div>${item.shortDescription}</div>
+            <div class="simple"><strong>Explicação simples:</strong> ${item.simpleExplanation}</div>
             <div class="source">Fonte científica: <a href="${item.sourceUrl}" target="_blank" rel="noopener noreferrer">${item.sourceLabel}</a></div>
           </article>
         `;

@@ -18,11 +18,34 @@ const outDir = path.resolve('assets/images');
 if(!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
 
 const prompts = [
-  {file: 'ansiedade.png', prompt: 'Realistic, empathetic portrait capturing the feeling of anxiety: a person clutching their chest slightly, tense shoulders, shallow breathing; background blurred with subtle swirling shapes to suggest racing thoughts; warm-but-muted tones, soft studio lighting, high-detail, respectful and non-stigmatizing'},
-  {file: 'depressao.png', prompt: 'Realistic, gentle scene expressing depression: a person seated by a window with low, soft light, gaze downcast and distant, heavy atmosphere, cool desaturated color palette, subtle grain, emotional but hopeful undertone, respectful portrayal'},
-  {file: 'toc.png', prompt: 'Realistic, focused image representing obsessive-compulsive behaviors: close-up of hands arranging small objects precisely in repeated patterns, cool neutral tones, shallow depth of field, crisp detail on hands and objects, conveying tension and the need for order without judgement'},
-  {file: 'panico.png', prompt: 'Expressive, respectful depiction of a panic moment: person with widened eyes and slightly open mouth, motion blur around edges to suggest sudden overwhelm, high-contrast lighting with cool highlights, emphasis on immediacy and breathlessness rather than sensationalism'},
-  {file: 'esquizofrenia.png', prompt: 'Conceptual but realistic portrait for schizophrenia focusing on experience and feeling: human profile with soft sound-wave and fragmented text overlays suggesting auditory hallucinations, muted color palette, gentle light, avoid caricature—respectful, empathetic and contemplative'}
+  {
+    file: 'stress.png',
+    prompt: 'Photorealistic scene of workplace stress: an adult in a call center desk shouting into a pillow to release tension, headset on table, computer screen with many notifications, dramatic but respectful mood, natural indoor lighting, cinematic, non-stigmatizing, no text'
+  },
+  {
+    file: 'ansiedade.png',
+    prompt: 'Photorealistic portrayal of anxiety: an adult repeatedly looking at a wristwatch in a busy urban station, tense posture, worried expression, slight motion blur of crowd around, empathetic tone, natural color grading, non-stigmatizing, no text'
+  },
+  {
+    file: 'burnout.png',
+    prompt: 'Photorealistic burnout concept: exhausted office worker late at night in front of laptop, head resting on folded arms, coffee cups and papers around, warm desk lamp and dark surroundings, emotional but respectful, non-stigmatizing, no text'
+  },
+  {
+    file: 'depressao.png',
+    prompt: 'Photorealistic, empathetic depression portrait: adult seated by a window with soft overcast light, low energy body language, introspective gaze downward, quiet room, muted tones, respectful and hopeful undertone, no text'
+  },
+  {
+    file: 'panico.png',
+    prompt: 'Photorealistic panic episode depiction: adult in crowded public space focusing on breath with hand on chest, blurred surroundings to suggest overwhelm, respectful and calm framing, non-sensational, no text'
+  },
+  {
+    file: 'toc.png',
+    prompt: 'Photorealistic OCD representation: adult repeatedly aligning household objects with intense concentration, multiple small corrections visible, clean interior environment, neutral tones, respectful, non-stigmatizing, no text'
+  },
+  {
+    file: 'esquizofrenia.png',
+    prompt: 'Photorealistic and compassionate portrayal for schizophrenia: adult in quiet room with reflective expression, subtle abstract sound-wave lighting effects around to suggest auditory hallucinations without caricature, respectful clinical tone, non-stigmatizing, no text'
+  }
 ];
 
 async function generate(){
