@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BlueLava Community - Perturbação</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#4A90E2;--bg:#f4f7f6;--white:#fff;--text:#333}
+    html,body{margin:0;background:var(--bg);color:var(--text);font-family:Roboto,Arial,sans-serif}
+    .wrap{max-width:980px;margin:22px auto;padding:0 16px}
+    .card{background:#fff;border:1px solid #ececec;border-radius:12px;padding:18px;box-shadow:0 10px 26px rgba(0,0,0,.06)}
+    .title{margin:8px 0 4px;font-size:1.6rem}
+    .meta{color:#4A90E2;font-weight:700}
+    .comments{margin-top:22px}
+    input,textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box;font-family:inherit}
+    textarea{min-height:130px;resize:vertical}
+    button{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:10px 14px;cursor:pointer;font-weight:700}
+    .comment{background:#fafafa;border:1px solid #ececec;border-radius:10px;padding:12px;margin:10px 0}
+    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .back{display:inline-block;margin-bottom:12px;text-decoration:none;color:#1a5eb8;font-weight:700}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="community.html">← Voltar à comunidade</a>
+
+    <section class="card" id="detailsCard" style="display:none">
+      <img id="dImage" src="" alt="Perturbação" style="width:100%;height:280px;object-fit:cover;border-radius:10px">
+      <h1 id="dTitle" class="title"></h1>
+      <div id="dMeta" class="meta"></div>
+      <p id="dDesc"></p>
+      <p><strong>Definição:</strong> <span id="dDefinition"></span></p>
+      <p><strong>Fonte científica:</strong> <a id="dSource" href="#" target="_blank" rel="noopener noreferrer"></a></p>
+    </section>
+
+    <section class="card comments" id="commentsCard" style="display:none">
+      <h2>Comentários da comunidade</h2>
+      <div class="row" style="margin-bottom:10px">
+        <input id="nameInput" placeholder="Nome (opcional)">
+        <label style="display:flex;align-items:center;gap:6px;white-space:nowrap"><input id="anonInput" type="checkbox"> Publicar em anónimo</label>
+      </div>
+      <textarea id="textInput" placeholder="Partilha a tua história..."></textarea>
+      <div style="text-align:right;margin-top:10px">
+        <button id="sendBtn">Publicar comentário</button>
+      </div>
+      <div id="commentsList" style="margin-top:14px"></div>
+    </section>
+  </div>
+
+  <script>
+    const disorders = [
+      {
+        id: 1,
+        category: 'Stress',
+        prevalencePt: 25,
+        image: 'https://source.unsplash.com/1200x700/?call-center,stress,office',
+        shortDescription: 'Resposta física e emocional a sobrecarga, comum em contextos de trabalho de alta pressão.',
+        definition: 'Stress psicológico é uma resposta adaptativa do organismo a exigências percebidas como superiores aos recursos disponíveis. Em exposição prolongada, associa-se a pior saúde mental e física.',
+        sourceLabel: 'APA - Stress effects on body',
+        sourceUrl: 'https://www.apa.org/topics/stress/body'
+      },
+      {
+        id: 2,
+        category: 'Ansiedade',
+        prevalencePt: 16.5,
+        image: 'https://source.unsplash.com/1200x700/?anxiety,worried,urban',
+        shortDescription: 'Preocupação excessiva, persistente e difícil de controlar, com sintomas físicos associados.',
+        definition: 'As perturbações de ansiedade incluem medo e preocupação desproporcionais, hipervigilância e sintomas somáticos (por exemplo, palpitações e tensão), com impacto funcional relevante.',
+        sourceLabel: 'NIMH - Anxiety Disorders',
+        sourceUrl: 'https://www.nimh.nih.gov/health/topics/anxiety-disorders'
+      },
+      {
+        id: 3,
+        category: 'Burnout',
+        prevalencePt: 10,
+        image: 'https://source.unsplash.com/1200x700/?overworked,computer,tired',
+        shortDescription: 'Exaustão ligada ao trabalho, com distanciamento emocional e menor eficácia profissional.',
+        definition: 'Burnout é uma síndrome associada ao stress crónico no trabalho, marcada por exaustão, cinismo/distanciamento e redução de eficácia profissional.',
+        sourceLabel: 'WHO - Burn-out (ICD-11)',
+        sourceUrl: 'https://www.who.int/standards/classifications/frequently-asked-questions/burn-out-an-occupational-phenomenon'
+      },
+      {
+        id: 4,
+        category: 'Depressão',
+        prevalencePt: 7.9,
+        image: 'https://source.unsplash.com/1200x700/?depression,alone,room',
+        shortDescription: 'Humor deprimido persistente, perda de interesse e alterações de sono, energia e concentração.',
+        definition: 'A depressão é uma perturbação mental com tristeza persistente e/ou anedonia, frequentemente acompanhada por alterações do sono, apetite, energia, cognição e risco suicidário.',
+        sourceLabel: 'WHO - Depressive disorder',
+        sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/depression'
+      },
+      {
+        id: 5,
+        category: 'Pânico',
+        prevalencePt: 4,
+        image: 'https://source.unsplash.com/1200x700/?panic,fear,crowd',
+        shortDescription: 'Ataques súbitos de medo intenso com sintomas físicos marcantes.',
+        definition: 'A perturbação de pânico caracteriza-se por ataques de pânico inesperados e recorrentes, seguidos de preocupação persistente com novos ataques e alterações comportamentais.',
+        sourceLabel: 'NHS - Panic disorder',
+        sourceUrl: 'https://www.nhs.uk/mental-health/conditions/panic-disorder/'
+      },
+      {
+        id: 6,
+        category: 'TOC',
+        prevalencePt: 1.5,
+        image: 'https://source.unsplash.com/1200x700/?compulsive,cleaning,organization',
+        shortDescription: 'Obsessões intrusivas e compulsões repetitivas para reduzir ansiedade.',
+        definition: 'A perturbação obsessivo-compulsiva envolve obsessões (pensamentos intrusivos) e/ou compulsões (rituais), clinicamente significativos e com prejuízo funcional.',
+        sourceLabel: 'NIMH - Obsessive-Compulsive Disorder',
+        sourceUrl: 'https://www.nimh.nih.gov/health/topics/obsessive-compulsive-disorder-ocd'
+      },
+      {
+        id: 7,
+        category: 'Esquizofrenia',
+        prevalencePt: 0.43,
+        image: 'https://source.unsplash.com/1200x700/?mental-health,therapy,reflection',
+        shortDescription: 'Perturbação grave com possíveis alucinações, delírios e desorganização do pensamento.',
+        definition: 'A esquizofrenia é uma perturbação mental grave, heterogénea, com sintomas psicóticos e alterações cognitivas/funcionais que exigem acompanhamento clínico contínuo.',
+        sourceLabel: 'WHO - Schizophrenia',
+        sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/schizophrenia'
+      }
+    ];
+
+    function getId() {
+      const params = new URLSearchParams(window.location.search);
+      return Number(params.get('id'));
+    }
+
+    function commentsKey(id) {
+      return `bluelava_comments_${id}`;
+    }
+
+    function loadComments(id) {
+      try {
+        return JSON.parse(localStorage.getItem(commentsKey(id)) || '[]');
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveComments(id, comments) {
+      localStorage.setItem(commentsKey(id), JSON.stringify(comments));
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function renderComments(disorderId) {
+      const comments = loadComments(disorderId);
+      const list = document.getElementById('commentsList');
+      if (comments.length === 0) {
+        list.innerHTML = '<p>Ainda não há comentários. Sê a primeira pessoa a partilhar.</p>';
+        return;
+      }
+
+      list.innerHTML = comments.map(function(comment) {
+        const author = comment.anonymous ? 'Anónimo' : (comment.name || 'Sem nome');
+        return `
+          <article class="comment">
+            <div class="row">
+              <strong>${escapeHtml(author)}</strong>
+              <small>${new Date(comment.createdAt).toLocaleString('pt-PT')}</small>
+            </div>
+            <p style="margin:8px 0 10px">${escapeHtml(comment.text)}</p>
+            <button onclick="likeComment(${disorderId}, ${comment.id})">🍿 ${comment.likes}</button>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function likeComment(disorderId, commentId) {
+      const comments = loadComments(disorderId);
+      const item = comments.find(function(entry) { return entry.id === commentId; });
+      if (!item) return;
+      item.likes = (item.likes || 0) + 1;
+      saveComments(disorderId, comments);
+      renderComments(disorderId);
+    }
+
+    function bindForm(disorderId) {
+      document.getElementById('sendBtn').addEventListener('click', function() {
+        const name = document.getElementById('nameInput').value.trim();
+        const anonymous = document.getElementById('anonInput').checked;
+        const text = document.getElementById('textInput').value;
+
+        if (!text || !text.trim()) {
+          alert('Escreve um comentário antes de publicar.');
+          return;
+        }
+
+        const comments = loadComments(disorderId);
+        comments.unshift({
+          id: Date.now(),
+          name,
+          anonymous,
+          text,
+          likes: 0,
+          createdAt: Date.now()
+        });
+
+        saveComments(disorderId, comments);
+        document.getElementById('textInput').value = '';
+        renderComments(disorderId);
+      });
+    }
+
+    function render() {
+      const id = getId();
+      const disorder = disorders.find(function(item) { return item.id === id; });
+      if (!disorder) {
+        document.querySelector('.wrap').innerHTML = '<p>Perturbação não encontrada. <a href="community.html">Voltar</a></p>';
+        return;
+      }
+
+      document.title = `BlueLava - ${disorder.category}`;
+      document.getElementById('dImage').src = disorder.image;
+      document.getElementById('dImage').alt = disorder.category;
+      document.getElementById('dTitle').textContent = disorder.category;
+      document.getElementById('dMeta').textContent = `🇵🇹 ${disorder.prevalencePt}% da população portuguesa`;
+      document.getElementById('dDesc').textContent = disorder.shortDescription;
+      document.getElementById('dDefinition').textContent = disorder.definition;
+      document.getElementById('dSource').href = disorder.sourceUrl;
+      document.getElementById('dSource').textContent = disorder.sourceLabel;
+
+      document.getElementById('detailsCard').style.display = 'block';
+      document.getElementById('commentsCard').style.display = 'block';
+
+      bindForm(id);
+      renderComments(id);
+    }
+
+    render();
+    window.likeComment = likeComment;
+  </script>
+</body>
+</html>

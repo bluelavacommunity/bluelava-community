@@ -4,88 +4,59 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>BlueLava Community</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
   <style>
-    :root{--primary:#4A90E2;--accent:#FF5722;--bg:#f4f7f6;--white:#fff;--text:#333}
-    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Roboto,Arial,sans-serif}
+    :root{--primary:#4A90E2;--bg:#f4f7f6;--white:#fff;--text:#333}
+    html,body{margin:0;background:var(--bg);color:var(--text);font-family:Roboto,Arial,sans-serif}
+    .hero{min-height:52vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f2a4a 0%,#1a5eb8 100%);color:#fff;text-align:center;padding:24px}
+    .hero-title{font-family:'Patrick Hand',cursive;font-size:3rem;margin:0 0 10px}
+    .hero-sub{margin:0 0 22px;opacity:.95}
+    .stat{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);padding:12px 18px;border-radius:12px}
+    .btn{margin-top:18px;background:var(--white);color:var(--primary);padding:11px 24px;border:none;border-radius:999px;font-weight:700;cursor:pointer}
 
-    /* Hero banner (minimal) */
-    .hero-banner{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f2a4a 0%,#1a5eb8 100%);color:white;text-align:center;padding:24px}
-    .hero-title{font-family:'Patrick Hand',cursive;font-size:3.2rem;margin:0 0 8px 0}
-    .hero-sub{font-size:1.1rem;opacity:0.95;margin:0 0 24px 0}
-    .stat-box{background:rgba(255,255,255,0.08);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);max-width:720px}
-    .stat-box strong{color:#fff}
-    .btn-primary{background:var(--white);color:var(--primary);padding:12px 28px;border-radius:999px;border:none;font-weight:700;cursor:pointer;margin-top:24px}
-
-    /* Email letter style */
-    /* Email letter style */
-    .email-overlay{position:fixed;left:0;right:0;bottom:0;top:0;display:flex;align-items:flex-end;justify-content:center;padding:24px;background:linear-gradient(180deg,rgba(10,20,40,0.2),rgba(10,20,40,0.35));z-index:60}
-    .email-card{width:100%;max-width:880px;background:#fff;border-radius:12px;padding:28px 34px;border:1px solid #eee;box-shadow:0 18px 60px rgba(0,0,0,0.18);font-size:1rem;line-height:1.7;transform:translateY(120vh);opacity:0}
-    .email-card.will-appear{animation:slideUp .9s cubic-bezier(.22,.9,.28,1) forwards}
-    @keyframes slideUp{from{transform:translateY(120vh);opacity:0}to{transform:translateY(0);opacity:1}}
-    .email-sign{display:block;text-align:right;margin-top:18px;font-weight:700}
-    .email-visit-btn{display:inline-block;margin-top:18px;background:var(--primary);color:#fff;padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
-
-    /* small responsive */
-    @media(max-width:700px){.hero-title{font-size:2.2rem}.email-card{padding:20px}}
+    .letter-wrap{max-width:980px;margin:22px auto 40px;padding:0 18px}
+    .letter{background:#fff;border:1px solid #ececec;border-radius:12px;box-shadow:0 14px 40px rgba(0,0,0,.08);padding:24px;line-height:1.7}
+    .letter h2{margin:0 0 12px;font-family:'Patrick Hand',cursive;font-size:2rem}
+    .letter p{margin:0 0 14px}
+    .sign{display:block;text-align:right;margin-top:8px;font-weight:700}
+    .letter-cta{text-align:center;margin-top:18px}
+    .letter-cta button{background:var(--primary);color:#fff;padding:10px 18px;border:none;border-radius:8px;cursor:pointer;font-weight:700}
+    @media(max-width:700px){.hero-title{font-size:2.2rem}}
   </style>
 </head>
 <body>
-
-  <!-- HERO BANNER (only banner + national stat + button) -->
-  <section id="hero" class="hero-banner">
+  <section class="hero">
     <div>
-      <div style="text-align:center">
-        <div class="hero-title">Bem-vindo à Comunidade Blue Lava</div>
-        <div class="hero-sub">A comunidade de apoio, partilha e crescimento em saúde mental</div>
-      </div>
-
-      <div style="margin-top:18px;display:flex;justify-content:center">
-        <div class="stat-box">
-          <div style="font-size:1rem">⚠️ <strong>Estatística Nacional:</strong> 1 em cada 5 pessoas em Portugal sofre de uma perturbação mental.</div>
-        </div>
-      </div>
-
-      <div style="display:flex;justify-content:center">
-        <button class="btn-primary" id="enterBtn">Visitar a Comunidade</button>
-      </div>
+      <h1 class="hero-title">Bem-vindo à Comunidade Blue Lava</h1>
+      <p class="hero-sub">A comunidade de apoio, partilha e crescimento em saúde mental</p>
+      <div class="stat">⚠️ <strong>Estatística Nacional:</strong> 1 em cada 5 pessoas em Portugal sofre de uma perturbação mental.</div>
+      <div><button class="btn" id="enterBtn">Visitar a Comunidade</button></div>
     </div>
   </section>
 
-  <!-- EMAIL-STYLED INTRO (letter) -->
-  <section id="email" style="display:block">
-    <div class="email-overlay">
-      <div class="email-card" id="emailCard">
-        <h2 style="margin-top:0;font-family:'Patrick Hand',cursive;font-size:1.8rem">Bem-vindo à Comunidade Blue Lava</h2>
-        <div style="font-style:italic;margin-bottom:12px">Uma carta de Humberto</div>
-        <div style="background:#fafafa;border-radius:8px;padding:18px;border:1px solid #eee">
-          <p>Chamo-me Humberto e criei esta comunidade com o objetivo de proporcionar às pessoas que vivem com perturbações mentais, especialmente a que eu sofro — esquizofrenia com alucinações auditivas — um espaço seguro onde possam partilhar as suas experiências e falar abertamente sobre os seus desafios. Pois durante muitos anos tentei encontrar espaços como este sem sucesso na internet e ainda mais difícil é encontrar alguém que tenha passado pelo mesmo tipo de alucinações que eu.</p>
-
-          <p>Acredito que, no futuro, se esta plataforma crescer e ganhar impacto, poderá também tornar-se um ponto de ligação para que os membros encontrem profissionais de saúde mental, como psiquiatras, que possam acompanhar os membros de forma adequada. Um espaço como este era exatamente aquilo que eu gostaria de ter tido ao longo dos últimos dez anos.</p>
-
-          <p>Demorei cerca de dez anos a sentir-me verdadeiramente estável e alinhado com a medicação. Durante muito tempo, fui resistente, teimoso e excessivamente imediatista nas minhas decisões. Sempre senti a necessidade de falar sobre o que se passava na minha mente, mas raramente senti que estava a ser plenamente compreendido pelos psicólogos por quem passei. Por este motivo, acabei por optar por tomar a medicação sem o devido acompanhamento contínuo — uma decisão que hoje reconheço ter sido um erro, pois se eu tivesse seguido o processo talvez não tivesse a necessidade de lutar contra os meus pensamentos por mais de uma década.</p>
-
-          <p>Sentia que, por mais que tentasse explicar o que estava a viver, nunca conseguia expressar totalmente aquilo que sentia. Tinha a perceção de que apenas alguém que tivesse passado — ou estivesse a passar — pelo mesmo desafio poderia compreender verdadeiramente a minha experiência.</p>
-
-          <p>Foi dessa necessidade que nasceu este espaço: um lugar onde cada pessoa possa partilhar a sua história, sentir-se ouvida e, quem sabe, ajudar alguém que se sinta como eu me senti há dez anos — perdido, incompreendido e condicionado pelo estigma que ainda existe, especialmente entre pessoas da minha idade ou gerações mais antigas (+31 anos), que diz que quem procura um psiquiatra é “maluquinho”.</p>
-
-          <p>A Blue Lava pretende ser o contrário desse estigma: um espaço de consciência, partilha, responsabilidade e crescimento.</p>
-
-          <p class="email-sign">— Humberto</p>
-        </div>
-
-        <div style="text-align:center;margin-top:18px">
-          <button id="visitFromEmail" class="email-visit-btn">Visitar comunidade</button>
-        </div>
+  <section class="letter-wrap">
+    <article class="letter">
+      <h2>Bem-vindo à Comunidade Blue Lava.</h2>
+      <p>Chamo-me Humberto e criei esta comunidade com o objetivo de proporcionar às pessoas que vivem com perturbações mentais, especialmente a que eu sofro — esquizofrenia com alucinações auditivas — um espaço seguro onde possam partilhar as suas experiências e falar abertamente sobre os seus desafios. Pois durante muitos anos tentei encontrar espaços como este sem sucesso na internet e ainda mais difícil é encontrar alguém que tenha passado pelo mesmo tipo de alucinações que eu.</p>
+      <p>Acredito que, no futuro, se esta plataforma crescer e ganhar impacto, poderá também tornar-se um ponto de ligação para que os membros encontrem profissionais de saúde mental, como psiquiatras, que possam acompanhar os membros de forma adequada. Um espaço como este era exatamente aquilo que eu gostaria de ter tido ao longo dos últimos dez anos.</p>
+      <p>Demorei cerca de dez anos a sentir-me verdadeiramente estável e alinhado com a medicação. Durante muito tempo, fui resistente, teimoso e excessivamente imediatista nas minhas decisões. Sempre senti a necessidade de falar sobre o que se passava na minha mente, mas raramente senti que estava a ser plenamente compreendido pelos psicólogos por quem passei. Por este motivo, acabei por optar por tomar a medicação sem o devido acompanhamento contínuo — uma decisão que hoje reconheço ter sido um erro, pois se eu tivesse seguido o processo talvez não tivesse a necessidade de lutar contra os meus pensamentos por mais de uma década.</p>
+      <p>Sentia que, por mais que tentasse explicar o que estava a viver, nunca conseguia expressar totalmente aquilo que sentia. Tinha a perceção de que apenas alguém que tivesse passado — ou estivesse a passar — pelo mesmo desafio poderia compreender verdadeiramente a minha experiência.</p>
+      <p>Foi dessa necessidade que nasceu este espaço: um lugar onde cada pessoa possa partilhar a sua história, sentir-se ouvida e, quem sabe, ajudar alguém que se sinta como eu me senti há dez anos — perdido, incompreendido e condicionado pelo estigma que ainda existe, especialmente entre pessoas da minha idade ou gerações mais antigas (+31 anos), que diz que quem procura um psiquiatra é “maluquinho”.</p>
+      <p>A Blue Lava pretende ser o contrário desse estigma: um espaço de consciência, partilha, responsabilidade e crescimento.</p>
+      <span class="sign">— Humberto</span>
+      <div class="letter-cta">
+        <button id="visitFromLetter">Visitar comunidade</button>
       </div>
-    </div>
+    </article>
   </section>
 
   <script>
-    // Landing buttons redirect to a dedicated community page
-    document.getElementById('enterBtn').addEventListener('click',()=>{ window.location.href = 'community.html'; });
-    document.getElementById('visitFromEmail').addEventListener('click',()=>{ window.location.href = 'community.html'; });
+    document.getElementById('enterBtn').addEventListener('click', function(){
+      window.location.href = 'community.html';
+    });
+    document.getElementById('visitFromLetter').addEventListener('click', function(){
+      window.location.href = 'community.html';
+    });
   </script>
 </body>
 </html>
