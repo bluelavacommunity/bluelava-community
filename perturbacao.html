@@ -4,10 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>BlueLava Community - Perturbação (neurodivergência)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     :root{--primary:#4A90E2;--bg:#f4f7f6;--white:#fff;--text:#333}
-    html,body{margin:0;color:var(--text);font-family:Roboto,Arial,sans-serif;background-color:#0b1f3d;background-image:url('assets/images/background website.jpeg');background-repeat:no-repeat;background-position:center center;background-size:cover;background-attachment:fixed}
+    html,body{margin:0;color:var(--text);font-family:Roboto,Arial,sans-serif;background-color:#0b1f3d;background-image:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),url('assets/images/background-fixed.jpg'),url('assets/images/background website.jpeg');background-repeat:no-repeat,no-repeat,no-repeat;background-position:center center,center center,center center;background-size:cover,cover,cover;background-attachment:fixed,fixed,fixed}
+    .top-banner{background:linear-gradient(180deg,#000f2a,#2b4cb8);color:#fff;padding:14px 16px}
+    .top-banner-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+    .banner-title{font-weight:700;font-size:1.05rem}
+    .social-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;background:#000;color:#fff;text-decoration:none;box-shadow:0 4px 10px rgba(0,0,0,.28);transition:transform .15s ease,opacity .15s ease}
+    .social-btn:hover{transform:translateY(-1px);opacity:.92}
+    .social-btn i{font-size:18px}
     .wrap{max-width:980px;margin:22px auto;padding:0 16px}
     .card{background:#fff;border:1px solid #ececec;border-radius:12px;padding:18px;box-shadow:0 10px 26px rgba(0,0,0,.06)}
     .title{margin:8px 0 4px;font-size:1.6rem}
@@ -25,6 +32,17 @@
   </style>
 </head>
 <body>
+  <header class="top-banner">
+    <div class="top-banner-inner">
+      <img src="logo.png" alt="logo" style="max-width:120px;display:block;margin:0">
+      <div class="banner-title">Comunidade Blue Lava</div>
+      <div style="margin-left:8px;display:flex;gap:10px;align-items:center">
+        <a class="social-btn" href="https://chat.whatsapp.com/I2DYIq1923JKIiv37BQ2LE?mode=hqctswa" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a class="social-btn" href="#" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
+      </div>
+    </div>
+  </header>
+
   <div class="wrap">
     <a class="back" href="community.html">← Voltar à comunidade</a>
 

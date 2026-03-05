@@ -10,7 +10,12 @@
     :root{--primary:#4A90E2;--accent:#FF5722;--bg:#f4f7f6;--white:#fff;--text:#333}
     html,body{height:100%;margin:0;color:var(--text);font-family:Roboto,Arial,sans-serif}
     body{
-      background:#0b1f3d url('assets/images/background website.jpeg') center center / cover no-repeat fixed;
+      background-color:#0b1f3d;
+      background-image:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),url('assets/images/background-fixed.jpg'),url('assets/images/background website.jpeg');
+      background-repeat:no-repeat,no-repeat,no-repeat;
+      background-position:center center,center center,center center;
+      background-size:cover,cover,cover;
+      background-attachment:fixed,fixed,fixed;
     }
     header{background:linear-gradient(180deg,#000f2a,#2b4cb8);color:#fff;padding:20px;text-align:center}
     .stats-banner{background:var(--accent);color:#fff;padding:10px 0;font-weight:700;overflow:hidden}
@@ -41,7 +46,7 @@
       <img src="logo.png" alt="logo" style="max-width:140px;display:block;margin:0">
       <div style="font-weight:700;font-size:1.1rem">Comunidade Blue Lava</div>
       <div style="margin-left:8px;display:flex;gap:10px;align-items:center">
-        <a class="social-btn" href="https://chat.whatsapp.com/Brbk55gFD3KG1UFx8DOEPs" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a class="social-btn" href="https://chat.whatsapp.com/I2DYIq1923JKIiv37BQ2LE?mode=hqctswa" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
         <a class="social-btn" href="#" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
       </div>
     </div>

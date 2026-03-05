@@ -1,65 +1,83 @@
 <!DOCTYPE html>
 <html lang="pt-pt">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>BlueLava Community</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
-  <style>
-    :root{--primary:#4A90E2;--bg:#f4f7f6;--white:#fff;--text:#333}
-    html,body{margin:0;color:var(--text);font-family:Roboto,Arial,sans-serif;background-color:#0b1f3d;background-image:url('assets/images/background website.jpeg');background-repeat:no-repeat;background-position:center center;background-size:cover;background-attachment:fixed}
-    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;background:transparent;color:#fff;text-align:center;padding:24px}
-    .hero-logo{display:block;max-width:160px;width:100%;height:auto;margin:0 auto 14px}
-    .hero-title{font-family:'Patrick Hand',cursive;font-size:3rem;margin:0 0 10px}
-    .hero-sub{margin:0 0 22px;opacity:.95}
-    .stat{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);padding:12px 18px;border-radius:12px}
-    .btn{margin-top:18px;background:var(--white);color:var(--primary);padding:11px 24px;border:none;border-radius:999px;font-weight:700;cursor:pointer}
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>BlueLava Community</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+	<style>
+		:root{--primary:#4A90E2;--bg:#f4f7f6;--white:#fff;--text:#333}
+		html,body{margin:0;color:var(--text);font-family:Roboto,Arial,sans-serif;background-color:#0b1f3d;background-image:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),url('assets/images/background-fixed.jpg'),url('assets/images/background website.jpeg');background-repeat:no-repeat,no-repeat,no-repeat;background-position:center center,center center,center center;background-size:cover,cover,cover;background-attachment:fixed,fixed,fixed}
+		.top-banner{background:linear-gradient(180deg,#000f2a,#2b4cb8);color:#fff;padding:14px 16px}
+		.top-banner-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+		.banner-title{font-weight:700;font-size:1.05rem}
+		.social-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;background:#000;color:#fff;text-decoration:none;box-shadow:0 4px 10px rgba(0,0,0,.28);transition:transform .15s ease,opacity .15s ease}
+		.social-btn:hover{transform:translateY(-1px);opacity:.92}
+		.social-btn i{font-size:18px}
+		.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;background:transparent;color:#fff;text-align:center;padding:24px}
+		.hero-logo{display:block;max-width:160px;width:100%;height:auto;margin:0 auto 14px}
+		.hero-title{font-family:'Patrick Hand',cursive;font-size:3rem;margin:0 0 10px}
+		.hero-sub{margin:0 0 22px;opacity:.95}
+		.stat{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);padding:12px 18px;border-radius:12px}
+		.btn{margin-top:18px;background:var(--white);color:var(--primary);padding:11px 24px;border:none;border-radius:999px;font-weight:700;cursor:pointer}
 
-    .letter-wrap{max-width:980px;margin:-96px auto 40px;padding:0 18px;position:relative;z-index:2}
-    .letter{background:#fff;border:1px solid #ececec;border-radius:12px;box-shadow:0 14px 40px rgba(0,0,0,.08);padding:24px;line-height:1.7}
-    .letter h2{margin:0 0 12px;font-family:'Patrick Hand',cursive;font-size:2rem}
-    .letter p{margin:0 0 14px;text-align:justify;text-justify:inter-word;hyphens:auto}
-    .sign{display:block;text-align:right;margin-top:8px;font-weight:700}
-    .letter-cta{text-align:center;margin-top:18px}
-    .letter-cta button{background:var(--primary);color:#fff;padding:10px 18px;border:none;border-radius:8px;cursor:pointer;font-weight:700}
-    @media(max-width:700px){.hero-title{font-size:2.2rem}.letter-wrap{margin:-48px auto 32px}}
-  </style>
+		.letter-wrap{max-width:980px;margin:-96px auto 40px;padding:0 18px;position:relative;z-index:2}
+		.letter{background:#fff;border:1px solid #ececec;border-radius:12px;box-shadow:0 14px 40px rgba(0,0,0,.08);padding:24px;line-height:1.7}
+		.letter h2{margin:0 0 12px;font-family:'Patrick Hand',cursive;font-size:2rem}
+		.letter p{margin:0 0 14px;text-align:justify;text-justify:inter-word;hyphens:auto}
+		.sign{display:block;text-align:right;margin-top:8px;font-weight:700}
+		.letter-cta{text-align:center;margin-top:18px}
+		.letter-cta button{background:var(--primary);color:#fff;padding:10px 18px;border:none;border-radius:8px;cursor:pointer;font-weight:700}
+		@media(max-width:700px){.hero-title{font-size:2.2rem}.letter-wrap{margin:-48px auto 32px}}
+	</style>
 </head>
 <body>
-  <section class="hero">
-    <div>
-      <img class="hero-logo" src="logo.png" alt="Logo Blue Lava">
-      <h1 class="hero-title">Bem-vindo à Comunidade Blue Lava</h1>
-      <p class="hero-sub">A comunidade de apoio, partilha e crescimento em saúde mental</p>
-      <div class="stat">⚠️ <strong>Estatística Nacional:</strong> 1 em cada 5 pessoas em Portugal sofre de uma perturbação (neurodivergência) mental.</div>
-      <div><button class="btn" id="enterBtn">Visitar a Comunidade</button></div>
-    </div>
-  </section>
+	<header class="top-banner">
+		<div class="top-banner-inner">
+			<img src="logo.png" alt="logo" style="max-width:120px;display:block;margin:0">
+			<div class="banner-title">Comunidade Blue Lava</div>
+			<div style="margin-left:8px;display:flex;gap:10px;align-items:center">
+				<a class="social-btn" href="https://chat.whatsapp.com/I2DYIq1923JKIiv37BQ2LE?mode=hqctswa" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+				<a class="social-btn" href="#" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
+			</div>
+		</div>
+	</header>
 
-  <section class="letter-wrap">
-    <article class="letter">
-      <h2>Bem-vindo à Comunidade Blue Lava.</h2>
-      <p>Chamo-me Humberto e criei esta comunidade com o propósito de oferecer um espaço seguro a pessoas que vivem com neurodivergências — em especial aquela com que convivo: esquizofrenia com alucinações auditivas. Aqui, é possível partilhar experiências e falar abertamente sobre os desafios do dia a dia, mas também sobre as estratégias que cada um encontrou para os ultrapassar.</p>
-      <p>Durante dez anos procurei um espaço assim, sem sucesso. Ainda mais difícil foi encontrar alguém com a mesma condição que eu. Mesmo no acompanhamento psiquiátrico — tanto no Serviço Nacional de Saúde como no privado — nunca me senti verdadeiramente compreendido. Talvez pela raridade do meu caso, talvez por limitações do próprio sistema. O certo é que esse sentimento levou-me, muitas vezes, a guardar para mim aquilo que estava a viver, com receio de ser internado se fosse totalmente transparente.</p>
-      <p>Acredito que, no futuro, se esta plataforma crescer e ganhar impacto, poderá também tornar-se uma ponte entre os membros e profissionais de saúde mental preparados para acompanhar cada caso de forma adequada. Um espaço assim teria feito toda a diferença ao longo da última década da minha vida.</p>
-      <p>Demorei cerca de dez anos a sentir-me estável e alinhado com a medicação. Fui resistente, teimoso e demasiado imediatista nas minhas decisões. Cheguei a optar por tomar medicação sem o acompanhamento contínuo necessário — um erro que hoje reconheço. Se tivesse respeitado o processo desde o início, talvez não tivesse passado tanto tempo a lutar contra os meus próprios pensamentos.</p>
-      <p>Houve um período em que sentia que, por mais que explicasse o que estava a viver, nunca conseguia traduzir plenamente a minha experiência. Ficou clara para mim uma realidade: só quem passa — ou já passou — pelo mesmo consegue compreender verdadeiramente.</p>
-      <p>Foi dessa necessidade que nasceu este espaço. Um lugar onde qualquer pessoa pode partilhar a sua história, sentir-se ouvida e, quem sabe, ajudar alguém que se sinta como eu me senti há dez anos — perdido, incompreendido e marcado pelo estigma que ainda persiste, sobretudo entre pessoas da minha geração e das anteriores, onde procurar um psiquiatra continua a ser visto como sinal de fraqueza.</p>
-      <p>A Blue Lava quer ser o oposto desse estigma: um espaço de consciência, partilha responsável e crescimento real.</p>
-      <span class="sign">— Humberto</span>
-      <div class="letter-cta">
-        <button id="visitFromLetter">Visitar comunidade</button>
-      </div>
-    </article>
-  </section>
+	<section class="hero">
+		<div>
+			<img class="hero-logo" src="logo.png" alt="Logo Blue Lava">
+			<h1 class="hero-title">Bem-vindo à Comunidade Blue Lava</h1>
+			<p class="hero-sub">A comunidade de apoio, partilha e crescimento em saúde mental</p>
+			<div class="stat">⚠️ <strong>Estatística Nacional:</strong> 1 em cada 5 pessoas em Portugal sofre de uma perturbação (neurodivergência) mental.</div>
+			<div><button class="btn" id="enterBtn">Visitar a Comunidade</button></div>
+		</div>
+	</section>
 
-  <script>
-    document.getElementById('enterBtn').addEventListener('click', function(){
-      window.location.href = 'community.html';
-    });
-    document.getElementById('visitFromLetter').addEventListener('click', function(){
-      window.location.href = 'community.html';
-    });
-  </script>
+	<section class="letter-wrap">
+		<article class="letter">
+			<h2>Bem-vindo à Comunidade Blue Lava.</h2>
+			<p>Chamo-me Humberto e criei esta comunidade com o propósito de oferecer um espaço seguro a pessoas que vivem com neurodivergências — em especial aquela com que convivo: esquizofrenia com alucinações auditivas. Aqui, é possível partilhar experiências e falar abertamente sobre os desafios do dia a dia, mas também sobre as estratégias que cada um encontrou para os ultrapassar.</p>
+			<p>Durante dez anos procurei um espaço assim, sem sucesso. Ainda mais difícil foi encontrar alguém com a mesma condição que eu. Mesmo no acompanhamento psiquiátrico — tanto no Serviço Nacional de Saúde como no privado — nunca me senti verdadeiramente compreendido. Talvez pela raridade do meu caso, talvez por limitações do próprio sistema. O certo é que esse sentimento levou-me, muitas vezes, a guardar para mim aquilo que estava a viver, com receio de ser internado se fosse totalmente transparente.</p>
+			<p>Acredito que, no futuro, se esta plataforma crescer e ganhar impacto, poderá também tornar-se uma ponte entre os membros e profissionais de saúde mental preparados para acompanhar cada caso de forma adequada. Um espaço assim teria feito toda a diferença ao longo da última década da minha vida.</p>
+			<p>Demorei cerca de dez anos a sentir-me estável e alinhado com a medicação. Fui resistente, teimoso e demasiado imediatista nas minhas decisões. Cheguei a optar por tomar medicação sem o acompanhamento contínuo necessário — um erro que hoje reconheço. Se tivesse respeitado o processo desde o início, talvez não tivesse passado tanto tempo a lutar contra os meus próprios pensamentos.</p>
+			<p>Houve um período em que sentia que, por mais que explicasse o que estava a viver, nunca conseguia traduzir plenamente a minha experiência. Ficou clara para mim uma realidade: só quem passa — ou já passou — pelo mesmo consegue compreender verdadeiramente.</p>
+			<p>Foi dessa necessidade que nasceu este espaço. Um lugar onde qualquer pessoa pode partilhar a sua história, sentir-se ouvida e, quem sabe, ajudar alguém que se sinta como eu me senti há dez anos — perdido, incompreendido e marcado pelo estigma que ainda persiste, sobretudo entre pessoas da minha geração e das anteriores, onde procurar um psiquiatra continua a ser visto como sinal de fraqueza.</p>
+			<p>A Blue Lava quer ser o oposto desse estigma: um espaço de consciência, partilha responsável e crescimento real.</p>
+			<span class="sign">— Humberto</span>
+			<div class="letter-cta">
+				<button id="visitFromLetter">Visitar comunidade</button>
+			</div>
+		</article>
+	</section>
+
+	<script>
+		document.getElementById('enterBtn').addEventListener('click', function(){
+			window.location.href = 'community.html';
+		});
+		document.getElementById('visitFromLetter').addEventListener('click', function(){
+			window.location.href = 'community.html';
+		});
+	</script>
 </body>
 </html>
