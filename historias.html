@@ -315,11 +315,26 @@
         backendStatus.style.color = tone === 'error' ? '#b42318' : '#204a86';
       }
 
-      function getStories(){ try { return JSON.parse(localStorage.getItem('bluelava_stories')||'[]'); } catch(e){ return []; } }
-      function saveStories(v){ localStorage.setItem('bluelava_stories', JSON.stringify(v)); }
+      function getStories(){
+        try {
+          const raw = localStorage.getItem('bluelava_stories')
+            || localStorage.getItem('stories')
+            || localStorage.getItem('bluelava_story_data')
+            || '[]';
+          return JSON.parse(raw);
+        } catch(e){
+          return [];
+        }
+      }
+      function saveStories(v){
+        localStorage.setItem('bluelava_stories', JSON.stringify(v));
+      }
       function removeLegacySampleStories(){
         const stories = getStories();
-        const filtered = stories.filter(story => !LEGACY_SAMPLE_TEXTS.has(story.text) && !isBannedStory(story));
+        const filtered = stories.filter(story => {
+          const text = story.text || story.story_text || story.storyText || '';
+          return !LEGACY_SAMPLE_TEXTS.has(text) && !isBannedStory(story);
+        });
         if (filtered.length !== stories.length) saveStories(filtered);
       }
       function escapeHtml(str){
@@ -332,7 +347,7 @@
       }
 
       function isBannedStory(story){
-        const text = String(story.text || '').toLowerCase().trim();
+        const text = String(story.text || story.story_text || story.storyText || '').toLowerCase().trim();
         return text.includes('healthcheck') || text.includes('sync test');
       }
 
@@ -358,19 +373,23 @@
       function normalizeLocalStory(story){
         const metadata = (story.reactions && story.reactions.__meta__) || {};
         return {
-          id: story.id,
-          name: story.name || '',
-          anonymous: Boolean(story.anonymous),
-          text: story.text || '',
+          id: story.id || story._id || story.story_id || Date.now(),
+          name: story.name || story.nickname || '',
+          anonymous: Boolean(story.anonymous || story.is_anonymous),
+          text: story.text || story.story_text || story.storyText || story.body || '',
           reactions: story.reactions || {},
-          createdAt: Number(story.createdAt) || Date.now(),
-          threadId: metadata.threadId || null,
-          threadIndex: metadata.threadIndex || null
+          createdAt: Number(story.createdAt || story.created_at || Date.now()) || Date.now(),
+          threadId: story.threadId || story.thread_id || metadata.threadId || null,
+          threadIndex: story.threadIndex || story.thread_index || metadata.threadIndex || null
         };
       }
 
       function getLocalComments(){
-        try { return JSON.parse(localStorage.getItem('bluelava_story_comments') || '[]'); } catch (e) { return []; }
+        try {
+          return JSON.parse(localStorage.getItem('bluelava_story_comments') || localStorage.getItem('story_comments') || '[]');
+        } catch (e) {
+          return [];
+        }
       }
 
       function saveLocalComments(comments){
