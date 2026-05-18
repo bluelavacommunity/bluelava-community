@@ -242,7 +242,7 @@
     closeStoryFormFooter.addEventListener('click', closeForm);
     storyPart1.addEventListener('input', updateFormState);
 
-    const reactionEmojiList = ['❤️', '🤯', '🫂', '😢', '😮', '😂', '👏', '👍', '🙏', '🔥'];
+    const reactionEmojiList = ['❤️', '🤯', '🫂', '😢', '😮', '', '👍', '🙏', '🔥'];
 
     function getReactionStorageKey(storyKey, emoji) {
       return `storyReaction:${storyKey}:${emoji}`;
