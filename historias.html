@@ -7,815 +7,130 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root{--primary:#4A90E2;--white:#fff;--text:#333}
-    html,body{margin:0;color:var(--text);font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.6;background-color:#0b1f3d;background-image:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),url('assets/images/background-fixed.jpg'),url('assets/images/background website.jpeg');background-repeat:no-repeat,no-repeat,no-repeat;background-position:center center,center center,center center;background-size:cover,cover,cover;background-attachment:fixed,fixed,fixed}
+    :root{--primary:#4A90E2;--white:#fff;--text:#111;--muted:#5b6774;--card:#ffffffee;--surface:#0b1f3d}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;color:var(--text);font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.6;background-color:#0b1f3d;background-image:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),url('assets/images/background-fixed.jpg'),url('assets/images/background website.jpeg');background-repeat:no-repeat,no-repeat,no-repeat;background-position:center center,center center,center center;background-size:cover,cover,cover;background-attachment:fixed,fixed,fixed}
+    body{min-height:100vh}
+    a{color:inherit;text-decoration:none}
+    .page-shell{max-width:1120px;margin:0 auto;padding:0 16px 40px}
     .top-banner{background:linear-gradient(180deg,#000f2a,#2b4cb8);color:#fff;padding:14px 16px}
-    .top-banner-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+    .top-banner-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
     .banner-title{font-weight:700;font-size:1.05rem}
-    .social-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:999px;background:#000;color:#fff;text-decoration:none;box-shadow:0 4px 10px rgba(0,0,0,.28);transition:transform .15s ease,opacity .15s ease}
-    .social-btn:hover{transform:translateY(-1px);opacity:.92}
-    .social-btn i{font-size:18px}
+    .hero{padding:40px 0 24px}
+    .hero h1{margin:0 0 10px;font-size:clamp(2.2rem,3vw,3.4rem);line-height:1.04;color:#fff;text-shadow:0 20px 35px rgba(0,0,0,.25)}
+    .hero p{max-width:760px;margin:0;color:#e8ecf4;font-size:1.02rem;line-height:1.75}
     .news-feed{background:#ff6f3d;color:#fff;padding:10px 0;overflow:hidden;white-space:nowrap;position:relative}
-    .news-feed-track{display:inline-flex;align-items:center;gap:28px;min-width:max-content;padding:0 16px;animation:newsTicker 90s linear infinite;will-change:transform}
+    .news-feed-track{display:inline-flex;align-items:center;gap:28px;min-width:max-content;padding:0 16px;animation:newsTicker 70s linear infinite;will-change:transform}
     .news-feed:hover .news-feed-track{animation-play-state:paused}
-    .news-tip{font-size:.94rem;font-weight:600}
-    @keyframes newsTicker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
-    .site-nav{background:#fff;border-bottom:1px solid rgba(0,0,0,.04)}
-    .site-nav .nav-link{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;min-height:44px;border-radius:999px;border:1px solid #dbe8ff;background:#f8fbff;color:#1f4f8f;text-decoration:none;font-weight:700;transition:transform .15s ease,box-shadow .15s ease,background .15s ease,color .15s ease}
-    .site-nav .nav-link:hover{transform:translateY(-1px);box-shadow:0 8px 16px rgba(74,144,226,.18);background:#eef6ff}
-    .site-nav .nav-link:focus-visible{outline:2px solid #1f4f8f;outline-offset:2px}
-    .site-nav .nav-link.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 8px 18px rgba(74,144,226,.28)}
-    .container{max-width:980px;margin:20px auto;padding:0 16px}
-    .tagline-text{font-size:1.05rem;color:#fff;text-align:center;padding:12px 16px;opacity:.95}
-    .stories-feed{display:grid;grid-template-columns:1fr;gap:14px}
-    .card{background:#fff;border:1px solid #ececec;border-radius:10px;padding:14px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
-    .story-card{margin:0 0 4px}
-    .story-text{margin:0;color:#222;white-space:pre-wrap}
-    .story-author{margin-top:10px;font-weight:600;color:#444}
-    .comment-card{margin-top:10px;padding:12px;border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc}
-    .comment-form{margin-top:12px;border-top:1px solid #e2e8f0;padding-top:12px}
-    .comment-form textarea{width:100%;min-height:80px;resize:vertical;padding:10px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box;font-family:'Inter',sans-serif}
-    .comment-form-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:10px}
-    .comment-form-row input[type=text]{flex:1 1 220px;padding:10px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#111}
-    .comment-form-row label{display:inline-flex;align-items:center;gap:8px;font-size:0.95rem;color:#334155}
-    .reactions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .reaction-btn{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:10px 12px;border-radius:999px;border:1px solid #e0e0e0;background:#f8fafc;cursor:pointer;font-weight:700}
-    .reaction-btn:hover{background:#eef6ff;border-color:#cfe2ff}
-    .share-panel textarea,.share-panel input[type=text]{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box;font-family:'Inter',sans-serif}
-    .share-panel textarea{min-height:110px;resize:vertical}
-    .share-panel{margin-top:16px}
-    .share-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
-    .share-name{flex:1 1 240px}
-    .share-anon{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-weight:600}
-    .share-help{white-space:pre-wrap;background:#f3f8ff;border:1px solid #d5e6ff;border-radius:8px;padding:10px;margin:0 0 10px;color:#204a86}
-    .share-cta{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px;background:#fff;border:1px solid #ececec;border-radius:14px;box-shadow:0 12px 28px rgba(0,0,0,.08);margin-bottom:18px}
-    .share-cta p{margin:0;color:#334155}
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000}
-    .modal-overlay.open{display:flex}
-    .modal-card{position:relative;width:100%;max-width:780px;max-height:90vh;overflow:auto;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.25)}
-    .close-modal{position:absolute;top:14px;right:14px;width:44px;height:44px;border:none;background:rgba(255,255,255,.95);border-radius:50%;cursor:pointer;color:#1f2937;font-size:1.35rem;line-height:1;box-shadow:0 8px 18px rgba(0,0,0,.12)}
-    .backend-status{margin:0 0 10px;font-size:.92rem;color:#204a86}
-    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;background:var(--primary);color:#fff;padding:10px 16px;border:none;border-radius:999px;font-weight:700;cursor:pointer}
-    body.embedded .top-banner, body.embedded .news-feed, body.embedded .site-nav, body.embedded .tagline, body.embedded footer{display:none !important}
-    body.embedded .container{margin-top:14px}
-    .top-banner,.news-feed,.site-nav{transition:transform .3s ease,opacity .3s ease,margin .3s ease}
-    body.hide-header .top-banner{transform:translateY(-100%);opacity:0;pointer-events:none}
-    body.hide-header .news-feed{transform:translateY(-100%);opacity:0;pointer-events:none}
-    body.hide-header .site-nav{transform:translateY(-100%);opacity:0;pointer-events:none}
-    @media(max-width:700px){
-      html,body{background-attachment:scroll,scroll,scroll}
-      .container{padding:0 12px}
-      .card{padding:12px}
-      .share-row{flex-direction:column;align-items:stretch}
-      .share-name{flex-basis:auto}
-      .share-anon{width:100%}
-      .btn{width:100%}
-    }
+    .news-feed-item{font-size:.95rem;font-weight:500}
+    @keyframes newsTicker{0%{transform:translateX(0)}100%{transform:translateX(calc(-100%))}}
+    .story-grid{display:grid;grid-template-columns:1fr;gap:24px;max-width:1000px;margin:32px auto 0}
+    .story-card{background:var(--card);border-radius:24px;padding:28px;box-shadow:0 28px 70px rgba(10,20,50,.18);border:1px solid rgba(255,255,255,.14)}
+    .story-meta{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+    .story-author{font-size:1rem;font-weight:700;color:#141922}
+    .story-badge{background:rgba(74,144,226,.12);color:#1752a8;font-size:.85rem;font-weight:700;padding:.3rem .75rem;border-radius:999px;text-transform:uppercase;letter-spacing:.04em}
+    .story-date{color:var(--muted);font-size:.95rem;margin-bottom:18px}
+    .story-body{white-space:pre-wrap;font-size:1rem;color:#232b35;line-height:1.85}
+    .story-body p{margin:0 0 1.2rem}
+    .story-body p:last-child{margin-bottom:0}
+    .footer{margin-top:44px;padding:18px 0;color:#e2e8f0;text-align:center;font-size:.95rem}
+    @media (min-width:720px){.top-banner-inner{justify-content:space-between}.story-grid{gap:28px}}
   </style>
 </head>
 <body>
-  <header class="top-banner">
+  <div class="top-banner">
     <div class="top-banner-inner">
-      <img src="logo.png" alt="logo" style="max-width:120px;display:block;margin:0">
-      <div class="banner-title">Comunidade Blue Lava</div>
-      <div style="margin-left:8px;display:flex;gap:10px;align-items:center">
-        <a class="social-btn" href="https://www.instagram.com/bluelava.comunidade?utm_source=qr&igsh=bWJlYW11NWc4NWJr" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
-        <a class="social-btn" href="https://www.youtube.com/@Bluelava.comunidade" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i></a>
-        <a class="social-btn" href="https://t.me/c/3827671679/3" aria-label="Telegram" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-telegram"></i></a>
-        <a class="social-btn" href="#" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
-        <a class="social-btn" href="https://chat.whatsapp.com/I2DYIq1923JKIiv37BQ2LE?mode=gi_t" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i></a>
-      </div>
+      <div class="banner-title">BlueLava</div>
+      <div class="banner-subtitle">Histórias</div>
     </div>
-  </header>
-
+  </div>
   <div class="news-feed" role="region" aria-label="Dicas rápidas para manter a calma">
     <div class="news-feed-track">
-      <span class="news-tip">🫁 Pânico: inspira 4 segundos, segura 4 e expira 6 para baixar o pico.</span>
-      <span class="news-tip">🧠 Ansiedade: usa 5-4-3-2-1 (ver, tocar, ouvir, cheirar, saborear) para regressar ao presente.</span>
-      <span class="news-tip">⚡ TDAH: trabalha em blocos curtos (10-15 min) com pausa de 2 min e lista visual de 3 tarefas.</span>
-      <span class="news-tip">🧩 Autismo: prepara pausas sensoriais, reduz estímulos e usa rotinas previsíveis em dias intensos.</span>
-      <span class="news-tip">🔁 TOC: adia o ritual 2 minutos e repete; o atraso progressivo reduz a urgência.</span>
-      <span class="news-tip">🗣️ Esquizofrenia: ativa o plano de apoio (contacto seguro, ambiente calmo, hidratação e ajuda profissional).</span>
-      <span class="news-tip">🎢 Bipolaridade: protege o sono, evita excessos e monitoriza sinais precoces de aceleração ou quebra.</span>
-      <span class="news-tip">📘 Dislexia: usa leitura com áudio, texto com bom contraste e blocos curtos para reduzir fadiga.</span>
-      <span class="news-tip">🧭 Dispraxia: divide tarefas em passos pequenos e usa apoio visual para reduzir sobrecarga motora.</span>
-      <span class="news-tip">🔥 Burnout: corta tarefas não essenciais no dia crítico e prioriza recuperação física.</span>
-      <span class="news-tip">🌤️ Depressão: define uma micro-meta diária (banho, caminhada curta, refeição) e celebra o progresso.</span>
-      <span class="news-tip">🚨 Crise aguda: em emergência liga 112 ou SNS 24 (808 24 24 24).</span>
+      <div class="news-feed-item">Aqui estão as histórias reais partilhadas pela nossa comunidade.</div>
+      <div class="news-feed-item">Humberto, Sky, Sky (Micéu Bizarro) e Ametista.</div>
+      <div class="news-feed-item">Cuidar da saúde mental começa por ouvir, partilhar e pedir ajuda.</div>
     </div>
   </div>
 
-  <nav class="site-nav" aria-label="Main navigation">
-    <div class="container" style="display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;padding:8px 4px">
-      <a href="comunidade.html?tab=historias" class="nav-link active">Histórias reais</a>
-      <a href="comunidade.html?tab=compreender" class="nav-link">Compreender</a>
-      <a href="comunidade.html?tab=recursos" class="nav-link">Recursos</a>
-      <a href="comunidade.html?tab=origem" class="nav-link">Origem</a>
-      <a href="comunidade.html?tab=futuro" class="nav-link">Planos para o Futuro</a>
-    </div>
-  </nav>
-
-  <section class="tagline container">
-    <p class="tagline-text">A tua História pode ajudar alguém, partilha.</p>
-  </section>
-
-  <main class="container">
-    <section class="share-cta">
-      <div>
-        <strong style="display:block;margin-bottom:6px;font-size:1.05rem;color:#111;">Partilha a tua história</strong>
-        <p>Ajuda outras pessoas com a tua experiência e inspira a comunidade. Clica para abrir o formulário.</p>
-      </div>
-      <button id="openShareModal" class="btn">Partilha a tua história</button>
+  <main class="page-shell">
+    <section class="hero">
+      <h1>Histórias reais de quem viveu a experiência</h1>
+      <p>Estas quatro partilhas são a versão estática da página de histórias: não há feed dinâmico, apenas relatos directos de quem passou por um processo de saúde mental.</p>
     </section>
 
-    <div id="shareModal" class="modal-overlay" aria-hidden="true">
-      <div class="modal-card">
-        <button id="closeShareModal" class="close-modal" aria-label="Fechar">×</button>
-        <section id="sharePanel" class="card share-panel" style="margin:0;">
-          <h2 style="margin-top:0">Partilha de experiências</h2>
-          <p class="share-help">Algo que nunca disse a ninguém é...</p>
-          <p id="storiesBackendStatus" class="backend-status"></p>
-          <div class="share-row">
-            <input id="storyName" class="share-name" type="text" placeholder="Nickname (opcional)">
-            <label class="share-anon"><input id="storyAnon" type="checkbox" checked> Partilhar anonimamente</label>
-          </div>
-          <div id="topicoEditor">
-            <div id="topicoParts"></div>
-            <div id="topicoControls" style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:12px;flex-wrap:wrap">
-              <button id="addTopicoPart" class="btn" type="button" style="background:#1d4ed8;">Adicionar nova parte</button>
-              <div style="flex:1 1 auto;min-width:220px;text-align:right;color:#334155;font-size:0.92rem;">Cada parte tem até 10000 caracteres. Quando uma parte encher, podes continuar na próxima parte.</div>
-            </div>
-            <div id="charCounter" style="text-align:right; margin-top:5px; font-size:0.9rem; color:#666;">0 caracteres em 1 parte</div>
-          </div>
-          <div style="text-align:right;margin-top:10px"><button id="submitStory" class="btn">Partilhar experiência</button></div>
-        </section>
-      </div>
-    </div>
+    <section class="story-grid">
+      <article class="story-card">
+        <div class="story-meta">
+          <span class="story-author">Sky (Micéu Bizarro)</span>
+          <span class="story-badge">Partilha</span>
+        </div>
+        <div class="story-date">Publicado a 30 de abril de 2026</div>
+        <div class="story-body">
+          <p>Ah e tem mais! Depois do relacionamento que mencionei, quando comecei a ter "visões" e a ouvir as vozes com mais vividez e constância, eu tinha uma crush, um rapaz de Belém. E eu via e visitava mundos meus, de "outras pessoas", "dele", "com ele" (o avatar/a entidade/"a alma" dele/a personificação dele em mim). E eu via arte, em vários formatos, animações, cinema-like stuff, locais arquitetonicamente kindos, e via até mundos impossíveis e várias coisas tipo inter-dimensionais. E eu vejo essas coisas com uma precisão artística e têm tanta beleza. Vejo principalmente coisas bonitas, paisagens por exemplo que vi (e até as que nunca vi em lado nenhum). E é aí que quero chegar.</p>
+          <p>Involuntariamente "vi-o" a andar pelo bairro dele. Numa zona muito específica. E como é que eu sei que é o bairro dele, se eu nunca lá tinha entrado? Se eu estava a milhas de distância noutro país? Porque mais tarde visitei o bairro, visitei Belém pela primeira vez e andei e procurei e encontrei a zona que eu "vi" meses antes.</p>
+          <p>Esse rapaz também fez algo uma vez (vi num story dele do ig ao pé do cão dele) que eu faço involuntariamente quando me zango ou fico com raiva, enrugar o focinho. Como os canídeos, como os lobos. Não sei se quando ele fez foi involuntariamente ou não, mas eu já fazia. Com um médico dentro da parapsicologia adivinhei quantas pedras tinha numa mão, sem as ver ou contar, peguei nelas duma vez, sem olhar e depois disse o número que a "visão"/pseudo-alucinação me mostrou. 5. Não sei como essas coisas aconteceram e porquê.</p>
+          <p>Tenho um amigo que brinca que isso vai ser granda cena se eu adivinhar os números do euromilhões haha. Também resolvo problemas matemáticos às vezes voluntariamente e outras involuntariamente com as visões/pseudo-alucinações. Mas também fica assustador quando alguém crosses me ou eu tenho um mau feeling sobre alguém e vejo essa pessoa temporariamente feia ou deformada. Ou quando as vozes de dentro veem ligeiramente afinadas ou graves. Pra mim isso é estranho, dentro de toda a estranheza. Mas voltam todos ao normal aqui dentro visual e sonoricamente, bonitos e limpos at the end of all.</p>
+          <p>O meu cérebro também me destaca na realidade padrões com intuito de fazer "impressão", com algo visível no mundo ou também através de padrões mentais que fazem "impressão", se por exemplo fui pelo caminho errado depois de ter visto no google maps o trilho certo. Se por exemplo estou a pensar de uma forma que não me agrada ou pode me magoar. É um mundo aqui. Vários até. Mas eu não fiquei a tripar sozinha. Pedi. Ajuda. "Não percebo isto. Isto está a consumir-me e a ser overwhelming pra mim, preciso de ajuda". E foi o suficiente, para alguém ter me entendido. E depois não foi só uma pessoa a entender, foram duas, depois passaram a três, quatro, várias e assim vai: uma rede de apoio real.</p>
+          <p>Então eu acredito no processo. Então eu não estou sozinha. Então eu não tenho de engolir o choro, engolir a minha dor, engolir o meu assombro, e passar por algo tão intenso fechada. Há pessoas reais que no mundo real nos ajudam realmente. So I hold on to that & I hold on to myself and my community. It really does take a village! ❤️</p>
+        </div>
+      </article>
 
-    <section id="storiesFeed" class="stories-feed"></section>
+      <article class="story-card">
+        <div class="story-meta">
+          <span class="story-author">Sky</span>
+          <span class="story-badge">Partilha</span>
+        </div>
+        <div class="story-date">Publicado a 30 de abril de 2026</div>
+        <div class="story-body">
+          <p>Nasci, abri os olhos e não chorei, algo que surpreendeu todos os presentes na sala de parto. Olho aberto, jikulumessu, como ensina a cultura. Desde a infância nutri uma intuição muito forte, criatividade e imaginação férteis e sensibilidade muito altas, só não tinha noção disso. Bastava observar um pouco, para conhecer, bastava sentir um pouco para afetar o meu corpo (tive a minha menarca depois de um rapaz ter escrito por mensagem que gostava de mim, teve um efeito no meu corpo, senti euforia, felicidade e algo que identifico hoje como a sensação do primeiro amor ou paixoneta e isso teve um efeito hormonal em mim, claro, eram químicos do corpo a trabalhar).</p>
+          <p>Eu nunca pensei que essa sensibilidade fosse se tornar no que tornou. Tinha sonhos vívidos ao crescer, simbólicos, bonitos, coloridos e daqueles kinda dark que parecem premonitórios ou até mesmo protetivos (por exemplo sonhar quando alguém pode estar prestes a sofrer ou morrer ou sonhar que protegia as pessoas em camadas e plataformas criadas dentro do meu subconsciente, que as protegia dentro de mim, em mundos meus). A minha noção de espaço era precisa, as minhas imaginações eram vívidas, mas eu não ligava muito a isso, só era criança e sonhava e inventava.</p>
+          <p>Imaginações, na idade adulta tornaram-se "visões", pseudo-alucinações, imagens involuntárias dentro da minha cabeça. Na noite da morte da minha melhor amiga de infância, na madrugada em que ela estava a morrer, pensei nela. E fui ouvir uma música que tinha ouvido através dela anos antes. Everything must go, uma música sobre nos libertarmos de bens materiais e até não físicos, ideologias, mentalidades, pensamentoss (rancor, ilusão). Porque nada disso vai connosco quando partimos daqui. Só a nossa alma. Quase como se soubesse, mas não sabia.</p>
+          <p>As coisas começaram a ficar ainda mais estranhas dentro de um relacionamento em que estava, um relacionamento no qual entrei relutante, com a intuição a gritar para fugir dali. Beijei o meu parceiro e vi uma cobra vívida, a cores, na minha mente, a atacar-me. Simbolicamente, com a mente que tenho isso podia significar muita coisa, podia ser um alerta para eu ouvir a minha intuição e me afastar. Mas não me prendo aos significados, só aprendi a notar quando algo não está bem, e aquilo (o relacionamento), para mim, não estava bem e eu também não estava.</p>
+          <p>Tive psicose durante a relação. Viver 2 anos de algo que no fundo não queremos em constante flight or fight mode, em modo de sobrevivência, desespero, dor e aflição e medo, sem deixar transparecer, não só por nós como pelos outros traumatiza, deixa marcas. E quando terminou finalmente, poucas semanas depois começaram as vozes e as visões. De tudo. Não no mundo aqui fora, no mundo aqui de dentro. E eu interagia com elas e afetavam-me.</p>
+          <p>A minha sensibilidade tornou-se hipersensibilidade, a minha observação tornou-se hipervigilância. Sinto dores simbólicas, alertas, avisos, (por exemplo se acho que algo que possa fazer vá magoar alguém importante para mim sinto dores nos ovários - como se fosse perder os meus filhos, é essa a interpretação que a minha mente fez e colocou, dores no peito se acho que algo me vai partir o coração, sopros, sensações que entidades externas me tocam, convivem comigo, me avisam), o meu corpo se pensa que estou em perigo move-se ligeiramente involuntariamente pra me proteger.</p>
+          <p>Coisas muito complexas pra explicar e de novo não é só sobre o que significa simbolicamente, mas sim o facto de que não é um estado muito natural. É a minha nova natureza, mas a realidade é que, apesar de eu estar fisicamente bem, e as minhas trips sejam o meu subconsciente só a tentar me proteger, eu não estou bem. Estou medicada e acompanhada e digo e repito que pedir ajuda é o maior ato de amor que podemos fazer por nós mesmos e pelos que amamos. E sair da ignorância, pesquisar, perguntar, perceber, nutrir o insight. Porque esse insight vai nos salvar a vida.</p>
+          <p>Eu não tive os meus dois pais porque ambos ficaram esquizofrénicos e sei bem a marca que é perder a noção. Portanto dentro da minha lucidez, encorajo a procura de ajuda, a aceitar apoio, a não se sentirem sozinhos nisso, porque não estão, a perceberem que vai ficar tudo bem com os passos certos para o tratamento, a cura, a ajuda. Não tem mal nenhum yah. Um chá do bem, umas healing vibes, se até o sol é medicação e vitamina, o quê que tem um pill ou outro. Se não estivermos confortáveis com algo, falar, manifestar os nossos desconfortos a quem nos está a ajudar e ajustar tudo consoante aquilo que nos faz bem. É só gerir. E todos conseguimos, desde o quadraplégico ao insano. Acreditem sempre no poder de que vai ficar tudo bem, mesmo com tudo que já vivem, viram, viveram, ouviram, mesmo que tudo grite que não está tudo bem. Vai ficar. Daqui dei ❤️</p>
+        </div>
+      </article>
+
+      <article class="story-card">
+        <div class="story-meta">
+          <span class="story-author">Humberto</span>
+          <span class="story-badge">Partilha</span>
+        </div>
+        <div class="story-date">Publicado a 12 de abril de 2026</div>
+        <div class="story-body">
+          <p>A ignorância foi a minha pior inimiga há 11 anos — e eu vou explicar porquê. Estava num condomínio em Luanda, na casa de um amigo, quando o pessoal decidiu juntar-se para fumar erva. Na altura, se não me falha a memória, devia ser a minha terceira ou quarta vez a fumar. E, sinceramente, até aquele momento, eu ainda não percebia por que razão tanta gente gostava daquilo. Nunca tinha sentido grande coisa. Para mim, era só fumo, conversa e nada mais.</p>
+          <p>Mas nessa noite… tudo mudou. Estávamos sentados nuns bancos, numa zona com pouca iluminação. Coisas da banda. Só o cenário já metia respeito: sombras por todo o lado, pouca visibilidade, aquele ambiente pesado que quase parecia um aviso silencioso de que alguma coisa estava prestes a correr mal. Enquanto uns estavam na conversa — eu incluído — outro grupo estava concentrado a desfazer a erva e a colocá-la num cigarro já esvaziado do tabaco. Quando finalmente acabaram a missão, o pica começou a rodar de mão em mão.</p>
+          <p>Até que chegou a minha vez. Dei três passas fortes. Daquelas mesmo fundas. Segurei o ar nos pulmões o máximo que consegui. E, segundos depois de expirar, senti o meu coração a disparar. De repente, senti-me invencível. Olhei para um dos meus amigos e disse: “Dude, já volto.” E desatei a correr que nem um maluco até ao fim da rua, à velocidade máxima, como se tivesse acabado de descobrir um superpoder.</p>
+          <p>Fui e voltei. Quando parei, tentei recuperar a fôlego e comecei a sentir-me um pouco mais calmo. Ainda ficámos ali uns bons 20 minutos, só a dizer disparates e a rir de nada. Mas, à medida que o tempo passava, o ambiente ficava cada vez mais sombrio. Já estava praticamente tudo às escuras, e a única luz que tínhamos vinha dos iPhones. Entretanto, chegou a hora de voltar para casa do meu amigo. Era simples: bastava subir a rua durante uns cinco minutos e chegávamos.</p>
+          <p>Ou, pelo menos, era isso que eu pensava. Quando nos levantámos dos bancos e cada um começou a seguir para sua casa, agarrei o braço do meu amigo com força e pedi-lhe, quase como uma criança: “Não largues o meu braço até chegarmos a tua casa.” No fundo, eu já sentia que alguma coisa não estava bem. Começámos a subir a rua. Passados poucos passos, as minhas calças começaram a descer. Puxei-as para cima. Tudo bem. Continuámos. Mais alguns passos, e vejo um arbusto a mexer-se. Olhei para aquilo e pensei: “Espera… porque é que esse arbusto se mexeu, se nem sequer está vento?” Mas ignorei. Continuámos. Pouco depois, senti uma comichão estranha na orelha. Cocei. Seguimos caminho.</p>
+          <p>E então, depois de uns minutos a andar — minutos esses que pareceram uma eternidade — uma pergunta atravessou-me a cabeça como um choque: “Mas… já estamos a subir esta rua há tanto tempo… e ainda não chegámos?” Olhei para trás. E nesse exacto momento, quando virei o corpo 180 graus… estávamos de volta aos bancos. No exacto momento em que nos estávamos a despedir, cada um pronto para seguir o seu caminho.</p>
+          <p>Na altura, eu ainda não tinha percebido bem o que tinha acabado de acontecer. Pensei que talvez tivesse imaginado. Como se a minha mente tivesse apagado o momento em que nos despedimos e começámos a subir a rua. Voltei-me outra vez para a subida. Agarrei novamente o braço do meu amigo. E pedi-lhe, mais uma vez, para não me largar até chegarmos a casa. E sabem o que aconteceu? As calças voltaram a cair. O arbusto voltou a mexer-se. A comichão na orelha voltou.</p>
+          <p>E quando virei novamente o corpo 180 graus… estávamos outra vez nos bancos. Outra despedida. Outro início. Outro regresso ao mesmo ponto. Foi aí que percebi que alguma coisa estava profundamente errada. Eu tinha entrado num loop temporal. Vivi aquele mesmo momento vezes sem conta. Dez. Vinte. Trinta. Perdi a noção. Só sei que foi uma das experiências mais assustadoras que já tive com a erva, porque por mais que eu tentasse resistir, por mais que eu lutasse contra aquilo, o meu corpo acabava sempre por virar os 180 graus… e eu voltava aos bancos.</p>
+          <p>Ao fim da décima vez, eu já sabia exactamente o que ia acontecer. As calças iam cair. O arbusto ia mexer-se. A orelha ia dar sinal. E eu ia voltar ao início. Outra vez. E outra. E outra. Hoje, olhando para trás, quase desejava que essa experiência me tivesse traumatizado ainda mais do que traumatizou. Talvez assim eu tivesse parado ali. Talvez assim nunca mais tivesse tocado em erva. Talvez assim não tivesse acabado, mais tarde, na psiquiatria, vítima de um surto psicótico que quase me levou a tirar a minha própria vida.</p>
+          <p>Mas essa… ainda não é uma história que eu esteja pronto para contar. A lição, essa, é clara. Nem toda a gente pode consumir as mesmas coisas da mesma forma. Conhecermo-nos a nós próprios não é opcional — é necessário. E, se escolhemos consumir, temos de saber os nossos limites. Eu, infelizmente, aprendi ao errar, bastantes vezes nos últimos 11 anos, pois nem mesmo álcool posso consumir. Sempre fui teimoso. Os conselhos entravam-me por um ouvido e saíam pelo outro.</p>
+          <p>Hoje já não sou assim. Hoje presto muito mais atenção à informação que me passam. Tento aprender não só com os meus erros, mas também com os erros dos outros. Porque, sinceramente, depois daquela trip, eu nunca mais devia ter tocado em erva. Mas isso ficou no passado. E, de certa forma, também ajudou a moldar a pessoa consciente que sou hoje. Por isso, deixo-vos isto: Tenham cuidado com aquilo que consomem. E nunca tenham vergonha de pedir ajuda — seja a um profissional, seja a um amigo próximo. Porque às vezes, quando ignoramos os sinais, o preço pode ser muito mais alto do que imaginamos, falo por experiência.</p>
+        </div>
+      </article>
+
+      <article class="story-card">
+        <div class="story-meta">
+          <span class="story-author">Ametista</span>
+          <span class="story-badge">Partilha</span>
+        </div>
+        <div class="story-date">Publicado a 27 de março de 2026</div>
+        <div class="story-body">
+          <p>Foi num ano que tudo mudou. Senti o meu mundo a desabar. Talvez devido ao stress, burnout, má alimentação, ritmo acelerado, más decisões e assédio no trabalho que tive alucinações auditivas. Tive ataques de pânico, ansiedade, depressão, tremores. Hoje faria tudo diferente, mas esta doença ensinou me que devemos abrandar e cuidar da nossa saúde, do nosso bem estar e principalmente da nossa mente, pois estava num ritmo muito acelerado e sem rumo, querendo tudo rapidamente e sem forças para pensar direito.</p>
+          <p>Tentei ignorar as vozes da minha cabeça e continuar dia após dia até que "a água do meu copo transbordou". Fui internada e com a medicação as vozes que ouvia desapareceram, mas outras doenças despoletaram como a ansiedade, a depressão, o pânico. Assim com apoio da família frequentei o hospital de dia, frequentei a aeips, tive consultas de psicologia, e consultas de hipnose na clínica da mente. Mais tarde como sentia me melhor, deixei a medicação e as vozes voltaram e foi pior. Tentei o suicídio.</p>
+          <p>Decidi então não deixar a medicação, fazer terapia e após algum tempo procurar trabalho. Tanto o hospital de dia como aeips e o internamento tive com outras pessoas que sofriam de doenças mentais foi muito bom e importante. Juntos ajudavamos uns aos outros. Saíamos, jogávamos e partilhavamos experiências. É importante não sentirmos sozinhos e sem apoio e devemos sempre pedir ajuda sempre que precisarmos.</p>
+          <p>Sim foi difícil mas sempre que dava um pequeno passo na direção certa. Tive medo de sair de casa, de multidões, de escadas, andar de transportes e todos os dias dava um pequeno passo até que agora já vou ao cinema, a praia, às lojas. A minha ansiedade agora está estabilizada e estas pequenas conquistas eram celebradas. Agora felizmente estou a ter uma vida mais calma, criei rotinas de bem estar faço meditação, natação, saio, vejo filmes, vou inscrever-me no ginásio e estou com amigos, familiares e namorado.</p>
+          <p>Sempre gostei de ajudar e espero com a minha partilha possa ajudar mais pessoas. Não estão sozinhos. Luz, Força e fé. Um abraço. 🤗</p>
+        </div>
+      </article>
+    </section>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="stories-config.js"></script>
-  <script>
-    (function(){
-      const params = new URLSearchParams(window.location.search);
-      const embed = params.get('embed') === '1';
-      const preserveAnon = params.get('anon') === '1';
-      if (embed) document.body.classList.add('embedded');
-
-      if (preserveAnon) {
-        try { document.getElementById('storyAnon').checked = true; } catch (e) {}
-        document.querySelectorAll('.site-nav a').forEach(a => {
-          const href = a.getAttribute('href');
-          if (!href || href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) return;
-          a.href = href + (href.includes('?') ? '&anon=1' : '?anon=1');
-        });
-      }
-
-      const config = window.BLUELAVA_STORIES_CONFIG || {};
-      const supabaseUrl = String(config.supabaseUrl || '').trim();
-      const supabaseAnonKey = String(config.supabaseAnonKey || '').trim();
-      const supabaseEnabled = Boolean(supabaseUrl && supabaseAnonKey);
-
-      // Editor de tópicos de histórias
-      const topicoParts = document.getElementById('topicoParts');
-      const addTopicoPart = document.getElementById('addTopicoPart');
-      const charCounter = document.getElementById('charCounter');
-      function buildTopicoPart(text = '') {
-        const partIndex = topicoParts.children.length + 1;
-        const wrapper = document.createElement('div');
-        wrapper.className = 'topico-part';
-        wrapper.dataset.index = String(partIndex);
-        wrapper.style.border = '1px solid #d9e2ec';
-        wrapper.style.borderRadius = '10px';
-        wrapper.style.padding = '12px';
-        wrapper.style.background = '#f8fafc';
-
-        const header = document.createElement('div');
-        header.className = 'share-row';
-        header.style.marginBottom = '8px';
-        header.style.justifyContent = 'space-between';
-
-        const label = document.createElement('strong');
-        label.textContent = `Parte ${partIndex}`;
-        label.style.fontSize = '0.95rem';
-
-        const counter = document.createElement('span');
-        counter.className = 'segment-counter';
-        counter.textContent = '0 / 10000 caracteres';
-        counter.style.fontSize = '0.9rem';
-        counter.style.color = '#666';
-
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.textContent = 'Remover parte';
-        removeBtn.style.border = 'none';
-        removeBtn.style.background = 'transparent';
-        removeBtn.style.color = '#1d4ed8';
-        removeBtn.style.fontWeight = '700';
-        removeBtn.style.cursor = 'pointer';
-        removeBtn.style.marginLeft = '12px';
-        removeBtn.addEventListener('click', () => {
-          if (topicoParts.children.length === 1) return;
-          wrapper.remove();
-          updateTopicoLabels();
-          updateTopicoCounter();
-        });
-
-        const topRow = document.createElement('div');
-        topRow.style.display = 'flex';
-        topRow.style.justifyContent = 'space-between';
-        topRow.style.alignItems = 'center';
-        topRow.style.gap = '12px';
-        topRow.appendChild(label);
-        const rightGroup = document.createElement('div');
-        rightGroup.style.display = 'flex';
-        rightGroup.style.alignItems = 'center';
-        rightGroup.style.gap = '12px';
-        rightGroup.appendChild(counter);
-        if (topicoParts.children.length > 0) rightGroup.appendChild(removeBtn);
-        topRow.appendChild(rightGroup);
-        wrapper.appendChild(topRow);
-
-        const textarea = document.createElement('textarea');
-        textarea.className = 'story-segment';
-        textarea.placeholder = partIndex === 1 ? 'Algo que nunca disse a ninguém é...' : 'Continua a tua história aqui...';
-        textarea.maxLength = 10000;
-        textarea.style.width = '100%';
-        textarea.style.padding = '10px';
-        textarea.style.border = '1px solid #ddd';
-        textarea.style.borderRadius = '8px';
-        textarea.style.boxSizing = 'border-box';
-        textarea.style.fontFamily = "'Inter',sans-serif";
-        textarea.style.minHeight = '110px';
-        textarea.addEventListener('input', () => {
-          const length = textarea.value.length;
-          counter.textContent = `${length} / 10000 caracteres`;
-          if (length >= 10000 && wrapper.nextElementSibling === null) {
-            addTopicoPart.click();
-            const nextTextarea = topicoParts.lastElementChild.querySelector('textarea');
-            nextTextarea.focus();
-          }
-          updateTopicoCounter();
-        });
-
-        textarea.value = text;
-        wrapper.appendChild(textarea);
-        return wrapper;
-      }
-
-      function updateTopicoLabels() {
-        Array.from(topicoParts.children).forEach((part, index) => {
-          part.dataset.index = String(index + 1);
-          const label = part.querySelector('strong');
-          if (label) label.textContent = `Parte ${index + 1}`;
-          const removeBtn = part.querySelector('button');
-          if (removeBtn) removeBtn.style.display = index === 0 ? 'none' : 'inline-flex';
-        });
-      }
-
-      function updateTopicoCounter() {
-        const segments = Array.from(topicoParts.querySelectorAll('textarea'));
-        const total = segments.reduce((sum, textarea) => sum + textarea.value.length, 0);
-        charCounter.textContent = `${total} caracteres em ${segments.length} parte${segments.length === 1 ? '' : 's'}`;
-      }
-
-      function addTopicoEditorPart(text = '') {
-        const part = buildTopicoPart(text);
-        topicoParts.appendChild(part);
-        updateTopicoLabels();
-        updateTopicoCounter();
-        part.querySelector('textarea').focus();
-      }
-
-      addTopicoPart.addEventListener('click', () => addTopicoEditorPart());
-      addTopicoEditorPart();
-
-      const EMOJIS = ['🍿','🤯','😢','🫂','😁'];
-      const LEGACY_SAMPLE_TEXTS = new Set([
-        'Há dias em que não sinto nada... e isso assusta mais do que sentir tudo.',
-        'Pedir ajuda foi a melhor decisão que tomei; encontrei apoio em pequenos passos.',
-        'A medicação ajudou-me, mas a compreensão da família foi essencial.',
-        'Aprendi a respirar durante picos de ansiedade e ajuda muito.',
-        'A solidão era o pior, até que entrei num grupo de apoio e senti-me menos só.'
-      ]);
-      const feed = document.getElementById('storiesFeed');
-      const backendStatus = document.getElementById('storiesBackendStatus');
-      let storiesCache = [];
-      const supabaseClient = (supabaseEnabled && window.supabase && typeof window.supabase.createClient === 'function')
-        ? window.supabase.createClient(supabaseUrl, supabaseAnonKey)
-        : null;
-
-      function setStatus(text, tone){
-        if (!backendStatus) return;
-        backendStatus.textContent = text;
-        backendStatus.style.color = tone === 'error' ? '#b42318' : '#204a86';
-      }
-
-      function getStories(){ try { return JSON.parse(localStorage.getItem('bluelava_stories')||'[]'); } catch(e){ return []; } }
-      function saveStories(v){ localStorage.setItem('bluelava_stories', JSON.stringify(v)); }
-      function removeLegacySampleStories(){
-        const stories = getStories();
-        const filtered = stories.filter(story => !LEGACY_SAMPLE_TEXTS.has(story.text) && !isBannedStory(story));
-        if (filtered.length !== stories.length) saveStories(filtered);
-      }
-      function escapeHtml(str){
-        return String(str)
-          .replace(/&/g,'&amp;')
-          .replace(/</g,'&lt;')
-          .replace(/>/g,'&gt;')
-          .replace(/\"/g,'&quot;')
-          .replace(/'/g,'&#39;');
-      }
-
-      function isBannedStory(story){
-        const text = String(story.text || '').toLowerCase().trim();
-        return text.includes('healthcheck') || text.includes('sync test');
-      }
-
-      function reactionsHtml(story){
-        const reactions = story.reactions || {};
-        return EMOJIS.map(e => `<button class="reaction-btn" data-id="${story.id}" data-emoji="${e}">${e} <span>${reactions[e] || 0}</span></button>`).join('');
-      }
-
-      function normalizeRemoteStory(row){
-        const metadata = (row.reactions && row.reactions.__meta__) || {};
-        return {
-          id: row.id,
-          name: row.nickname || '',
-          anonymous: Boolean(row.is_anonymous),
-          text: row.story_text || '',
-          reactions: row.reactions || {},
-          createdAt: new Date(row.created_at).getTime() || Date.now(),
-          threadId: metadata.threadId || null,
-          threadIndex: metadata.threadIndex || null
-        };
-      }
-
-      function normalizeLocalStory(story){
-        const metadata = (story.reactions && story.reactions.__meta__) || {};
-        return {
-          id: story.id,
-          name: story.name || '',
-          anonymous: Boolean(story.anonymous),
-          text: story.text || '',
-          reactions: story.reactions || {},
-          createdAt: Number(story.createdAt) || Date.now(),
-          threadId: metadata.threadId || null,
-          threadIndex: metadata.threadIndex || null
-        };
-      }
-
-      function getLocalComments(){
-        try { return JSON.parse(localStorage.getItem('bluelava_story_comments') || '[]'); } catch (e) { return []; }
-      }
-
-      function saveLocalComments(comments){
-        localStorage.setItem('bluelava_story_comments', JSON.stringify(comments));
-      }
-
-      function normalizeRemoteComment(row){
-        return {
-          id: row.id,
-          storyId: Number(row.story_id) || null,
-          threadId: row.thread_id || null,
-          name: row.nickname || '',
-          anonymous: Boolean(row.is_anonymous),
-          text: row.comment_text || '',
-          createdAt: new Date(row.created_at).getTime() || Date.now()
-        };
-      }
-
-      function normalizeLocalComment(item){
-        return {
-          id: item.id,
-          storyId: Number(item.storyId) || null,
-          threadId: item.threadId || null,
-          name: item.name || '',
-          anonymous: Boolean(item.anonymous),
-          text: item.text || '',
-          createdAt: Number(item.createdAt) || Date.now()
-        };
-      }
-
-      function getSupabaseHeaders(){
-        return {
-          apikey: supabaseAnonKey,
-          Authorization: `Bearer ${supabaseAnonKey}`
-        };
-      }
-
-      async function fetchSupabaseRest(path){
-        const url = `${supabaseUrl.replace(/\/$/, '')}/rest/v1/${path}`;
-        const response = await fetch(url, {
-          headers: getSupabaseHeaders()
-        });
-        const text = await response.text();
-        if (!response.ok) {
-          let message = text;
-          try { message = JSON.parse(text).message || text; } catch (e) {}
-          throw new Error(`Supabase REST error ${response.status}: ${message}`);
-        }
-        return JSON.parse(text);
-      }
-
-      function groupCommentsByKey(comments){
-        const map = new Map();
-        (comments || []).forEach(comment => {
-          const key = comment.threadId ? `topico-${comment.threadId}` : `story-${comment.storyId}`;
-          const list = map.get(key) || [];
-          list.push(comment);
-          map.set(key, list);
-        });
-        return map;
-      }
-
-      function commentsHtml(comments){
-        if (!comments || comments.length === 0) return '';
-        return comments.map(comment => `
-          <div class="comment-card">
-            <p style="margin:0">${escapeHtml(comment.text)}</p>
-            <div style="margin-top:8px;font-size:0.9rem;color:#334155;">${comment.anonymous ? 'Anónimo' : escapeHtml(comment.name)} • ${new Date(comment.createdAt).toLocaleDateString('pt-PT', { day:'2-digit', month:'2-digit', year:'numeric' })}</div>
-          </div>
-        `).join('');
-      }
-
-      function commentFormHtml(itemKey, storyId, topicoId){
-        return `
-          <div class="comment-form" data-item-key="${escapeHtml(itemKey)}" data-story-id="${storyId}" data-topico-id="${topicoId || ''}">
-            <textarea class="comment-input" placeholder="Escreve um comentário..."></textarea>
-            <div class="comment-form-row">
-              <input type="text" class="comment-name" placeholder="Nome (opcional)">
-              <label><input type="checkbox" class="comment-anon" checked> Anónimo</label>
-              <button type="button" class="btn comment-submit">Publicar comentário</button>
-            </div>
-          </div>
-        `;
-      }
-
-      function mergeLocalStories(remoteStories){
-        const localStories = getStories().filter(story => !isBannedStory(story));
-        const remoteIds = new Set(remoteStories.map(story => String(story.id)));
-        const normalizedLocal = localStories
-          .map(normalizeLocalStory)
-          .filter(story => !remoteIds.has(String(story.id)));
-        return remoteStories.concat(normalizedLocal).sort((a,b)=>b.createdAt - a.createdAt);
-      }
-
-      function buildRenderItems(stories, commentsByKey = new Map()) {
-        const topicoGroups = new Map();
-        const items = [];
-        stories.forEach((story) => {
-          if (story.threadId) {
-            const group = topicoGroups.get(story.threadId) || [];
-            group.push(story);
-            topicoGroups.set(story.threadId, group);
-          } else {
-            items.push(Object.assign({}, story, { comments: commentsByKey.get(`story-${story.id}`) || [] }));
-          }
-        });
-        topicoGroups.forEach((group) => {
-          group.sort((a,b)=> (a.threadIndex || 0) - (b.threadIndex || 0));
-          const createdAt = Math.max(...group.map(s=>s.createdAt));
-          const topicoId = group[0].threadId;
-          items.push({
-            isTopico: true,
-            threadId: topicoId,
-            topicoAuthor: group[0].anonymous ? 'Anónimo' : (group[0].name || 'Sem nome'),
-            anonymous: group[0].anonymous,
-            topicoSegments: group,
-            comments: commentsByKey.get(`topico-${topicoId}`) || [],
-            createdAt
-          });
-        });
-        return items.sort((a,b)=> b.createdAt - a.createdAt);
-      }
-
-      function renderStories(stories, commentsByKey = new Map()){
-        storiesCache = stories.slice();
-        feed.innerHTML = '';
-        if (stories.length===0) {
-          feed.innerHTML = '<div class="card"><p style="margin:0">Ainda não existem partilhas publicadas. Usa a secção acima para seres a primeira pessoa a partilhar a tua experiência.</p></div>';
-          return;
-        }
-        const renderItems = buildRenderItems(stories, commentsByKey);
-        renderItems.forEach((item)=>{
-          const card = document.createElement('article');
-          card.className='story-card card';
-          const itemKey = item.isTopico ? `topico-${item.threadId}` : `story-${item.id}`;
-          const comments = item.comments || [];
-          const commentsHeader = comments.length ? `<div style="margin-top:12px;font-weight:700;color:#1f2937;">${comments.length} comentário${comments.length === 1 ? '' : 's'}</div>` : '';
-          if (item.isTopico) {
-            const segmentsHtml = item.topicoSegments.map((segment, idx) => `
-              <div class="topico-segment" style="margin-bottom:16px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:0.9rem;font-weight:700;color:#1f4f8f;">Parte ${idx+1} de ${item.topicoSegments.length}<span>${segment.reactions ? Object.values(segment.reactions).reduce((sum, value) => sum + (typeof value === 'number' ? value : 0), 0) : 0} reações</span></div>
-                <p class="story-text">${escapeHtml(segment.text)}</p>
-                <div class="reactions">${reactionsHtml(segment)}</div>
-              </div>
-            `).join('');
-            card.innerHTML = `
-              <div style="margin-bottom:10px;font-weight:700;color:#0f172a;">Tópico com ${item.topicoSegments.length} parte${item.topicoSegments.length === 1 ? '' : 's'}</div>
-              ${segmentsHtml}
-              <div class="story-author">- ${item.topicoAuthor}</div>
-              ${commentsHeader}
-              ${commentsHtml(comments)}
-              ${commentFormHtml(itemKey, item.topicoSegments[0].id, item.threadId)}
-            `;
-          } else {
-            card.innerHTML = `
-              <p class="story-text">${escapeHtml(item.text)}</p>
-              <div class="story-author">- ${item.anonymous ? 'Anónimo' : (item.name||'Sem nome')}</div>
-              <div class="reactions">${reactionsHtml(item)}</div>
-              ${commentsHeader}
-              ${commentsHtml(comments)}
-              ${commentFormHtml(itemKey, item.id, null)}
-            `;
-          }
-          feed.appendChild(card);
-        });
-        document.querySelectorAll('.reaction-btn').forEach(b=>b.addEventListener('click', async function(){
-          const id = Number(this.dataset.id);
-          const emoji = this.dataset.emoji;
-          const story = storiesCache.find(x => Number(x.id) === id);
-          if (!story) return;
-          story.reactions = story.reactions || {};
-          const nextReactions = Object.assign({}, story.reactions, {
-            [emoji]: (story.reactions[emoji] || 0) + 1
-          });
-
-          if (supabaseClient) {
-            const previous = story.reactions;
-            story.reactions = nextReactions;
-            renderStories(storiesCache);
-            const { error } = await supabaseClient
-              .from('stories')
-              .update({ reactions: nextReactions })
-              .eq('id', story.id);
-            if (error) {
-              story.reactions = previous;
-              renderStories(storiesCache);
-              setStatus('Nao foi possivel atualizar a reacao. Tenta novamente.', 'error');
-            }
-            return;
-          }
-
-          const localStories = getStories();
-          const localStory = localStories.find(x => Number(x.id) === id);
-          if (!localStory) return;
-          localStory.reactions = nextReactions;
-          saveStories(localStories);
-          renderStories(localStories.slice().sort((a,b)=>b.createdAt - a.createdAt));
-        }));
-      }
-
-      feed.addEventListener('click', async function(event){
-        if (!event.target.matches('.comment-submit')) return;
-        const form = event.target.closest('.comment-form');
-        if (!form) return;
-        const storyId = Number(form.dataset.storyId) || null;
-        const topicoId = form.dataset.topicoId || null;
-        const itemKey = form.dataset.itemKey;
-        const textarea = form.querySelector('.comment-input');
-        const nameInput = form.querySelector('.comment-name');
-        const anonCheckbox = form.querySelector('.comment-anon');
-        const text = textarea ? textarea.value.trim() : '';
-        if (!text) return alert('Escreve um comentário.');
-
-        const name = nameInput ? nameInput.value.trim() : '';
-        const anonymous = anonCheckbox ? anonCheckbox.checked : true;
-        const commentPayload = {
-          nickname: name,
-          is_anonymous: anonymous,
-          comment_text: text,
-          story_id: storyId,
-          thread_id: topicoId || null
-        };
-
-        if (supabaseClient) {
-          const { error } = await supabaseClient
-            .from('story_comments')
-            .insert(commentPayload);
-          if (error) {
-            console.error('Supabase comment error:', error);
-            return setStatus('Nao foi possivel publicar o comentário. Tenta novamente.', 'error');
-          }
-        } else {
-          const comments = getLocalComments();
-          comments.push({
-            id: Date.now() + Math.floor(Math.random()*1000),
-            storyId,
-            threadId: topicoId || null,
-            name,
-            anonymous,
-            text,
-            createdAt: Date.now()
-          });
-          saveLocalComments(comments);
-        }
-
-        textarea.value = '';
-        nameInput.value = '';
-        if (anonCheckbox) anonCheckbox.checked = true;
-        await loadAndRenderStories();
-      });
-
-      async function loadRemoteStories(){
-        if (supabaseClient) {
-          const { data, error } = await supabaseClient
-            .from('stories')
-            .select('id,nickname,is_anonymous,story_text,reactions,created_at')
-            .order('created_at', { ascending: false })
-            .limit(200);
-          if (error) throw error;
-          return (data || []).map(normalizeRemoteStory);
-        }
-
-        const data = await fetchSupabaseRest('stories?select=id,nickname,is_anonymous,story_text,reactions,created_at&order=created_at.desc&limit=200');
-        return (data || []).map(normalizeRemoteStory);
-      }
-
-      async function loadRemoteComments(){
-        if (supabaseClient) {
-          const { data, error } = await supabaseClient
-            .from('story_comments')
-            .select('id,story_id,thread_id,nickname,is_anonymous,comment_text,created_at')
-            .order('created_at', { ascending: true })
-            .limit(1000);
-          if (error) throw error;
-          return (data || []).map(normalizeRemoteComment);
-        }
-
-        const data = await fetchSupabaseRest('story_comments?select=id,story_id,thread_id,nickname,is_anonymous,comment_text,created_at&order=created_at.asc&limit=1000');
-        return (data || []).map(normalizeRemoteComment);
-      }
-
-      function loadLocalComments(){
-        return getLocalComments().map(normalizeLocalComment);
-      }
-
-      async function loadAndRenderStories(){
-        if (!supabaseClient) {
-          removeLegacySampleStories();
-          const stories = getStories().filter(story => !isBannedStory(story)).slice().sort((a,b)=>b.createdAt - a.createdAt);
-          const comments = loadLocalComments();
-          const commentsByKey = groupCommentsByKey(comments);
-          renderStories(stories, commentsByKey);
-          return;
-        }
-        try {
-          const remoteStories = (await loadRemoteStories()).filter(story => !isBannedStory(story));
-          const stories = mergeLocalStories(remoteStories);
-          const remoteComments = await loadRemoteComments();
-          const localComments = loadLocalComments();
-          const commentsByKey = groupCommentsByKey(remoteComments.concat(localComments));
-          renderStories(stories, commentsByKey);
-        } catch (err) {
-          console.error(err);
-          setStatus('Ligacao ao feed partilhado indisponivel. A mostrar modo local.', 'error');
-          const stories = getStories().slice().sort((a,b)=>b.createdAt - a.createdAt);
-          const comments = loadLocalComments();
-          const commentsByKey = groupCommentsByKey(comments);
-          renderStories(stories, commentsByKey);
-        }
-      }
-
-      function getTopicoSegments() {
-        return Array.from(topicoParts.querySelectorAll('textarea'))
-          .map(textarea => textarea.value.trim())
-          .filter(Boolean);
-      }
-
-      function buildTopicoId() {
-        return `topico-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
-      }
-
-      function resetTopicoEditor() {
-        topicoParts.innerHTML = '';
-        addTopicoEditorPart();
-        updateTopicoCounter();
-      }
-
-      document.getElementById('submitStory').addEventListener('click', async function(){
-        const name = document.getElementById('storyName').value.trim();
-        const anonymous = document.getElementById('storyAnon').checked;
-        const segments = getTopicoSegments();
-        const totalLength = segments.reduce((sum, value) => sum + value.length, 0);
-        if (totalLength === 0) return alert('Escreve a tua experiência.');
-
-        const topicoId = segments.length > 1 ? buildTopicoId() : null;
-        const payload = segments.map((segment, index) => ({
-          nickname: name,
-          is_anonymous: anonymous,
-          story_text: segment,
-          reactions: topicoId ? { __meta__: { threadId: topicoId, threadIndex: index + 1 } } : {}
-        }));
-
-        if (supabaseClient) {
-          const { error } = await supabaseClient
-            .from('stories')
-            .insert(payload);
-          if (error) {
-            console.error('Supabase error:', error);
-            setStatus(`Erro: ${error.message || 'Nao foi possivel publicar agora. Tenta novamente.'}`, 'error');
-            return;
-          }
-        } else {
-          const stories = getStories();
-          const baseTime = Date.now();
-          payload.forEach((story, index) => {
-            stories.push({
-              id: baseTime + index,
-              name,
-              anonymous,
-              text: story.story_text,
-              reactions: story.reactions,
-              createdAt: baseTime + index
-            });
-          });
-          saveStories(stories);
-        }
-
-        resetTopicoEditor();
-        if (!anonymous) document.getElementById('storyName').value='';
-        setShareModalOpen(false);
-        await loadAndRenderStories();
-        window.scrollTo({top: 0, behavior:'smooth'});
-      });
-
-      const shareModal = document.getElementById('shareModal');
-      const openShareModal = document.getElementById('openShareModal');
-      const closeShareModal = document.getElementById('closeShareModal');
-
-      function setShareModalOpen(open) {
-        if (!shareModal) return;
-        shareModal.classList.toggle('open', open);
-        shareModal.setAttribute('aria-hidden', String(!open));
-        document.body.style.overflow = open ? 'hidden' : 'auto';
-        if (open) {
-          document.getElementById('storyName').focus();
-        }
-      }
-
-      if (openShareModal) {
-        openShareModal.addEventListener('click', () => setShareModalOpen(true));
-      }
-      if (closeShareModal) {
-        closeShareModal.addEventListener('click', () => setShareModalOpen(false));
-      }
-      if (shareModal) {
-        shareModal.addEventListener('click', (event) => {
-          if (event.target === shareModal) setShareModalOpen(false);
-        });
-      }
-
-      if (supabaseEnabled) {
-        setStatus('Feed partilhado ativo: novas histórias aparecem para toda a comunidade em tempo real.', 'ok');
-        if (supabaseClient) {
-          supabaseClient
-            .channel('stories-live')
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'stories' }, function(){
-              loadAndRenderStories();
-            })
-            .subscribe();
-        } else {
-          setStatus('Feed partilhado ativo via fallback REST: histórias devem carregar mesmo que o cliente Supabase não esteja disponível.', 'ok');
-        }
-      } else {
-        setStatus('Modo local ativo: para feed global, configura o Supabase em stories-config.js.', 'ok');
-      }
-
-      loadAndRenderStories();
-    })();
-
-    // Hide header on scroll down
-    (function() {
-      let lastScrollTop = 0;
-      let ticking = false;
-
-      function updateHeader() {
-        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // Only hide header if scrolling down past 100px
-        if (currentScroll > 100 && currentScroll > lastScrollTop) {
-          // Scrolling down
-          document.body.classList.add('hide-header');
-        } else {
-          // Scrolling up
-          document.body.classList.remove('hide-header');
-        }
-        
-        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-        ticking = false;
-      }
-
-      window.addEventListener('scroll', function() {
-        if (!ticking) {
-          window.requestAnimationFrame(updateHeader);
-          ticking = true;
-        }
-      }, false);
-    })();
-  </script>
+  <div class="footer">Histórias estáticas — apenas as partilhas de Humberto, Sky, Sky (Micéu Bizarro) e Ametista.</div>
 </body>
 </html>
