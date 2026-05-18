@@ -37,6 +37,16 @@
     .reaction-actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
     .reaction-button{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:999px;border:1px solid rgba(74,144,226,.2);background:#f8fbff;color:#153f73;font-size:1.1rem;cursor:pointer;transition:transform .2s ease,background .2s ease}
     .reaction-button:hover{transform:translateY(-1px);background:#eaf4ff}
+    .comment-actions{display:flex;gap:10px;margin-bottom:14px}
+    .comment-button{padding:10px 14px;border:none;border-radius:999px;background:#4A90E2;color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;transition:transform .2s ease,background .2s ease}
+    .comment-button:hover{transform:translateY(-1px);background:#3a78c0}
+    .comment-panel{display:none;background:rgba(255,255,255,.92);border:1px solid rgba(74,144,226,.18);border-radius:18px;padding:16px;margin-bottom:18px}
+    .comment-panel.open{display:block}
+    .comment-textarea{width:100%;min-height:100px;padding:12px;border:1px solid #d1d5db;border-radius:16px;background:#f8fafc;resize:vertical;line-height:1.7;color:#111;margin-bottom:10px}
+    .comment-note{font-size:.9rem;color:#475569;margin-bottom:10px}
+    .comment-save{padding:10px 16px;border:none;border-radius:999px;background:#4A90E2;color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;transition:transform .2s ease,background .2s ease}
+    .comment-save:hover{transform:translateY(-1px);background:#3a78c0}
+    .comment-status{font-size:.9rem;color:#1752a8}
     .story-body{white-space:pre-wrap;font-size:1rem;color:#232b35;line-height:1.85}
     .story-body p{margin:0 0 1.2rem}
     .story-body p:last-child{margin-bottom:0}
@@ -264,6 +274,92 @@
       }
     }
 
+    function getCommentStorageKey(storyKey) {
+      return `storyComment:${storyKey}`;
+    }
+
+    function getSavedComment(storyKey) {
+      return localStorage.getItem(getCommentStorageKey(storyKey)) || '';
+    }
+
+    function saveComment(storyKey, comment) {
+      localStorage.setItem(getCommentStorageKey(storyKey), comment);
+    }
+
+    function updateCommentCount(note, currentLength) {
+      note.textContent = `${currentLength} / 500 caracteres`;
+    }
+
+    function initializeStoryComments() {
+      document.querySelectorAll('.story-card[data-story-key]').forEach(card => {
+        const storyKey = card.dataset.storyKey;
+        const commentsContainer = document.createElement('div');
+        commentsContainer.className = 'comment-actions';
+
+        const commentToggle = document.createElement('button');
+        commentToggle.type = 'button';
+        commentToggle.className = 'comment-button';
+        commentToggle.textContent = 'Comments';
+
+        const commentPanel = document.createElement('div');
+        commentPanel.className = 'comment-panel';
+
+        const commentTextarea = document.createElement('textarea');
+        commentTextarea.className = 'comment-textarea';
+        commentTextarea.maxLength = 500;
+        commentTextarea.placeholder = 'Escreve um comentário de até 500 caracteres. Só aparece quando clicas em Comments.';
+
+        const commentNote = document.createElement('div');
+        commentNote.className = 'comment-note';
+        commentNote.textContent = '0 / 500 caracteres';
+
+        const commentSave = document.createElement('button');
+        commentSave.type = 'button';
+        commentSave.className = 'comment-save';
+        commentSave.textContent = 'Salvar comentário';
+
+        const commentStatus = document.createElement('div');
+        commentStatus.className = 'comment-status';
+        commentStatus.textContent = '';
+
+        const savedComment = getSavedComment(storyKey);
+        if (savedComment) {
+          commentTextarea.value = savedComment;
+          updateCommentCount(commentNote, savedComment.length);
+        }
+
+        commentTextarea.addEventListener('input', () => {
+          updateCommentCount(commentNote, commentTextarea.value.length);
+        });
+
+        commentToggle.addEventListener('click', () => {
+          commentPanel.classList.toggle('open');
+          if (commentPanel.classList.contains('open')) {
+            const saved = getSavedComment(storyKey);
+            commentTextarea.value = saved;
+            updateCommentCount(commentNote, saved.length);
+          }
+        });
+
+        commentSave.addEventListener('click', () => {
+          const comment = commentTextarea.value.trim();
+          saveComment(storyKey, comment);
+          commentStatus.textContent = 'Comentário guardado.';
+          setTimeout(() => { commentStatus.textContent = ''; }, 2000);
+        });
+
+        commentPanel.appendChild(commentTextarea);
+        commentPanel.appendChild(commentNote);
+        commentPanel.appendChild(commentSave);
+        commentPanel.appendChild(commentStatus);
+
+        commentsContainer.appendChild(commentToggle);
+        commentsContainer.appendChild(commentPanel);
+
+        card.insertBefore(commentsContainer, card.querySelector('.story-body'));
+      });
+    }
+
     function initializeStoryReactions() {
       document.querySelectorAll('.story-card[data-story-key]').forEach(card => {
         const storyKey = card.dataset.storyKey;
@@ -304,6 +400,7 @@
       });
     }
 
+    initializeStoryComments();
     initializeStoryReactions();
 
     const params = new URLSearchParams(window.location.search);
