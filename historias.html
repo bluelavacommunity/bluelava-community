@@ -33,6 +33,26 @@
     .story-body{white-space:pre-wrap;font-size:1rem;color:#232b35;line-height:1.85}
     .story-body p{margin:0 0 1.2rem}
     .story-body p:last-child{margin-bottom:0}
+    .story-cta{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:24px 28px;margin:24px 0;backdrop-filter:blur(10px)}
+    .story-cta h2{margin:0 0 10px;font-size:1.4rem;color:#fff}
+    .story-cta p{margin:0;color:#e8ecf4;line-height:1.75;font-size:1rem}
+    .story-cta button{margin-top:18px;padding:12px 20px;border:none;border-radius:999px;background:#4A90E2;color:#fff;font-size:1rem;font-weight:700;cursor:pointer;transition:transform .2s ease,background .2s ease}
+    .story-cta button:hover{transform:translateY(-1px);background:#3a78c0}
+    .story-form-wrapper{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(4,18,42,.82);backdrop-filter:blur(10px);z-index:999;visibility:hidden;opacity:0;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
+    .story-form-wrapper.open{visibility:visible;opacity:1;pointer-events:auto}
+    .story-form-card{background:#fff;border-radius:28px;max-width:760px;width:100%;padding:28px;box-shadow:0 32px 70px rgba(0,0,0,.28);color:#141922}
+    .story-form-card h2{margin:0 0 12px;font-size:1.7rem}
+    .story-form-card p{margin:0 0 18px;color:#475569;line-height:1.8}
+    .story-form-card label{display:block;font-weight:700;margin-bottom:10px;color:#242f3d}
+    .story-form-card textarea{width:100%;min-height:160px;padding:14px 16px;font-size:1rem;border:1px solid #d1d5db;border-radius:16px;background:#f8fafc;resize:vertical;line-height:1.7;color:#111}
+    .story-form-card .field-note{margin:10px 0 16px;font-size:.95rem;color:#475569}
+    .story-form-card .additional-parts{display:none;gap:18px}
+    .story-form-card .additional-parts.open{display:block}
+    .story-form-card .form-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:18px}
+    .story-form-card button{padding:12px 20px;border:none;border-radius:999px;font-size:1rem;font-weight:700;cursor:pointer}
+    .story-form-card .button-secondary{background:#f1f5f9;color:#111}
+    .story-form-card .button-primary{background:#4A90E2;color:#fff}
+    .story-form-card .close-form{position:absolute;top:18px;right:18px;border:none;background:transparent;color:#475569;font-size:1rem;cursor:pointer}
     .footer{margin-top:44px;padding:18px 0;color:#e2e8f0;text-align:center;font-size:.95rem}
     @media (min-width:720px){.top-banner-inner{justify-content:space-between}.story-grid{gap:28px}}
   </style>
@@ -56,6 +76,37 @@
     <section class="hero">
       <h1>Histórias reais de quem viveu a experiência</h1>
       <p>Estas quatro partilhas são a versão estática da página de histórias: não há feed dinâmico, apenas relatos directos de quem passou por um processo de saúde mental.</p>
+    </section>
+
+    <section class="story-cta">
+      <h2>Partilha a tua história</h2>
+      <p>Ajuda outras pessoas com a tua experiência e inspira a comunidade. Clica para abrir o formulário.</p>
+      <button id="openStoryForm">Abrir formulário</button>
+    </section>
+
+    <section class="story-form-wrapper" id="storyForm">
+      <div class="story-form-card">
+        <button class="close-form" id="closeStoryForm">Fechar</button>
+        <h2>Escreve a tua história</h2>
+        <p>Escreve a parte 1 da história. Se ultrapassar 10000 caracteres, serão mostradas as opções para parte 2 e parte 3.</p>
+        <label for="storyPart1">Parte 1</label>
+        <textarea id="storyPart1" aria-label="Parte 1 da história" maxlength="30000"></textarea>
+        <div class="field-note" id="part1Count">0 / 10000 caracteres</div>
+        <div class="additional-parts" id="extraParts">
+          <div>
+            <label for="storyPart2">Parte 2</label>
+            <textarea id="storyPart2" aria-label="Parte 2 da história"></textarea>
+          </div>
+          <div>
+            <label for="storyPart3">Parte 3</label>
+            <textarea id="storyPart3" aria-label="Parte 3 da história"></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="button-secondary" id="closeStoryFormFooter">Cancelar</button>
+          <button type="button" class="button-primary">Enviar</button>
+        </div>
+      </div>
     </section>
 
     <section class="story-grid">
@@ -132,5 +183,38 @@
   </main>
 
   <div class="footer">Histórias estáticas — apenas as partilhas de Humberto, Sky, Sky (Micéu Bizarro) e Ametista.</div>
+  <script>
+    const openStoryForm = document.getElementById('openStoryForm');
+    const closeStoryForm = document.getElementById('closeStoryForm');
+    const closeStoryFormFooter = document.getElementById('closeStoryFormFooter');
+    const storyForm = document.getElementById('storyForm');
+    const storyPart1 = document.getElementById('storyPart1');
+    const extraParts = document.getElementById('extraParts');
+    const part1Count = document.getElementById('part1Count');
+
+    function updateFormState() {
+      const length = storyPart1.value.length;
+      part1Count.textContent = `${length} / 10000 caracteres`;
+      if (length > 10000) {
+        extraParts.classList.add('open');
+      } else {
+        extraParts.classList.remove('open');
+      }
+    }
+
+    openStoryForm.addEventListener('click', () => {
+      storyForm.classList.add('open');
+      storyPart1.focus();
+      updateFormState();
+    });
+
+    function closeForm() {
+      storyForm.classList.remove('open');
+    }
+
+    closeStoryForm.addEventListener('click', closeForm);
+    closeStoryFormFooter.addEventListener('click', closeForm);
+    storyPart1.addEventListener('input', updateFormState);
+  </script>
 </body>
 </html>
