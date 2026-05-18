@@ -176,7 +176,7 @@
       const config = window.BLUELAVA_STORIES_CONFIG || {};
       const supabaseUrl = String(config.supabaseUrl || '').trim();
       const supabaseAnonKey = String(config.supabaseAnonKey || '').trim();
-      const supabaseEnabled = Boolean(window.supabase && supabaseUrl && supabaseAnonKey);
+      const supabaseEnabled = Boolean(supabaseUrl && supabaseAnonKey);
 
       // Editor de tópicos de histórias
       const topicoParts = document.getElementById('topicoParts');
@@ -303,11 +303,9 @@
       const feed = document.getElementById('storiesFeed');
       const backendStatus = document.getElementById('storiesBackendStatus');
       let storiesCache = [];
-      let supabaseClient = null;
-
-      if (supabaseEnabled) {
-        supabaseClient = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-      }
+      const supabaseClient = (supabaseEnabled && window.supabase && typeof window.supabase.createClient === 'function')
+        ? window.supabase.createClient(supabaseUrl, supabaseAnonKey)
+        : null;
 
       function setStatus(text, tone){
         if (!backendStatus) return;
@@ -315,26 +313,11 @@
         backendStatus.style.color = tone === 'error' ? '#b42318' : '#204a86';
       }
 
-      function getStories(){
-        try {
-          const raw = localStorage.getItem('bluelava_stories')
-            || localStorage.getItem('stories')
-            || localStorage.getItem('bluelava_story_data')
-            || '[]';
-          return JSON.parse(raw);
-        } catch(e){
-          return [];
-        }
-      }
-      function saveStories(v){
-        localStorage.setItem('bluelava_stories', JSON.stringify(v));
-      }
+      function getStories(){ try { return JSON.parse(localStorage.getItem('bluelava_stories')||'[]'); } catch(e){ return []; } }
+      function saveStories(v){ localStorage.setItem('bluelava_stories', JSON.stringify(v)); }
       function removeLegacySampleStories(){
         const stories = getStories();
-        const filtered = stories.filter(story => {
-          const text = story.text || story.story_text || story.storyText || '';
-          return !LEGACY_SAMPLE_TEXTS.has(text) && !isBannedStory(story);
-        });
+        const filtered = stories.filter(story => !LEGACY_SAMPLE_TEXTS.has(story.text) && !isBannedStory(story));
         if (filtered.length !== stories.length) saveStories(filtered);
       }
       function escapeHtml(str){
@@ -347,7 +330,7 @@
       }
 
       function isBannedStory(story){
-        const text = String(story.text || story.story_text || story.storyText || '').toLowerCase().trim();
+        const text = String(story.text || '').toLowerCase().trim();
         return text.includes('healthcheck') || text.includes('sync test');
       }
 
@@ -373,23 +356,19 @@
       function normalizeLocalStory(story){
         const metadata = (story.reactions && story.reactions.__meta__) || {};
         return {
-          id: story.id || story._id || story.story_id || Date.now(),
-          name: story.name || story.nickname || '',
-          anonymous: Boolean(story.anonymous || story.is_anonymous),
-          text: story.text || story.story_text || story.storyText || story.body || '',
+          id: story.id,
+          name: story.name || '',
+          anonymous: Boolean(story.anonymous),
+          text: story.text || '',
           reactions: story.reactions || {},
-          createdAt: Number(story.createdAt || story.created_at || Date.now()) || Date.now(),
-          threadId: story.threadId || story.thread_id || metadata.threadId || null,
-          threadIndex: story.threadIndex || story.thread_index || metadata.threadIndex || null
+          createdAt: Number(story.createdAt) || Date.now(),
+          threadId: metadata.threadId || null,
+          threadIndex: metadata.threadIndex || null
         };
       }
 
       function getLocalComments(){
-        try {
-          return JSON.parse(localStorage.getItem('bluelava_story_comments') || localStorage.getItem('story_comments') || '[]');
-        } catch (e) {
-          return [];
-        }
+        try { return JSON.parse(localStorage.getItem('bluelava_story_comments') || '[]'); } catch (e) { return []; }
       }
 
       function saveLocalComments(comments){
@@ -418,6 +397,27 @@
           text: item.text || '',
           createdAt: Number(item.createdAt) || Date.now()
         };
+      }
+
+      function getSupabaseHeaders(){
+        return {
+          apikey: supabaseAnonKey,
+          Authorization: `Bearer ${supabaseAnonKey}`
+        };
+      }
+
+      async function fetchSupabaseRest(path){
+        const url = `${supabaseUrl.replace(/\/$/, '')}/rest/v1/${path}`;
+        const response = await fetch(url, {
+          headers: getSupabaseHeaders()
+        });
+        const text = await response.text();
+        if (!response.ok) {
+          let message = text;
+          try { message = JSON.parse(text).message || text; } catch (e) {}
+          throw new Error(`Supabase REST error ${response.status}: ${message}`);
+        }
+        return JSON.parse(text);
       }
 
       function groupCommentsByKey(comments){
@@ -621,22 +621,32 @@
       });
 
       async function loadRemoteStories(){
-        const { data, error } = await supabaseClient
-          .from('stories')
-          .select('id,nickname,is_anonymous,story_text,reactions,created_at')
-          .order('created_at', { ascending: false })
-          .limit(200);
-        if (error) throw error;
+        if (supabaseClient) {
+          const { data, error } = await supabaseClient
+            .from('stories')
+            .select('id,nickname,is_anonymous,story_text,reactions,created_at')
+            .order('created_at', { ascending: false })
+            .limit(200);
+          if (error) throw error;
+          return (data || []).map(normalizeRemoteStory);
+        }
+
+        const data = await fetchSupabaseRest('stories?select=id,nickname,is_anonymous,story_text,reactions,created_at&order=created_at.desc&limit=200');
         return (data || []).map(normalizeRemoteStory);
       }
 
       async function loadRemoteComments(){
-        const { data, error } = await supabaseClient
-          .from('story_comments')
-          .select('id,story_id,thread_id,nickname,is_anonymous,comment_text,created_at')
-          .order('created_at', { ascending: true })
-          .limit(1000);
-        if (error) throw error;
+        if (supabaseClient) {
+          const { data, error } = await supabaseClient
+            .from('story_comments')
+            .select('id,story_id,thread_id,nickname,is_anonymous,comment_text,created_at')
+            .order('created_at', { ascending: true })
+            .limit(1000);
+          if (error) throw error;
+          return (data || []).map(normalizeRemoteComment);
+        }
+
+        const data = await fetchSupabaseRest('story_comments?select=id,story_id,thread_id,nickname,is_anonymous,comment_text,created_at&order=created_at.asc&limit=1000');
         return (data || []).map(normalizeRemoteComment);
       }
 
@@ -759,14 +769,18 @@
         });
       }
 
-      if (supabaseClient) {
-        setStatus('Feed partilhado ativo: novas historias aparecem para toda a comunidade em tempo real.', 'ok');
-        supabaseClient
-          .channel('stories-live')
-          .on('postgres_changes', { event: '*', schema: 'public', table: 'stories' }, function(){
-            loadAndRenderStories();
-          })
-          .subscribe();
+      if (supabaseEnabled) {
+        setStatus('Feed partilhado ativo: novas histórias aparecem para toda a comunidade em tempo real.', 'ok');
+        if (supabaseClient) {
+          supabaseClient
+            .channel('stories-live')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'stories' }, function(){
+              loadAndRenderStories();
+            })
+            .subscribe();
+        } else {
+          setStatus('Feed partilhado ativo via fallback REST: histórias devem carregar mesmo que o cliente Supabase não esteja disponível.', 'ok');
+        }
       } else {
         setStatus('Modo local ativo: para feed global, configura o Supabase em stories-config.js.', 'ok');
       }
