@@ -30,8 +30,11 @@
     .story-author{font-size:1rem;font-weight:700;color:#141922}
     .story-badge{background:rgba(74,144,226,.12);color:#1752a8;font-size:.85rem;font-weight:700;padding:.3rem .75rem;border-radius:999px;text-transform:uppercase;letter-spacing:.04em}
     .story-date{color:var(--muted);font-size:.95rem;margin-bottom:8px}
-    .story-reactions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;font-size:.95rem;color:#475569}
+    .story-reactions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;font-size:.95rem;color:#475569}
     .story-reaction{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:rgba(74,144,226,.08);color:#153f73}
+    .reaction-actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+    .reaction-button{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:999px;border:1px solid rgba(74,144,226,.2);background:#f8fbff;color:#153f73;font-size:1.1rem;cursor:pointer;transition:transform .2s ease,background .2s ease}
+    .reaction-button:hover{transform:translateY(-1px);background:#eaf4ff}
     .story-body{white-space:pre-wrap;font-size:1rem;color:#232b35;line-height:1.85}
     .story-body p{margin:0 0 1.2rem}
     .story-body p:last-child{margin-bottom:0}
@@ -112,16 +115,17 @@
     </section>
 
     <section class="story-grid">
-      <article class="story-card">
+      <article class="story-card" data-story-key="sky-miceu">
         <div class="story-meta">
           <span class="story-author">Sky (Micéu Bizarro)</span>
           <span class="story-badge">Partilha</span>
         </div>
         <div class="story-date">Publicado a 30 de abril de 2026</div>
         <div class="story-reactions">
-          <span class="story-reaction">🤯 1</span>
-          <span class="story-reaction">🫂 2</span>
+          <span class="story-reaction" data-reaction-emoji="🤯" data-initial-count="1">🤯 1</span>
+          <span class="story-reaction" data-reaction-emoji="🫂" data-initial-count="2">🫂 2</span>
         </div>
+        <div class="reaction-actions"></div>
         <div class="story-body">
           <p>Ah e tem mais! Depois do relacionamento que mencionei, quando comecei a ter "visões" e a ouvir as vozes com mais vividez e constância, eu tinha uma crush, um rapaz de Belém. E eu via e visitava mundos meus, de "outras pessoas", "dele", "com ele" (o avatar/a entidade/"a alma" dele/a personificação dele em mim). E eu via arte, em vários formatos, animações, cinema-like stuff, locais arquitetonicamente kindos, e via até mundos impossíveis e várias coisas tipo inter-dimensionais. E eu vejo essas coisas com uma precisão artística e têm tanta beleza. Vejo principalmente coisas bonitas, paisagens por exemplo que vi (e até as que nunca vi em lado nenhum). E é aí que quero chegar.</p>
           <p>Involuntariamente "vi-o" a andar pelo bairro dele. Numa zona muito específica. E como é que eu sei que é o bairro dele, se eu nunca lá tinha entrado? Se eu estava a milhas de distância noutro país? Porque mais tarde visitei o bairro, visitei Belém pela primeira vez e andei e procurei e encontrei a zona que eu "vi" meses antes.</p>
@@ -132,15 +136,16 @@
         </div>
       </article>
 
-      <article class="story-card">
+      <article class="story-card" data-story-key="sky">
         <div class="story-meta">
           <span class="story-author">Sky</span>
           <span class="story-badge">Partilha</span>
         </div>
         <div class="story-date">Publicado a 30 de abril de 2026</div>
         <div class="story-reactions">
-          <span class="story-reaction">🫂 2</span>
+          <span class="story-reaction" data-reaction-emoji="🫂" data-initial-count="2">🫂 2</span>
         </div>
+        <div class="reaction-actions"></div>
         <div class="story-body">
           <p>Nasci, abri os olhos e não chorei, algo que surpreendeu todos os presentes na sala de parto. Olho aberto, jikulumessu, como ensina a cultura. Desde a infância nutri uma intuição muito forte, criatividade e imaginação férteis e sensibilidade muito altas, só não tinha noção disso. Bastava observar um pouco, para conhecer, bastava sentir um pouco para afetar o meu corpo (tive a minha menarca depois de um rapaz ter escrito por mensagem que gostava de mim, teve um efeito no meu corpo, senti euforia, felicidade e algo que identifico hoje como a sensação do primeiro amor ou paixoneta e isso teve um efeito hormonal em mim, claro, eram químicos do corpo a trabalhar).</p>
           <p>Eu nunca pensei que essa sensibilidade fosse se tornar no que tornou. Tinha sonhos vívidos ao crescer, simbólicos, bonitos, coloridos e daqueles kinda dark que parecem premonitórios ou até mesmo protetivos (por exemplo sonhar quando alguém pode estar prestes a sofrer ou morrer ou sonhar que protegia as pessoas em camadas e plataformas criadas dentro do meu subconsciente, que as protegia dentro de mim, em mundos meus). A minha noção de espaço era precisa, as minhas imaginações eram vívidas, mas eu não ligava muito a isso, só era criança e sonhava e inventava.</p>
@@ -153,17 +158,18 @@
         </div>
       </article>
 
-      <article class="story-card">
+      <article class="story-card" data-story-key="humberto">
         <div class="story-meta">
           <span class="story-author">Humberto</span>
           <span class="story-badge">Partilha</span>
         </div>
         <div class="story-date">Publicado a 12 de abril de 2026</div>
         <div class="story-reactions">
-          <span class="story-reaction">😢 1</span>
-          <span class="story-reaction">🤯 3</span>
-          <span class="story-reaction">🫂 5</span>
+          <span class="story-reaction" data-reaction-emoji="😢" data-initial-count="1">😢 1</span>
+          <span class="story-reaction" data-reaction-emoji="🤯" data-initial-count="3">🤯 3</span>
+          <span class="story-reaction" data-reaction-emoji="🫂" data-initial-count="5">🫂 5</span>
         </div>
+        <div class="reaction-actions"></div>
         <div class="story-body">
           <p>A ignorância foi a minha pior inimiga há 11 anos — e eu vou explicar porquê. Estava num condomínio em Luanda, na casa de um amigo, quando o pessoal decidiu juntar-se para fumar erva. Na altura, se não me falha a memória, devia ser a minha terceira ou quarta vez a fumar. E, sinceramente, até aquele momento, eu ainda não percebia por que razão tanta gente gostava daquilo. Nunca tinha sentido grande coisa. Para mim, era só fumo, conversa e nada mais.</p>
           <p>Mas nessa noite… tudo mudou. Estávamos sentados nuns bancos, numa zona com pouca iluminação. Coisas da banda. Só o cenário já metia respeito: sombras por todo o lado, pouca visibilidade, aquele ambiente pesado que quase parecia um aviso silencioso de que alguma coisa estava prestes a correr mal. Enquanto uns estavam na conversa — eu incluído — outro grupo estava concentrado a desfazer a erva e a colocá-la num cigarro já esvaziado do tabaco. Quando finalmente acabaram a missão, o pica começou a rodar de mão em mão.</p>
@@ -179,15 +185,16 @@
         </div>
       </article>
 
-      <article class="story-card">
+      <article class="story-card" data-story-key="ametista">
         <div class="story-meta">
           <span class="story-author">Ametista</span>
           <span class="story-badge">Partilha</span>
         </div>
         <div class="story-date">Publicado a 27 de março de 2026</div>
         <div class="story-reactions">
-          <span class="story-reaction">🫂 11</span>
+          <span class="story-reaction" data-reaction-emoji="🫂" data-initial-count="11">🫂 11</span>
         </div>
+        <div class="reaction-actions"></div>
         <div class="story-body">
           <p>Foi num ano que tudo mudou. Senti o meu mundo a desabar. Talvez devido ao stress, burnout, má alimentação, ritmo acelerado, más decisões e assédio no trabalho que tive alucinações auditivas. Tive ataques de pânico, ansiedade, depressão, tremores. Hoje faria tudo diferente, mas esta doença ensinou me que devemos abrandar e cuidar da nossa saúde, do nosso bem estar e principalmente da nossa mente, pois estava num ritmo muito acelerado e sem rumo, querendo tudo rapidamente e sem forças para pensar direito.</p>
           <p>Tentei ignorar as vozes da minha cabeça e continuar dia após dia até que "a água do meu copo transbordou". Fui internada e com a medicação as vozes que ouvia desapareceram, mas outras doenças despoletaram como a ansiedade, a depressão, o pânico. Assim com apoio da família frequentei o hospital de dia, frequentei a aeips, tive consultas de psicologia, e consultas de hipnose na clínica da mente. Mais tarde como sentia me melhor, deixei a medicação e as vozes voltaram e foi pior. Tentei o suicídio.</p>
@@ -232,6 +239,70 @@
     closeStoryForm.addEventListener('click', closeForm);
     closeStoryFormFooter.addEventListener('click', closeForm);
     storyPart1.addEventListener('input', updateFormState);
+
+    const reactionEmojiList = ['🤯', '🫂', '😢'];
+
+    function getReactionStorageKey(storyKey, emoji) {
+      return `storyReaction:${storyKey}:${emoji}`;
+    }
+
+    function getSavedReactionCount(storyKey, emoji) {
+      const value = localStorage.getItem(getReactionStorageKey(storyKey, emoji));
+      return value ? parseInt(value, 10) || 0 : 0;
+    }
+
+    function saveReactionCount(storyKey, emoji, count) {
+      localStorage.setItem(getReactionStorageKey(storyKey, emoji), count);
+    }
+
+    function updateReactionDisplay(card, emoji, count) {
+      const target = card.querySelector(`.story-reaction[data-reaction-emoji="${emoji}"]`);
+      if (target) {
+        target.textContent = `${emoji} ${count}`;
+      }
+    }
+
+    function initializeStoryReactions() {
+      document.querySelectorAll('.story-card[data-story-key]').forEach(card => {
+        const storyKey = card.dataset.storyKey;
+        const actions = card.querySelector('.reaction-actions');
+        if (!actions) return;
+
+        reactionEmojiList.forEach(emoji => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'reaction-button';
+          button.textContent = emoji;
+          button.dataset.emoji = emoji;
+          button.addEventListener('click', () => {
+            let reactionNode = card.querySelector(`.story-reaction[data-reaction-emoji="${emoji}"]`);
+            const reactionsContainer = card.querySelector('.story-reactions');
+            if (!reactionNode && reactionsContainer) {
+              reactionNode = document.createElement('span');
+              reactionNode.className = 'story-reaction';
+              reactionNode.dataset.reactionEmoji = emoji;
+              reactionNode.dataset.initialCount = '0';
+              reactionsContainer.appendChild(reactionNode);
+            }
+            const initial = reactionNode ? parseInt(reactionNode.dataset.initialCount, 10) || 0 : 0;
+            const saved = getSavedReactionCount(storyKey, emoji);
+            const updated = saved + 1;
+            saveReactionCount(storyKey, emoji, updated);
+            updateReactionDisplay(card, emoji, initial + updated);
+          });
+          actions.appendChild(button);
+        });
+
+        card.querySelectorAll('.story-reaction').forEach(reactionNode => {
+          const emoji = reactionNode.dataset.reactionEmoji;
+          const initial = parseInt(reactionNode.dataset.initialCount, 10) || 0;
+          const saved = getSavedReactionCount(storyKey, emoji);
+          reactionNode.textContent = `${emoji} ${initial + saved}`;
+        });
+      });
+    }
+
+    initializeStoryReactions();
   </script>
 </body>
 </html>
